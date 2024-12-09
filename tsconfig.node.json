@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "tsBuildInfoFile": ".tsbuildinfo.node.json",
+    "incremental": true,
     "target": "ES2022",
     "lib": ["ES2023"],
     "module": "ESNext",
