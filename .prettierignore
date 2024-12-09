@@ -1,0 +1,8 @@
+vite.config.ts
+/dist
+/node_modules
+*json
+*html
+*md
+*txt
+.env*

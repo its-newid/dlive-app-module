@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="os" content="DLIVE" />
+    <title>DIVA | 딜라이브OTT'v</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script type="text/javascript">
+      function triggerBackEvent() {
+          var event = document.createEvent('KeyboardEvent');
+          Object.defineProperty(event, 'keyCode', {
+              get: function () {
+                  return this.keyCodeVal;
+              }
+          });
+          Object.defineProperty(event, 'which', {
+              get: function () {
+                  return this.keyCodeVal;
+              }
+          });
+
+          /*
+          initKeyEvent (type, bubbles, cancelable, view,
+                    ctrlKey, altKey, shiftKey, metaKey,
+                    keyCode, charCode)
+
+          initKeyboardEvent(type, canBubble, cancelable,
+            view, key, location, ctrlKey,
+            altKey, shiftKey, metaKey)
+          */
+          if (event.initKeyboardEvent) {
+              event.initKeyboardEvent("keydown", true, true, document.defaultView, false, false, false, false, 27, 27);
+          } else {
+              event.initKeyEvent("keydown", true, true, document.defaultView, false, false, false, false, 27, 0);
+          }
+          event.keyCodeVal = 27;
+          document.dispatchEvent(event);
+      }
+  </script>
+  </body>
+</html>
