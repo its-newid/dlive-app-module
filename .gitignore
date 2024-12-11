@@ -28,3 +28,6 @@ dist-ssr
 
 # SAMPLE DATA
 sample_linear_data.json
+
+# TSBUILDINFO
+.tsbuildinfo*
