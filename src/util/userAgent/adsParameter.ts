@@ -1,8 +1,8 @@
-import { AdsParameter, UserAgentOS } from '@/type/userAgent';
+import { IAdsParameter, UserAgentOS } from '@/type/userAgent';
 
 const ADS_APP_NAME = 'diva';
 
-export abstract class UserAgentAdsParameter implements AdsParameter {
+export abstract class UserAgentAdsParameter implements IAdsParameter {
     private readonly appName = ADS_APP_NAME;
 
     constructor(
@@ -37,9 +37,10 @@ export abstract class UserAgentAdsParameter implements AdsParameter {
     }
 }
 
-export class NewidAgentAdsParameter extends UserAgentAdsParameter {
+export class DliveAgentAdsParameter extends UserAgentAdsParameter {
     constructor(os: UserAgentOS) {
-        super(os, encodeURIComponent('diva'), encodeURIComponent('diva.net'));
+        // FIXME: diva로 앱 이름 변경
+        super(os, encodeURIComponent('bingekorea'), encodeURIComponent('bingekorea.net'));
     }
 
     getIfaType(): string {
