@@ -1,0 +1,12 @@
+<svg width="100%" height="100%" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Indicator / Live Screen-Guide / Selected Channel">
+<path id="Rectangle" d="M0 2L9.17157 11.1716C10.7337 12.7337 10.7337 15.2663 9.17157 16.8284L0 26V2Z" fill="#D3F47C"/>
+<path id="Shadow" d="M0 2L9.17157 11.1716C10.7337 12.7337 10.7337 15.2663 9.17157 16.8284L0 26V2Z" fill="url(#paint0_linear_20035_17080)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_20035_17080" x1="0" y1="14" x2="12" y2="14" gradientUnits="userSpaceOnUse">
+<stop stop-color="#141415" stop-opacity="0.6"/>
+<stop offset="1" stop-color="#141415" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
