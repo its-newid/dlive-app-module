@@ -1,4 +1,4 @@
-import { AdsParameter, UserAgentOS } from '@/types/userAgent';
+import { AdsParameter, UserAgentOS } from '@/type/userAgent';
 
 const ADS_APP_NAME = 'diva';
 

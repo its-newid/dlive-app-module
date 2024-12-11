@@ -1,4 +1,4 @@
-import { KeyCodeMap } from '@/types/userAgent';
+import { KeyCodeMap } from '@/type/userAgent';
 
 export class UserAgentKeyCodeMap implements KeyCodeMap {
     arrowLeft = 37;

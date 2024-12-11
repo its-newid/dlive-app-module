@@ -1,4 +1,4 @@
-import { UserAgentOS } from '@/types/userAgent';
+import { UserAgentOS } from '@/type/userAgent';
 
 export function getOS(): UserAgentOS {
     const metaContentName = document.querySelector('meta[property="os"]')?.getAttribute('content');

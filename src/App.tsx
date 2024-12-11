@@ -2,7 +2,7 @@ import { ThemeProvider } from 'styled-components';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '@/utils/i18n';
+import i18n from '@/util/i18n';
 import Navigation from '@/Router';
 import GlobalStyle from '@/style/GlobalStyle';
 import { theme } from '@/style/theme';

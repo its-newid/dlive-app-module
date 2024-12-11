@@ -1,4 +1,4 @@
-import { ScreenDimension } from '@/types/userAgent';
+import { ScreenDimension } from '@/type/userAgent';
 
 export class UserAgentScreenSize implements ScreenDimension {
     getScreenWidth() {

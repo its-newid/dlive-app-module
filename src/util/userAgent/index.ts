@@ -1,14 +1,14 @@
-import { getOS } from '@/utils/getOs';
-import { AndroidAgentAdsParameter, NewidAgentAdsParameter } from '@/utils/userAgent/adsParameter';
-import { UserAgentKeyCodeMap } from '@/utils/userAgent/keyCodeMap';
-import { UserAgentScreenSize } from '@/utils/userAgent/screenSize';
+import { getOS } from '@/util/getOs';
+import { AndroidAgentAdsParameter, NewidAgentAdsParameter } from '@/util/userAgent/adsParameter';
+import { UserAgentKeyCodeMap } from '@/util/userAgent/keyCodeMap';
+import { UserAgentScreenSize } from '@/util/userAgent/screenSize';
 import {
     AdsParameter,
     KeyCodeMap,
     ScreenDimension,
     UserAgent,
     UserAgentOS
-} from '@/types/userAgent';
+} from '@/type/userAgent';
 
 interface IUserAgentConstructor {
     new (

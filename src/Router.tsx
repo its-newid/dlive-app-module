@@ -1,6 +1,6 @@
 import { createHashRouter, RouterProvider, Navigate } from 'react-router';
-import LinearLayout from '@/layout/LinearLayout';
-import LiveScreen from '@/features/screen/linear/LiveScreen';
+import LinearLayout from '@/component/layout/LinearLayout';
+import LiveScreen from '@/feature/screen/linear/LiveScreen';
 
 const router = createHashRouter([
     {
