@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useAtom, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { appService } from '@/api/service/app';
 import { ScheduleResponse } from '@/api/model/schedule';
@@ -16,7 +16,8 @@ export const useGetSchedule = () => {
     // const { lang, country } = useAtomValue(localeState);
     const locale = DEFAULT_LOCALE;
 
-    const [scheduleEnabled, setScheduleEnabled] = useAtom(scheduleEnabledState);
+    // const [scheduleEnabled, setScheduleEnabled] = useAtom(scheduleEnabledState);
+    const setScheduleEnabled = useSetAtom(scheduleEnabledState);
 
     const { data, isLoading, isError, isRefetching, refetch } = useQuery({
         queryKey: [QueryKeys.APP],
@@ -24,7 +25,7 @@ export const useGetSchedule = () => {
             return appService.fetchSchedule(locale);
         },
         select: useCallback(transformData, []),
-        enabled: scheduleEnabled
+        enabled: true
     });
 
     const setChannels = useSetAtom(channelsState);
