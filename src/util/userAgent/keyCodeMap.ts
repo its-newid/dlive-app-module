@@ -1,6 +1,6 @@
-import { KeyCodeMap } from '@/type/userAgent';
+import { IKeyCodeMap } from '@/type/userAgent';
 
-export class UserAgentKeyCodeMap implements KeyCodeMap {
+export class UserAgentKeyCodeMap implements IKeyCodeMap {
     arrowLeft = 37;
     arrowUp = 38;
     arrowRight = 39;
