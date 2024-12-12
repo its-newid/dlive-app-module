@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.3",
+    "axios": "^1.7.9",
     "dayjs": "^1.11.13",
+    "hls.js": "^1.5.17",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
     "i18next": "^24.0.5",
