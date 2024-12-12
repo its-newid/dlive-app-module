@@ -1,11 +1,26 @@
 import styled from 'styled-components';
-import { Outlet } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
+import Banner from '@/feature/screen/linear/banner';
+import Guide from '@/feature/screen/linear/guide';
+import { useAtomValue } from 'jotai';
+import { isFirstLaunchState } from '@/atom/app.ts';
+import { RoutePath } from '@/type/routePath.ts';
 
 const LinearLayout = () => {
+    const isFirstLaunch = useAtomValue(isFirstLaunchState);
+
+    // todo 추후 onboarding 페이지 추가시
+    //  !isFirstLaunch 에서 isFirstLaunch로 변경 예정
+
+    if (!isFirstLaunch) {
+        return <Navigate to={RoutePath.ONBOARDING} replace />;
+    }
+
     return (
         <Container>
             <Outlet />
-            <h1>LinearLayout</h1>
+            <Banner />
+            <Guide />
         </Container>
     );
 };
