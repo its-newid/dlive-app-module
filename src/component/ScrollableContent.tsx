@@ -7,16 +7,11 @@ import {
     useRef
 } from 'react';
 import styled from 'styled-components';
-import {
-    Enable,
-    IExtendableStyledComponent,
-    KeyboardEventListener,
-    Nullable
-} from '../type/common';
-import { userAgent } from '../util/userAgent';
-import { DOWN, UP } from '../util/eventKey';
-import { coerceAtLeast, coerceAtMost, coerceIn } from '../util/common';
-import { UserAgentOS } from '../type/userAgent';
+import { Enable, IExtendableStyledComponent, KeyboardEventListener, Nullable } from '@/type/common';
+import { userAgent } from '@/util/userAgent';
+import { DOWN, UP } from '@/util/eventKey';
+import { coerceAtLeast, coerceAtMost, coerceIn } from '@/util/common';
+import { UserAgentOS } from '@/type/userAgent';
 
 const MIN_HEIGHT = 0;
 

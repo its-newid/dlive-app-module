@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
-import { mylistState, TMyListContents } from '../atom/app';
-import { ContentType } from '../type/common';
+import { mylistState, TMyListContents } from '@/atom/app';
+import { ContentType } from '@/type/common';
 
 type Props = {
     contentId: string;
@@ -20,7 +20,7 @@ const useMyList = () => {
         setState((prev: TMyListContents) => {
             return {
                 ...prev,
-                [type]: [...prev[type].filter((id) => id !== contentId)],
+                [type]: [...prev[type].filter((id) => id !== contentId)]
             };
         });
     };

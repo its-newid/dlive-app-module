@@ -1,20 +1,12 @@
-import {
-    CustomKeyboardEvent,
-    FlexDirection,
-    Nullable,
-    Optional,
-} from '../type/common';
-import { MutableRefObject, useCallback, useLayoutEffect, useRef } from 'react';
-import { coerceIn, isItemEmpty } from '../util/common';
-import { DOWN, ENTER, UP } from '../util/eventKey';
-import {
-    containTabIndex,
-    getChildrenOfElement,
-} from '../util/getChildrenOfElement';
-import { makeKeyboardEvent } from '../util/makeKeyboardEvent';
-import { ElementStyle } from './useFlexBox';
-import { getElementStyle } from '../util/getElementStyle';
-import { getTransformMatrixValues } from '../util/getTransformMaxrixValues';
+import { RefObject, useCallback, useLayoutEffect, useRef } from 'react';
+import { CustomKeyboardEvent, FlexDirection, Nullable, Optional } from '@/type/common';
+import { coerceIn, isItemEmpty } from '@/util/common';
+import { DOWN, ENTER, UP } from '@/util/eventKey';
+import { containTabIndex, getChildrenOfElement } from '@/util/getChildrenOfElement';
+import { makeKeyboardEvent } from '@/util/makeKeyboardEvent';
+import { ElementStyle } from '@/hook/useFlexBox';
+import { getElementStyle } from '@/util/getElementStyle';
+import { getTransformMatrixValues } from '@/util/getTransformMaxrixValues';
 
 type Props<T> = {
     items: T[];
@@ -36,7 +28,7 @@ type Return = {
     getItemIndex: (item: HTMLElement) => number;
     setListRef: (node: Nullable<HTMLElement>) => void;
     setFocusRef: (node: Nullable<HTMLDivElement>) => void;
-    stateRef: MutableRefObject<State>;
+    stateRef: RefObject<State>;
 };
 
 export function useFixedColumn<T>({
@@ -45,7 +37,7 @@ export function useFixedColumn<T>({
     onClick,
     onFocus,
     selectedIndex,
-    rowsInNumber,
+    rowsInNumber
 }: Props<T>): Return {
     const containerRef = useRef<Nullable<HTMLElement>>(null);
     const fixedFocusRef = useRef<Nullable<HTMLDivElement>>(null);
@@ -113,9 +105,7 @@ export function useFixedColumn<T>({
             return;
         }
 
-        const selectedColumnIndex = stateRef.current.list.elements.indexOf(
-            selectedItemRef.current
-        );
+        const selectedColumnIndex = stateRef.current.list.elements.indexOf(selectedItemRef.current);
 
         const { keyCode } = event;
         if ([UP, DOWN].includes(keyCode)) {
@@ -153,10 +143,7 @@ export function useFixedColumn<T>({
         }
 
         return () => {
-            fixedFocusRef.current?.removeEventListener(
-                'keydown',
-                handleKeyDown
-            );
+            fixedFocusRef.current?.removeEventListener('keydown', handleKeyDown);
         };
     }, [enabled]);
 
@@ -177,46 +164,29 @@ export function useFixedColumn<T>({
 
     const setListRef = useCallback(
         (node: Nullable<HTMLElement>) => {
-            if (
-                !items.length ||
-                !node ||
-                !fixedFocusRef.current ||
-                !rowsInNumber
-            )
-                return;
+            if (!items.length || !node || !fixedFocusRef.current || !rowsInNumber) return;
 
             itemsRef.current = items;
             containerRef.current = node;
             window.addEventListener('wheel', handleWheel, {
-                passive: false,
+                passive: false
             });
 
             const elements = getChildrenOfElement(node);
             const focusableElements = elements
                 .map((child) => {
-                    return getChildrenOfElement(child).find((element) =>
-                        containTabIndex(element)
-                    );
+                    return getChildrenOfElement(child).find((element) => containTabIndex(element));
                 })
-                .filter(
-                    (element): element is HTMLElement => element !== undefined
-                );
+                .filter((element): element is HTMLElement => element !== undefined);
 
             const representativeItem = focusableElements?.[0];
             if (!representativeItem) return;
 
-            const elementStyle = getElementStyle(
-                representativeItem,
-                FlexDirection.COLUMN
-            );
+            const elementStyle = getElementStyle(representativeItem, FlexDirection.COLUMN);
 
-            const [translateX, translateY] = getTransformMatrixValues(
-                fixedFocusRef.current
-            );
+            const [translateX, translateY] = getTransformMatrixValues(fixedFocusRef.current);
             const borderWidth =
-                (fixedFocusRef.current?.offsetWidth -
-                    fixedFocusRef.current?.clientWidth) /
-                2;
+                (fixedFocusRef.current?.offsetWidth - fixedFocusRef.current?.clientWidth) / 2;
 
             fixedFocusRef.current.style.cssText = `
             top: ${elementStyle.top + node.offsetTop}px;
@@ -228,11 +198,11 @@ export function useFixedColumn<T>({
             stateRef.current = {
                 element: elementStyle,
                 list: {
-                    elements: focusableElements,
+                    elements: focusableElements
                 },
                 enabled,
                 transitionState: new Set(),
-                itemsInNumber: rowsInNumber,
+                itemsInNumber: rowsInNumber
             };
 
             const selectedItem = focusableElements.find(
@@ -253,7 +223,7 @@ export function useFixedColumn<T>({
         selectItem,
         getSelectedItemIndex,
         getItemIndex,
-        stateRef,
+        stateRef
     };
 }
 
@@ -273,11 +243,11 @@ const defaultElementStyle: ElementStyle = {
     width: 0,
     height: 0,
     gap: 0,
-    top: 0,
+    top: 0
 };
 
 const defaultListStyle: ListStyle = {
-    elements: [],
+    elements: []
 };
 
 const defaultState: State = {
@@ -285,5 +255,5 @@ const defaultState: State = {
     list: defaultListStyle,
     enabled: false,
     transitionState: new Set(),
-    itemsInNumber: undefined,
+    itemsInNumber: undefined
 };

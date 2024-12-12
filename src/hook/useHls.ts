@@ -7,7 +7,7 @@ import Hls, {
     ManifestParsedData,
     SubtitleTracksUpdatedData
 } from 'hls.js';
-import { Nullable } from '../type/common';
+import { Nullable } from '@/type/common';
 import { userAgent } from '@/util/userAgent';
 import { ReplaceAdsParamsHandler } from '@/hook/useMakeAdsUrl';
 

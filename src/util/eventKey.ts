@@ -1,5 +1,5 @@
-import { userAgent } from './userAgent';
 import { UIEvent } from 'react';
+import { userAgent } from '@/util/userAgent';
 import { EventListener } from '@/type/common';
 
 export const ENTER = userAgent.keyCodeMap.enter,

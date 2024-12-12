@@ -15,6 +15,6 @@ export const useModal = (): IModal => {
     return {
         isOpen,
         onOpen,
-        onClose,
+        onClose
     };
 };

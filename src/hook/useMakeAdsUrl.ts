@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
-import { IAdsParameter } from '../type/userAgent';
-import { DEFAULT_LOCALE } from '../app/environment';
-import { ipState, uuidState } from '../atom/app';
+import { IAdsParameter } from '@/type/userAgent';
+import { DEFAULT_LOCALE } from '@/app/environment';
+import { ipState, uuidState } from '@/atom/app';
 // import { UUIDGenerator } from '../util/userAgent/uuid';
 
 const DEVICE_ID = `[DEVICE_ID]`;

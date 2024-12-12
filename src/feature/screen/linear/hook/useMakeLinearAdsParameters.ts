@@ -1,7 +1,4 @@
-import {
-    ReplaceAdsParamsHandler,
-    useMakeAdsUrl,
-} from '../../../../hook/useMakeAdsUrl';
+import { ReplaceAdsParamsHandler, useMakeAdsUrl } from '@/hook/useMakeAdsUrl';
 
 export function useMakeLinearAdsParameters(): ReplaceAdsParamsHandler {
     const makeAdsUrl = useMakeAdsUrl();

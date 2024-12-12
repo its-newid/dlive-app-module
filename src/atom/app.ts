@@ -1,9 +1,9 @@
 // import { getLanguage, splitLanguageAndCountry } from '@/hook/loadLocaleMessage';
 import { atom } from 'jotai';
+import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 // import { DEFAULT_LOCALE } from '@/app/environment';
 import { ContentKind, ContentType } from '@/type/common';
 import { ChannelEpisode } from '@/type/linear';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 
 // type TLocale = {
 //     lang: string;

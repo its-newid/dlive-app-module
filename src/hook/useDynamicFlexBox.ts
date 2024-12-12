@@ -1,14 +1,14 @@
-import { CustomKeyboardEvent, FlexDirection, Nullable, Optional } from '../type/common';
+import { CustomKeyboardEvent, FlexDirection, Nullable, Optional } from '@/type/common';
 import { useCallback, useLayoutEffect, useRef } from 'react';
-import { coerceAtLeast, coerceAtMost, coerceIn } from '../util/common';
+import { coerceAtLeast, coerceAtMost, coerceIn } from '@/util/common';
 import {
     calculateViewportItemNumbers,
     getFlexDirection
-} from '../util/calculateViewportItemNumbers';
-import { DOWN, LEFT, RIGHT, UP } from '../util/eventKey';
-import { getChildrenOfElement } from '../util/getChildrenOfElement';
-import { makeKeyboardEvent } from '../util/makeKeyboardEvent';
-import { ElementStyle, OffsetState } from './useFlexBox';
+} from '@/util/calculateViewportItemNumbers';
+import { DOWN, LEFT, RIGHT, UP } from '@/util/eventKey';
+import { getChildrenOfElement } from '@/util/getChildrenOfElement';
+import { makeKeyboardEvent } from '@/util/makeKeyboardEvent';
+import { ElementStyle, OffsetState } from '@/hook/useFlexBox';
 
 type Props<T> = {
     items: T[];

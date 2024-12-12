@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
 import styled from 'styled-components';
+import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
 
 export function ErrorPage() {
     const handleExit = () => window.close();

@@ -1,6 +1,6 @@
-import { IExtendableStyledComponent } from '../type/common';
 import React, { useRef, useImperativeHandle } from 'react';
 import styled from 'styled-components';
+import { IExtendableStyledComponent } from '@/type/common';
 
 type FlexboxProps<T> = IExtendableStyledComponent & {
     items: T[];

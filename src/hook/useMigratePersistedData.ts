@@ -6,8 +6,8 @@ import {
     TWatchedContent,
     uuidState,
     watchHistoryState
-} from '../atom/app';
-import { ContentType } from '../type/common';
+} from '@/atom/app';
+import { ContentType } from '@/type/common';
 
 const OLD_PERSISTED_KEY = 'persist:root';
 const OLD_WATCH_HISTORY_KEY = 'recentlyWatchedContent';

@@ -1,5 +1,5 @@
 import { DOWN, UP } from '@/util/eventKey';
-import { CustomKeyCodeEvent, CustomKeyCodeEventInit } from '../type/common';
+import { CustomKeyCodeEvent, CustomKeyCodeEventInit } from '@/type/common';
 
 function createKeyboardEvent(type: string, initDict: CustomKeyCodeEventInit): CustomKeyCodeEvent {
     return new CustomKeyCodeEvent(type, initDict);

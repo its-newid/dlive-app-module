@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSetAtom } from 'jotai';
 import { useQuery } from '@tanstack/react-query';
-import { lastUpdatedTimeState } from '@/atom/app';
 import { useAtomCallback } from 'jotai/utils';
-// import { useNavigate } from 'react-router';
 import { usePrevious } from '@/hook/usePrevious';
+import { DEFAULT_LOCALE } from '@/app/environment';
 import { appService } from '@/api/service/app';
 import { LinearResponse } from '@/api/model/app';
 import { Channel } from '@/type/linear';
 import { QueryKeys } from '@/type/queryKey';
+import { lastUpdatedTimeState } from '@/atom/app';
 import { channelNowState, channelsState, readInitialChannel } from '@/atom/screen';
-import { DEFAULT_LOCALE } from '@/app/environment';
 
 export const useGetApp = () => {
     // const { lang, country } = useAtomValue(localeState);

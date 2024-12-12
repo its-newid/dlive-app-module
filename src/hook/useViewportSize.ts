@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
-import { userAgent } from '../util/userAgent';
-import { FlexDirection, Optional } from '../type/common';
+import { userAgent } from '@/util/userAgent';
+import { FlexDirection, Optional } from '@/type/common';
 
 type Return = {
     ref: RefObject<Optional<HTMLDivElement>>;

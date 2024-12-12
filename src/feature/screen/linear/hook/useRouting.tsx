@@ -1,14 +1,13 @@
-import { useLocation, useParams } from 'react-router';
-import { useNavigate } from 'react-router';
 import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useParams, useNavigate } from 'react-router';
 import { useAtomCallback } from 'jotai/utils';
-import { Optional } from '../../../../type/common';
-import { Channel } from '../../../../type/linear';
-import { channelNowState, channelSelector, selectedChannelSelector } from '../../../../atom/screen';
-import { RoutePath } from '../../../../type/routePath';
-import useOverlay from './useOverlay';
 import { useSetAtom } from 'jotai';
-import { LiveScreenOverlayType } from '../../../../atom/screen/linear';
+import { Optional } from '@/type/common';
+import { Channel } from '@/type/linear';
+import { RoutePath } from '@/type/routePath';
+import useOverlay from '@/feature/screen/linear/hook/useOverlay';
+import { channelNowState, channelSelector, selectedChannelSelector } from '@/atom/screen';
+import { LiveScreenOverlayType } from '@/atom/screen/linear';
 
 export const ChannelUpdateState = {
     PENDING: 'PENDING',

@@ -1,20 +1,15 @@
-import { Optional } from '../../../../type/common';
-import { Channel, ChannelEpisode } from '../../../../type/linear';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import {
-    findChannelSelector,
-    onAirScheduleEndTimeState,
-    onAirScheduleState
-} from '../../../../atom/screen';
-import { useScheduleUpdater } from '../../../../hook/useScheduleUpdater';
 import { useCallback, useEffect, useRef } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { usePrevious } from '../../../../hook/usePrevious';
-import { writeWatchHistory } from '../../../../atom/app';
-import { toTimestamp } from '../../../../util/common';
-
-import { useVisibility } from '../../../../hook/useVisibilityChange';
-import { VideoErrorState, videoErrorState } from '../../../../atom/screen/linear';
+import { toTimestamp } from '@/util/common';
+import { usePrevious } from '@/hook/usePrevious';
+import { useScheduleUpdater } from '@/hook/useScheduleUpdater';
+import { useVisibility } from '@/hook/useVisibilityChange';
+import { Optional } from '@/type/common';
+import { Channel, ChannelEpisode } from '@/type/linear';
+import { findChannelSelector, onAirScheduleEndTimeState, onAirScheduleState } from '@/atom/screen';
+import { VideoErrorState, videoErrorState } from '@/atom/screen/linear';
+import { writeWatchHistory } from '@/atom/app';
 
 const WATCH_TIME_THRESHOLD_SECONDS = 10;
 

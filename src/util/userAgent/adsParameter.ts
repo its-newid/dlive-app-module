@@ -40,7 +40,7 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
 export class DliveAgentAdsParameter extends UserAgentAdsParameter {
     constructor(os: UserAgentOS) {
         // FIXME: diva로 앱 이름 변경
-        super(os, encodeURIComponent('bingekorea'), encodeURIComponent('bingekorea.net'));
+        super(os, encodeURIComponent('diva'), encodeURIComponent('diva.net'));
     }
 
     getIfaType(): string {

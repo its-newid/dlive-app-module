@@ -1,18 +1,18 @@
 import { atom } from 'jotai';
 import { atomFamily, atomWithReset } from 'jotai/utils';
 // import { linearCategoriesState } from '../feed/home';
-import { coerceAtLeast, coerceAtMost, lerp, toMillis } from '../../util/common';
+import { coerceAtLeast, coerceAtMost, lerp, toMillis } from '@/util/common';
 import {
     floorToNearest30Minutes,
     TIME_SLOT_MAX_MILLIS,
     TIME_SLOT_MILLIS
-} from '../../feature/screen/linear/hook/useTimeline';
+} from '@/feature/screen/linear/hook/useTimeline';
 import { channelSelector } from './index';
-import { Optional, ScreenOverlayConfig, VideoErrorName } from '../../type/common';
+import { Optional, ScreenOverlayConfig, VideoErrorName } from '@/type/common';
 // import { MyListCategory } from '../../type/category';
-import { ChannelEpisode } from '../../type/linear';
-import { userAgent } from '../../util/userAgent';
-import { UserAgentOS } from '../../type/userAgent';
+import { ChannelEpisode } from '@/type/linear';
+import { userAgent } from '@/util/userAgent';
+import { UserAgentOS } from '@/type/userAgent';
 
 export const LiveScreenOverlayType = {
     IDLE: 'idle',

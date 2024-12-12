@@ -1,14 +1,14 @@
+import { useCallback } from 'react';
+import { useAtomCallback } from 'jotai/utils';
 import { useSetAtom } from 'jotai';
 import {
     LiveScreenOverlay,
     LiveScreenOverlayType,
     VideoState,
     videoState,
-    writeLiveScreenOverlay,
-} from '../../../../atom/screen/linear';
-import { ScreenOverlayConfig } from '../../../../type/common';
-import { useCallback } from 'react';
-import { useAtomCallback } from 'jotai/utils';
+    writeLiveScreenOverlay
+} from '@/atom/screen/linear';
+import { ScreenOverlayConfig } from '@/type/common';
 
 export default function useOverlay() {
     const setCurrentOverlay = useSetAtom(writeLiveScreenOverlay);
@@ -21,7 +21,7 @@ export default function useOverlay() {
 
     const showOverlay = ({
         type,
-        needDelay,
+        needDelay
     }: {
         type: LiveScreenOverlayType;
         needDelay?: boolean;
@@ -29,15 +29,14 @@ export default function useOverlay() {
         const overlay = getOverlay(type);
         if (!overlay) return;
 
-        const keepShowing =
-            needDelay === undefined ? getIsVideoLoading() : !needDelay;
+        const keepShowing = needDelay === undefined ? getIsVideoLoading() : !needDelay;
 
         const config: ScreenOverlayConfig = keepShowing
             ? { state: 'infinite' }
             : { state: 'delayed', duration: overlay.timeout };
         setCurrentOverlay({
             type: overlay.type,
-            config,
+            config
         });
     };
 
@@ -58,22 +57,19 @@ const getTimeout = {
     [LiveScreenOverlayType.MINI_BANNER]: 5000,
     [LiveScreenOverlayType.SUBTITLE_TRACK_SHEET]: 5000,
     [LiveScreenOverlayType.GUIDE]: 30_000,
-    [LiveScreenOverlayType.FULL_DESCRIPTION]: 30_000,
+    [LiveScreenOverlayType.FULL_DESCRIPTION]: 30_000
 };
 
 type TScreenOverlayMap = {
     [key in keyof typeof LiveScreenOverlayType]: LiveScreenOverlay;
 };
 
-const ScreenOverlayMap = Object.entries(LiveScreenOverlayType).reduce(
-    (acc, [key, value]) => {
-        return {
-            ...acc,
-            [key]: {
-                type: value,
-                timeout: getTimeout[value],
-            },
-        };
-    },
-    {} as TScreenOverlayMap
-);
+const ScreenOverlayMap = Object.entries(LiveScreenOverlayType).reduce((acc, [key, value]) => {
+    return {
+        ...acc,
+        [key]: {
+            type: value,
+            timeout: getTimeout[value]
+        }
+    };
+}, {} as TScreenOverlayMap);

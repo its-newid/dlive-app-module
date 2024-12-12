@@ -1,13 +1,13 @@
-import { toMillis } from '../util/common';
+import { toMillis } from '@/util/common';
 import { useCallback, useEffect, useRef } from 'react';
-import { Optional } from '../type/common';
-import { Channel, ChannelEpisode } from '../type/linear';
-import { findAiringEpisode, scheduleOfChannelSelector } from '../atom/screen/linear';
+import { Optional } from '@/type/common';
+import { Channel, ChannelEpisode } from '@/type/linear';
+import { findAiringEpisode, scheduleOfChannelSelector } from '@/atom/screen/linear';
 import { useAtomCallback } from 'jotai/utils';
-import { lastUpdatedTimeState } from '../atom/app';
+import { lastUpdatedTimeState } from '@/atom/app';
 import { SCHEDULE_STALE_TIME, useGetSchedule } from '@/api/scheduleQuery';
 import { useAtomValue, useAtom } from 'jotai';
-import { scheduleEnabledState } from '../atom/screen';
+import { scheduleEnabledState } from '@/atom/screen';
 
 export const useScheduleUpdater = ({
     channel,

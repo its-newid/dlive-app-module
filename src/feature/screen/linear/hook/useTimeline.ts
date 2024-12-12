@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { timeBarOffsetState } from '../../../../atom/screen/linear';
 import { useAtomValue } from 'jotai';
 import dayjs from 'dayjs';
+import { timeBarOffsetState } from '@/atom/screen/linear';
 
 export const TIME_SLOT_MILLIS = 1000 * 60 * 30; // 30 minutes
 export const TIME_SLOT_MAX_MILLIS = 1000 * 60 * 60 * 12; // 12 hours
@@ -35,9 +35,7 @@ const generateTimes = (millis: number = new Date().getTime()) => {
 };
 
 export function floorToNearest30Minutes(date: Date = new Date()) {
-    return new Date(
-        Math.floor(date.getTime() / TIME_SLOT_MILLIS) * TIME_SLOT_MILLIS
-    );
+    return new Date(Math.floor(date.getTime() / TIME_SLOT_MILLIS) * TIME_SLOT_MILLIS);
 }
 
 function format12Hour(date: Date) {

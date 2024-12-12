@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router';
-import { RoutePath } from '../type/routePath';
-import { useOnMount } from './useOnMount';
 import { useAtomValue } from 'jotai';
-import { isFirstLaunchState } from '../atom/app';
+import { RoutePath } from '@/type/routePath';
+import { useOnMount } from '@/hook/useOnMount';
+import { isFirstLaunchState } from '@/atom/app';
 
 export const useLoggingSessionEvent = () => {
     const { pathname } = useLocation();
