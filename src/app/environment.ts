@@ -10,8 +10,8 @@ const CONTACT_EMAIL = 'app-marketing@its-newid.com';
 const ERROR_VIDEO_URL = CDN_URL + '/img/bgErrorBlack.mp4';
 
 const DEFAULT_LOCALE = {
-    lang: 'ko',
-    country: 'KR'
+    lang: 'en',
+    country: 'US'
 };
 
 const EnvType = {
