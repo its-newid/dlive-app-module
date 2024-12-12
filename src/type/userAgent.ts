@@ -4,11 +4,11 @@ export const UserAgentOS = {
 } as const;
 export type UserAgentOS = (typeof UserAgentOS)[keyof typeof UserAgentOS];
 
-export interface TargetOS {
+export interface ITargetOS {
     type: UserAgentOS;
 }
 
-export interface AdsParameter {
+export interface IAdsParameter {
     params: {
         os: string;
         ua: string;
@@ -22,13 +22,13 @@ export interface AdsParameter {
     };
 }
 
-export interface ScreenDimension {
+export interface IScreenDimension {
     getScreenWidth(): number;
 
     getScreenHeight(): number;
 }
 
-export interface KeyCodeMap {
+export interface IKeyCodeMap {
     arrowLeft: number;
     arrowUp: number;
     arrowRight: number;
@@ -39,8 +39,8 @@ export interface KeyCodeMap {
     channelDown?: number;
 }
 
-export type UserAgent = TargetOS & {
-    adsParameter: AdsParameter;
-    keyCodeMap: KeyCodeMap;
-    screenSize: ScreenDimension;
+export type IUserAgent = ITargetOS & {
+    adsParameter: IAdsParameter;
+    keyCodeMap: IKeyCodeMap;
+    screenSize: IScreenDimension;
 };

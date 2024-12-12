@@ -1,6 +1,6 @@
-import { ScreenDimension } from '@/type/userAgent';
+import { IScreenDimension } from '@/type/userAgent';
 
-export class UserAgentScreenSize implements ScreenDimension {
+export class UserAgentScreenSize implements IScreenDimension {
     getScreenWidth() {
         return document.body.clientWidth;
     }
