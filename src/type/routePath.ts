@@ -1,6 +1,7 @@
 export const RoutePath = {
-    LIVE_SCREEN: 'live/:id',
-    ERROR: '/error',
-    ONBOARDING: '/onboarding'
+    ONBOARDING: '/onboarding',
+    AGREEMENT: '/agreement',
+    HOME: '/',
+    ERROR: '/error'
 } as const;
 export type RoutePath = (typeof RoutePath)[keyof typeof RoutePath];
