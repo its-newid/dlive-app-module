@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
 import { t } from 'i18next';
