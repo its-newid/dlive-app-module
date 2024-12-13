@@ -34,6 +34,6 @@ const Element = styled.img`
     top: 50%;
     left: 50%;
     animation: ${spin} 1s linear infinite;
-    width: 108px;
-    height: 108px;
+    width: 108rem;
+    height: 108rem;
 `;

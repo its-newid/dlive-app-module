@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Nullable } from '@/type/common';
 import { useImageLoaded } from '@/hook/useImageLoaded';
 import Clickable, { ClickableProps } from './Clickable';
-import { theme } from '@/style/Theme';
+import { theme } from '@/style/theme';
 
 type ImgProps = Pick<React.ComponentProps<'img'>, 'src' | 'alt'>;
 
