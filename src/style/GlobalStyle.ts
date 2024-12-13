@@ -24,8 +24,8 @@ const GlobalStyle = createGlobalStyle`
     position: fixed;  // 고정 위치로 설정
     top: 0;           // 상단에 위치
     left: 0;          // 좌측에 위치
-    width: 1920px;    // 고정 너비
-    height: 1080px;   // 고정 높이
+    width: 100%;
+    height: 100%;
     overflow: hidden; // 스크롤 숨김
     transform: scale(var(--scale)); // 스케일 적용
     transform-origin: 0 0; // 스케일 기준을 좌측 상단으로 설정

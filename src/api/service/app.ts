@@ -18,4 +18,5 @@ const executor = new HttpService(BASE_API_URL, {
     Authorization: `Bearer ${BEARER_TOKEN}`,
     'Content-Type': 'application/json'
 });
+
 export const appService = new AppService(executor);
