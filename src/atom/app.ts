@@ -4,6 +4,7 @@ import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 // import { DEFAULT_LOCALE } from '@/app/environment';
 import { ContentKind, ContentType } from '@/type/common';
 import { ChannelEpisode } from '@/type/linear';
+import { atomWithSessionStorage } from '@/util/sessionStorage.atom';
 
 // type TLocale = {
 //     lang: string;
@@ -175,11 +176,7 @@ export const searchKeywordHistorySelector = atom(
     }
 );
 
-export const lastUpdatedTimeState = atomWithStorage<number>(
-    'lastUpdatedTime',
-    0,
-    createJSONStorage(() => sessionStorage)
-);
+export const lastUpdatedTimeState = atomWithSessionStorage<number>('lastUpdatedTime', 0);
 
 export const ipState = atomWithStorage<string>(
     'ip',
