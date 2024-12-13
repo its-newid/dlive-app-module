@@ -1,0 +1,26 @@
+import LogoProd from '@/asset/icLogo.svg';
+import LogoDev from '@/asset/icLogoDev.svg';
+import LogoLocal from '@/asset/icLogoLocal.svg';
+import LogoErr from '@/asset/icLogoErr.svg';
+import { ENV_MODE, EnvType } from '@/app/environment';
+import { IExtendableStyledComponent } from '@/type/common';
+
+export function Logo({ ...rest }: IExtendableStyledComponent) {
+    if (!ENV_MODE) return;
+
+    const Component = getLogo(ENV_MODE);
+    return <Component {...rest} />;
+}
+
+const getLogo = (environmentName: string) => {
+    switch (environmentName) {
+        case EnvType.DEV:
+            return LogoDev;
+        case EnvType.LOCAL:
+            return LogoLocal;
+        case EnvType.ERROR_CASE:
+            return LogoErr;
+        default:
+            return LogoProd;
+    }
+};
