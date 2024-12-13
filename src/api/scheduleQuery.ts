@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { appService } from '@/api/service/app';
@@ -20,9 +20,9 @@ export const useGetSchedule = () => {
     const getChannels = useAtomCallback(useCallback((get) => get(channelsState), []));
     const lastAppQueryTime = useAtomValue(lastUpdatedTimeState);
 
-    useEffect(() => {
-        console.log('lastAppQueryTime', lastAppQueryTime);
-    }, [lastAppQueryTime]);
+    const queryClient = useQueryClient();
+
+    const cachedData = queryClient.getQueryData([QueryKeys.SCHEDULE]);
 
     const { data, isLoading, isError, isRefetching, refetch } = useQuery({
         queryKey: [QueryKeys.SCHEDULE],
@@ -36,7 +36,10 @@ export const useGetSchedule = () => {
         refetchOnReconnect: true, // 네트워크 재연결 시 refetch
         refetchOnMount: false, // 마운트 시 refetch 방지
         refetchOnWindowFocus: false, // 윈도우 포커스 시 refetch 방지
-        enabled: lastAppQueryTime === 0 || Date.now() - lastAppQueryTime > TWENTY_FOUR_HOURS_IN_MS
+        enabled:
+            !cachedData ||
+            lastAppQueryTime === 0 ||
+            Date.now() - lastAppQueryTime > TWENTY_FOUR_HOURS_IN_MS
     });
 
     useEffect(() => {
