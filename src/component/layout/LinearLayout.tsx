@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { Navigate, Outlet } from 'react-router';
+import { Navigate } from 'react-router';
 import Banner from '@/feature/screen/linear/banner';
 import Guide from '@/feature/screen/linear/guide';
 import { useAtomValue } from 'jotai';
 import { isFirstLaunchState } from '@/atom/app.ts';
 import { RoutePath } from '@/type/routePath.ts';
+import LiveScreen from '@/feature/screen/linear';
 
 const LinearLayout = () => {
     const isFirstLaunch = useAtomValue(isFirstLaunchState);
@@ -18,7 +19,7 @@ const LinearLayout = () => {
 
     return (
         <Container>
-            <Outlet />
+            <LiveScreen />
             <Banner />
             <Guide />
         </Container>
