@@ -166,17 +166,13 @@ type PromotionContent = { contentId: string; type: ContentType };
 export const promotionState = atom<Nullable<PromotionContent>>(null);
 
 export const readInitialChannel = atom((get) => {
-    const promotion = get(promotionState);
     const channels = get(channelsState);
     const watchHistory = get(watchHistoryState);
 
     const recentlyWatchedChannelId = watchHistory[ContentType.LINEAR]?.slice(-1)?.[0]?.contentId;
-    const promotionChannelId = promotion?.type === ContentType.LINEAR ? promotion?.contentId : null;
 
     const initialChannel = channels.find(
-        (channel) =>
-            channel.contentId === recentlyWatchedChannelId ||
-            channel.contentId === promotionChannelId
+        (channel) => channel.contentId === recentlyWatchedChannelId
     );
 
     return initialChannel || channels?.[0];

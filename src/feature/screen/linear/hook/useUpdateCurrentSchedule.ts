@@ -58,57 +58,11 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
                         contentId: channel.contentId
                     }
                 });
-
-                // const schedule = getCurrentSchedule();
-                // if (schedule) {
-                //     const params = {
-                //         content_id: channel.contentId,
-                //         content_title: channel.title,
-                //         program_id: schedule.contentId,
-                //         program_title: schedule.title
-                //     };
-                //     // trackEvent.mutate({
-                //     //     // eventType: AnalyticsEventType.LINEAR_WATCH,
-                //     //     params
-                //     // });
-                // }
             }
 
             initTime();
         }
     }, [currentSchedule]);
-
-    // const trackEvent = usePostAnalyticsEvent();
-    const trackWatchTimeEvent = useCallback(
-        (schedule: Optional<ChannelEpisode>, currentTime: number = toTimestamp(Date.now())) => {
-            const { current: scheduleEnterTime } = scheduleEnterTimeRef;
-
-            if (scheduleEnterTime === -1) return;
-            if (!schedule) return;
-
-            const watchTime = currentTime - scheduleEnterTime;
-            const neededTracking = watchTime > WATCH_TIME_THRESHOLD_SECONDS;
-            if (!neededTracking) return;
-
-            const channel = getChannel(schedule);
-            if (!channel) return;
-
-            // const params = {
-            //     content_id: channel.contentId,
-            //     content_title: channel.title,
-            //     program_id: schedule.contentId,
-            //     program_title: schedule.title,
-            //     total_sec: watchTime
-            // };
-            // trackEvent.mutate({
-            //     eventType: AnalyticsEventType.LINEAR_WATCH_TIME,
-            //     params
-            // });
-
-            scheduleEnterTimeRef.current = -1;
-        },
-        []
-    );
 
     const subscribeToUpdateCallback = useScheduleUpdater({
         channel,
@@ -118,21 +72,11 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
     });
 
     useEffect(() => {
-        scheduleEnterTimeRef.current = -1;
-
-        return () => trackWatchTimeEvent(getCurrentSchedule());
-    }, []);
-
-    useEffect(() => {
         const currentTime = toTimestamp(Date.now());
 
         if (visible && errorState.type === VideoErrorState.IDLE) {
             if (prevVisible !== visible && visible) {
                 scheduleEnterTimeRef.current = -1;
-            }
-
-            if (prevSchedule && prevSchedule !== currentSchedule) {
-                trackWatchTimeEvent(prevSchedule, currentTime);
             }
 
             if (currentSchedule) {

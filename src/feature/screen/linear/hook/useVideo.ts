@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react';
-import { Nullable, Optional } from '../../../../type/common';
-import { LinearVideoState, videoState, VideoState } from '../../../../atom/screen/linear';
+import { Nullable, Optional } from '@/type/common';
+import { LinearVideoState, videoState, VideoState } from '@/atom/screen/linear';
 import { useAtom } from 'jotai';
 import { VideoConfig } from '@/component/Video';
 
@@ -17,12 +17,12 @@ type VideoReturn = {
     setLoop: (loop: boolean) => void;
     setSrc: (src: string) => void;
     setAutoPlay: (autoplay: boolean) => void;
-    videoRef: RefObject<HTMLVideoElement | null>;
+    videoRef: RefObject<Nullable<HTMLVideoElement>>;
     videoCallback: (node: Nullable<HTMLVideoElement>) => void;
 };
 
 export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoReturn => {
-    const playerRef = useRef<HTMLVideoElement | null>(null);
+    const playerRef = useRef<Nullable<HTMLVideoElement>>(null);
 
     const _config = { ...defaultVideoConfig, ...config };
     const configRef = useRef<VideoConfig>({
