@@ -1,5 +1,4 @@
 import { createHashRouter, RouterProvider } from 'react-router';
-import LiveScreen from '@/feature/screen/linear/LiveScreen';
 import { ErrorPage } from '@/component/ErrorPage.tsx';
 import LinearLayout from '@/component/layout/LinearLayout';
 import { RoutePath } from '@/type/routePath.ts';
@@ -11,13 +10,7 @@ import withLoading from '@/app/withLoading.tsx';
 const router = createHashRouter([
     {
         path: '/',
-        element: <LinearLayout />,
-        children: [
-            {
-                path: '/',
-                element: <LiveScreen />
-            }
-        ]
+        element: <LinearLayout />
     },
     {
         path: RoutePath.ERROR,

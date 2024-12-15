@@ -1,23 +1,26 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { useAtomCallback } from 'jotai/utils';
 import { appService } from '@/api/service/app';
 import { ScheduleResponse } from '@/api/model/schedule';
 import { DEFAULT_LOCALE } from '@/app/environment';
 import { lastUpdatedTimeState } from '@/atom/app';
-import { channelsState, scheduleEnabledState } from '@/atom/screen';
+import {
+    channelNowState,
+    channelsState,
+    readInitialChannel,
+    scheduleEnabledState
+} from '@/atom/screen';
 import { QueryKeys } from '@/type/queryKey';
-import { ChannelEpisode } from '@/type/linear';
+import { useAtomCallback } from 'jotai/utils';
 
 const TWENTY_FOUR_HOURS_IN_MS = 1000 * 60 * 60 * 24;
+export const SCHEDULE_STALE_TIME = 1000 * 60 * 60 * 24;
 
 export const useGetSchedule = () => {
     const { lang, country } = DEFAULT_LOCALE;
-    const setScheduleEnabled = useSetAtom(scheduleEnabledState);
-    const setLastAppQueryTime = useSetAtom(lastUpdatedTimeState);
-    const setChannels = useSetAtom(channelsState);
-    const getChannels = useAtomCallback(useCallback((get) => get(channelsState), []));
+
+    const [isReady, setIsReady] = useState(false);
     const lastAppQueryTime = useAtomValue(lastUpdatedTimeState);
 
     const queryClient = useQueryClient();
@@ -42,6 +45,14 @@ export const useGetSchedule = () => {
             Date.now() - lastAppQueryTime > TWENTY_FOUR_HOURS_IN_MS
     });
 
+    const setScheduleEnabled = useSetAtom(scheduleEnabledState);
+    const setLastAppQueryTime = useSetAtom(lastUpdatedTimeState);
+    const setChannels = useSetAtom(channelsState);
+    const getChannels = useAtomCallback(useCallback((get) => get(channelsState), []));
+    const setChannelNow = useSetAtom(channelNowState);
+
+    const getInitialChannel = useAtomCallback(useCallback((get) => get(readInitialChannel), []));
+
     useEffect(() => {
         if (!data || isRefetching) return;
 
@@ -53,27 +64,29 @@ export const useGetSchedule = () => {
             schedule: data[channel.contentId] || channel.schedule
         }));
 
-        setChannels(updatedChannels);
+        setChannels(data);
+        setChannelNow(getInitialChannel());
         setScheduleEnabled(false);
+        setIsReady(true);
     }, [data, isRefetching]);
 
     return {
         isRefetching,
-        isLoading,
-        isError,
-        refetch
+        isLoading: isLoading || !isReady,
+        isError
     };
 };
 
 const transformData = (data: ScheduleResponse) => {
-    return data.reduce(
-        (acc, linear) => {
-            acc[linear.contentId] = linear.schedule.map((schedule) => ({
-                ...schedule,
-                channelId: linear.contentId
-            }));
-            return acc;
-        },
-        {} as Record<string, ChannelEpisode[]>
-    );
+    return data;
+    // return data.reduce(
+    //     (acc, linear) => {
+    //         acc[linear.contentId] = linear.schedule.map((schedule) => ({
+    //             ...schedule,
+    //             channelId: linear.contentId
+    //         }));
+    //         return acc;
+    //     },
+    //     {} as Record<string, ChannelEpisode[]>
+    // );
 };

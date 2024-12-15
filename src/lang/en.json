@@ -7,5 +7,7 @@
     "network_error_title": "There is a connection problem",
     "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
     "network_error_back": "Back",
-    "network_error_exit": "Exit"
+    "network_error_exit": "Exit",
+    "live_screen_channel_banner_guide": "Guide",
+    "detail_current_episode_left_minutes": "{minute}mins left"
 }
