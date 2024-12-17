@@ -3,5 +3,9 @@
     "guide_schedule_timeline_today": "오늘",
     "guide_schedule_timeline_tomorrow": "내일",
     "live_screen_channel_banner_my_list": "즐겨찾기",
-    "live_screen_channel_banner_full_description": "더보기"
-  }
+    "live_screen_channel_banner_full_description": "더보기",
+    "network_error_title": "There is a connection problem",
+    "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
+    "network_error_back": "Back",
+    "network_error_exit": "Exit"
+}

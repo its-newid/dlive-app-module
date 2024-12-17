@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
+import { t } from 'i18next';
 
 export function ErrorPage() {
     const handleExit = () => window.close();
@@ -21,7 +22,7 @@ export function ErrorPage() {
     return (
         <Container>
             <Column>
-                <Title id={'desc'}>id.app_query_error_message</Title>
+                <Title id={'desc'}>{t('app_query_error_message')}</Title>
                 <Row>
                     <Button
                         role={'button'}
@@ -30,7 +31,7 @@ export function ErrorPage() {
                         onClick={handleExit}
                         ref={callbackRef}
                     >
-                        <span id={'btn-title'}>id.network_error_exit</span>
+                        <span id={'btn-title'}>{t('network_error_exit')}</span>
                     </Button>
                 </Row>
             </Column>

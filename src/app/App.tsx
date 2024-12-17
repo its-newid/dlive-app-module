@@ -6,6 +6,10 @@ import i18n from '@/util/i18n';
 import Navigation from '@/app/Router';
 import GlobalStyle from '@/style/GlobalStyle';
 import { theme } from '@/style/theme';
+import { useSetAtom } from 'jotai';
+import { isFirstLaunchState } from '@/atom/app.ts';
+import { ENV_MODE, EnvType } from '@/app/environment.ts';
+import { useEffect } from 'react';
 
 export const defaultQueryConfig = {
     refetchOnWindowFocus: false,
@@ -21,6 +25,21 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+    const setIsFirstLaunch = useSetAtom(isFirstLaunchState);
+    useEffect(() => {
+        if (ENV_MODE !== EnvType.PROD) {
+            setIsFirstLaunch(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleClick = (event: MouseEvent) => event.preventDefault();
+        window.addEventListener('mousedown', handleClick);
+        return () => {
+            window.removeEventListener('mousedown', handleClick);
+        };
+    }, []);
+
     return (
         <I18nextProvider i18n={i18n}>
             <QueryClientProvider client={queryClient}>

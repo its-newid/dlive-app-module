@@ -1,6 +1,12 @@
-import { createHashRouter, RouterProvider, Navigate } from 'react-router';
-import LinearLayout from '@/component/layout/LinearLayout';
+import { createHashRouter, RouterProvider } from 'react-router';
 import LiveScreen from '@/feature/screen/linear/LiveScreen';
+import { ErrorPage } from '@/component/ErrorPage.tsx';
+import LinearLayout from '@/component/layout/LinearLayout';
+import { RoutePath } from '@/type/routePath.ts';
+import { useDetectOnline } from '@/hook/useDetectOnline.ts';
+import { NetworkErrorPage } from '@/app/NetworkErrorPage.tsx';
+import AgreementScreen from '@/feature/agreement';
+import withLoading from '@/app/withLoading.tsx';
 
 const router = createHashRouter([
     {
@@ -8,19 +14,29 @@ const router = createHashRouter([
         element: <LinearLayout />,
         children: [
             {
-                index: true,
-                element: <Navigate to='/live/44' replace />
-            },
-            {
-                path: 'live/:id',
+                path: '/',
                 element: <LiveScreen />
             }
         ]
+    },
+    {
+        path: RoutePath.ERROR,
+        element: <ErrorPage />
+    },
+    {
+        path: RoutePath.ONBOARDING,
+        element: <AgreementScreen />
     }
 ]);
 
 const Router = () => {
-    return <RouterProvider router={router} />;
+    const { isOnline, setOnline } = useDetectOnline();
+
+    return isOnline ? (
+        <RouterProvider router={router} />
+    ) : (
+        <NetworkErrorPage onConnected={setOnline} />
+    );
 };
 
-export default Router;
+export default withLoading(Router);

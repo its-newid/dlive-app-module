@@ -3,5 +3,9 @@
     "guide_schedule_timeline_today": "Today",
     "guide_schedule_timeline_tomorrow": "Tomorrow",
     "live_screen_channel_banner_my_list": "My List",
-    "live_screen_channel_banner_full_description": "More"
-  }
+    "live_screen_channel_banner_full_description": "More",
+    "network_error_title": "There is a connection problem",
+    "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
+    "network_error_back": "Back",
+    "network_error_exit": "Exit"
+}
