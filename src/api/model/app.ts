@@ -1,4 +1,4 @@
-import { ContentType, ThumbType } from '@/type/common';
+import { ThumbType } from '@/type/common';
 
 export type LinearResponse = {
     no: number;
@@ -21,20 +21,4 @@ export type ScheduleResponse = {
     duration: number;
     startAt: number;
     endAt: number;
-};
-
-type CategoryContentResponse = {
-    idx: number;
-    categoryIdx: number;
-    contentId: string;
-    type: ContentType;
-    thumbUrl: ThumbType;
-    title: string;
-};
-
-export type CategoryResponse = {
-    idx: number;
-    name: string;
-    linear: CategoryContentResponse[];
-    avod: CategoryContentResponse[];
 };
