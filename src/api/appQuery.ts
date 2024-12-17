@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { QueryKeys } from '../type/queryKey';
 import { appService } from './service/app';
-import { CategoryResponse, LinearResponse } from './model/app';
+import { LinearResponse } from './model/app';
 import { Channel } from '../type/linear';
 import {
     channelNowState,
@@ -64,20 +64,12 @@ const transformData = (data: ScheduleResponse) => {
     };
 };
 
-const mapToChannel = (
-    channel: LinearResponse,
-    categories: CategoryResponse[],
-): Channel => {
-    const linearCategories = categories.flatMap((category) => category.linear);
-    const findCategory = linearCategories.find((content) => {
-        return content.contentId === channel.contentId;
-    });
-
+const mapToChannel = (channel: LinearResponse): Channel => {
     const { schedule, ...rest } = channel;
 
     return {
         ...rest,
-        categoryIdx: findCategory?.categoryIdx ?? undefined,
+        categoryIdx: 1,
         schedule: schedule.map((schedule) => ({
             ...schedule,
             channelId: channel.contentId,
