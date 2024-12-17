@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 import { IExtendableStyledComponent } from '@/type/common';
-import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 type Props = IExtendableStyledComponent & {
     leftMillis: number;
 };
 
 export function ScheduleRemainingTime({ className, leftMillis }: Props) {
-    const { t } = useTranslation();
     const min = Math.floor(leftMillis / 1000 / 60);
 
     return (
         <TimeLeft className={className}>
             {t('detail_current_episode_left_minutes', {
-                minute: min
+                minute: min,
             })}
         </TimeLeft>
     );

@@ -1,15 +1,23 @@
 import { ForwardedRef, forwardRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { ContainerComponent } from './layout/layout';
-import { IExtendableStyledComponent, KeyboardEventListener } from '../type/common';
+import {
+    IExtendableStyledComponent,
+    KeyboardEventListener,
+} from '@/type/common';
 import { userAgent } from '@/util/userAgent';
-import { ENTER, onDefaultUIEvent } from '../util/eventKey';
-import { UserAgentOS } from '../type/userAgent';
+import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
+import { UserAgentOS } from '@/type/userAgent';
 
 export interface ClickableProps
     extends Omit<
             React.ComponentProps<'div'>,
-            'onClick' | 'onMouseEnter' | 'onMouseLeave' | 'onArrowKeyDown' | 'onFocus' | 'tabIndex'
+            | 'onClick'
+            | 'onMouseEnter'
+            | 'onMouseLeave'
+            | 'onArrowKeyDown'
+            | 'onFocus'
+            | 'tabIndex'
         >,
         IExtendableStyledComponent {
     onClick?: () => void;
@@ -30,10 +38,10 @@ function Clickable(
         onFocus,
         ...rest
     }: ContainerComponent<ClickableProps>,
-    ref: ForwardedRef<HTMLDivElement>
+    ref: ForwardedRef<HTMLDivElement>,
 ) {
     const enabled = useMemo(() => {
-        return userAgent.type !== (UserAgentOS.ANDROID || UserAgentOS.AMAZON);
+        return userAgent.type !== UserAgentOS.ANDROID;
     }, [userAgent]);
 
     const handleClick = () => onClick?.();
@@ -67,7 +75,9 @@ function Clickable(
     );
 }
 
-export default forwardRef<HTMLDivElement, ContainerComponent<ClickableProps>>(Clickable);
+export default forwardRef<HTMLDivElement, ContainerComponent<ClickableProps>>(
+    Clickable,
+);
 
 const Container = styled.div.attrs({ tabIndex: 0 })`
     :focus {
