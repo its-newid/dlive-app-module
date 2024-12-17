@@ -164,11 +164,11 @@ const Container = styled.div.attrs({ tabIndex: 0 })`
     overflow-x: hidden;
     overflow-y: auto;
     padding-right: 48rem;
-    :focus {
+    &:focus {
         outline: none;
     }
 
-    :focus::-webkit-scrollbar-thumb {
+    &:focus::-webkit-scrollbar-thumb {
         background-color: ${({ theme }) => theme.colors.main};
     }
 

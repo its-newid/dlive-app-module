@@ -80,12 +80,12 @@ const Container = styled.div.attrs<EpisodeCellStyleProps>((props) => ({
     ${({ states }) => rowStyle(states).backgroundColor};
     overflow: hidden;
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         outline: none;
         background: ${({ theme }) => theme.colors.grey50};
     }
 
-    :focus {
+    &:focus {
         outline: none;
         background: ${({ theme }) => theme.colors.main};
 

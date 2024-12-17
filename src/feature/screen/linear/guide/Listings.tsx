@@ -283,7 +283,7 @@ function EmptyMyList({ onClick, ...rest }: EmptyMyListProps) {
             <EpisodeCell
                 width={'100vw'}
                 states={[RowState.IDLE]}
-                title={t('.guide_schedule_empty_my_list')}
+                title={t('guide_schedule_empty_my_list')}
                 onClick={onClick}
                 onKeyDown={handleKeyDown}
                 {...rest}

@@ -137,12 +137,12 @@ const FavContainer = styled.div.attrs({ tabIndex: 0 })<{ states: RowState[] }>`
         color: ${({ theme }) => theme.colors.whiteAlpha89};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         outline: none;
         background: ${({ theme }) => theme.colors.grey50};
     }
 
-    :focus {
+    &:focus {
         outline: none;
         background: ${({ theme }) => theme.colors.main};
 
@@ -162,7 +162,7 @@ const Thumbnail = styled(LoadThumbnail)`
     min-width: 160rem;
     height: 90rem;
 
-    :after {
+    &:after {
         content: '';
         position: absolute;
         display: block;
@@ -174,16 +174,16 @@ const Thumbnail = styled(LoadThumbnail)`
         top: 0;
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         outline: none;
-        :after {
+        &:after {
             border: 6rem solid ${({ theme }) => theme.colors.grey50};
         }
     }
 
-    :focus {
+    &:focus {
         outline: none;
-        :after {
+        &:after {
             border: 6rem solid ${({ theme }) => theme.colors.main};
         }
     }

@@ -245,17 +245,17 @@ const Button = styled(Clickable)`
     color: ${({ theme }) => theme.colors.whiteAlpha95};
     background: ${({ theme }) => theme.colors.transparent};
 
-    :focus {
+    &:focus {
         color: ${({ theme }) => theme.colors.grey90};
         background: ${({ theme }) => theme.colors.main};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         color: ${({ theme }) => theme.colors.whiteAlpha95};
         background: ${({ theme }) => theme.colors.grey50};
     }
 
-    :first-child {
+    &:first-child {
         margin-right: 16em;
     }
 

@@ -178,11 +178,11 @@ const NavContainer = styled.div`
     align-items: center;
     background: ${({ theme }) => theme.colors.grey90};
 
-    :first-child {
+    &:first-child {
         padding-top: 36rem;
     }
 
-    :after {
+    &:after {
         content: '';
         z-index: 1;
         ${NavMask};
@@ -204,11 +204,11 @@ const Button = styled(Clickable)`
         color: ${({ theme }) => theme.colors.grey10};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         background: ${({ theme }) => theme.colors.grey50};
     }
 
-    :focus {
+    &:focus {
         background: ${({ theme }) => theme.colors.main};
 
         svg {

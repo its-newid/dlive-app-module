@@ -77,7 +77,7 @@ const MainContainer = styled.div`
     height: 100%;
     overflow: hidden;
 
-    :after {
+    &:after {
         content: '';
         position: absolute;
         width: 100%;

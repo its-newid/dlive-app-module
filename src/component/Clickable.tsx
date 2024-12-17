@@ -80,7 +80,7 @@ export default forwardRef<HTMLDivElement, ContainerComponent<ClickableProps>>(
 );
 
 const Container = styled.div.attrs({ tabIndex: 0 })`
-    :focus {
+    &:focus {
         outline: none;
     }
 `;

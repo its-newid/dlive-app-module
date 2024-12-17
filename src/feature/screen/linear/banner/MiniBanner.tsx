@@ -84,7 +84,7 @@ const Container = styled(Content).attrs({
     border-bottom-right-radius: 16rem;
     background-color: rgba(17, 24, 39, 0.5);
 
-    :focus {
+    &:focus {
         outline: none;
     }
 `;

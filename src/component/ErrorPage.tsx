@@ -59,7 +59,7 @@ const Title = styled.span`
         `${theme.fonts.weight.bold} 76rem/96rem ${theme.fonts.family.pretendard}`};
     color: ${({ theme }) => theme.colors.whiteAlpha95};
 
-    :after {
+    &:after {
         content: ' :(';
         color: ${({ theme }) => theme.colors.main};
     }
@@ -77,7 +77,7 @@ const Button = styled.div.attrs({ tabIndex: 0 })`
     outline: none;
     padding: 14rem 30rem;
 
-    :first-child {
+    &:first-child {
         margin-right: 24rem;
     }
 
@@ -88,7 +88,7 @@ const Button = styled.div.attrs({ tabIndex: 0 })`
         color: ${({ theme }) => theme.colors.whiteAlpha95};
     }
 
-    :focus {
+    &:focus {
         > span {
             color: ${({ theme }) => theme.colors.grey90};
         }
@@ -96,7 +96,7 @@ const Button = styled.div.attrs({ tabIndex: 0 })`
         background: ${({ theme }) => theme.colors.main};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         > span {
             color: ${({ theme }) => theme.colors.whiteAlpha95};
         }

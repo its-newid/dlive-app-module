@@ -1,6 +1,5 @@
 import { createGlobalStyle, DefaultTheme } from 'styled-components';
 import { Optional } from '../type/common';
-import { reset } from '@/style/reset';
 
 type GlobalStyleProps = {
     theme: DefaultTheme;
@@ -8,8 +7,6 @@ type GlobalStyleProps = {
 };
 
 const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
-  ${reset}
-
   * {
     user-select: none;
   }
