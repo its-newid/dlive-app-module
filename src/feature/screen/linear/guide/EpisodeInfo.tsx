@@ -1,30 +1,22 @@
-import React, { useDeferredValue, useEffect, useMemo, useRef } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import { Logo } from '../../../../component/Logo';
-import { EpisodeInfoLoader as InfoLoading } from '@/feature/screen/linear/guide/EpisodeInfoLoader';
-// import useRes from '../../../../hook/useRes';
-import { SimpleProgressBar } from '../../../../component/ProgressBar';
-// import { ScheduleRemainingTime } from '../ScheduleRemainingTime';
-// import { ScheduleDuration } from '../ScheduleDuration';
-import { useScheduleProgress } from '../../../../hook/useProgress';
-import { ErrorMessage, ThumbRatio, ThumbSizes } from '../../../../type/common';
-import { Marquee } from '../../../../component/Marquee';
-import { atom, useAtomValue } from 'jotai';
-// import { LoadThumbnail } from '../LoadThumbnail';
-import { Channel, ChannelEpisode } from '../../../../type/linear';
-import {
-    currentScheduleState,
-    findChannelSelector,
-} from '../../../../atom/screen';
-import { useTranslation } from 'react-i18next';
-import { LoadThumbnail } from '../LoadThumbnail';
+import { Logo } from '@/component/Logo';
+import { EpisodeInfoLoader as InfoLoading } from './EpisodeInfoLoader';
+import { SimpleProgressBar } from '@/component/ProgressBar';
 import { ScheduleRemainingTime } from '../ScheduleRemainingTime';
 import { ScheduleDuration } from '../ScheduleDuration';
+import { useScheduleProgress } from '@/hook/useProgress';
+import { ErrorMessage, ThumbRatio, ThumbSizes } from '@/type/common';
+import { Marquee } from '@/component/Marquee';
+import { atom, useAtomValue } from 'jotai';
+import { LoadThumbnail } from '../LoadThumbnail';
+import { Channel, ChannelEpisode } from '@/type/linear';
+import { currentScheduleState, findChannelSelector } from '@/atom/screen';
+import { t } from 'i18next';
 
 function EpisodeInfo() {
     const mountRef = useRef(false);
     const { current: isMount } = mountRef;
-    const { t } = useTranslation();
 
     const readInfoAtom = useMemo(() => {
         return atom((get) => {
@@ -67,7 +59,6 @@ function Info({
 }) {
     const deferredValue = useDeferredValue(info);
     const { schedule, channel } = useDeferredValue(deferredValue);
-    const { t } = useTranslation();
 
     return (
         <InfoContainer>
