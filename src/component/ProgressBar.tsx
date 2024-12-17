@@ -14,7 +14,7 @@ export type ProgressBarProps = IExtendableStyledComponent & {
 
 export function ProgressBar({ timeRange, ...rest }: ProgressBarProps) {
     const { value, max } = useProgress({
-        timeRange
+        timeRange,
     });
     return <SimpleProgressBar value={value} max={max} {...rest} />;
 }

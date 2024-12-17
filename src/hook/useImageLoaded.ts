@@ -16,7 +16,7 @@ export const useImageLoaded = (src: string) => {
                 node.addEventListener('load', handleImageLoaded);
             }
         },
-        [src]
+        [src],
     );
 
     useEffect(() => {

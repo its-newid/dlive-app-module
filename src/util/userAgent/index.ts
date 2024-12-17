@@ -1,13 +1,16 @@
-import { getOS } from '@/util/getOs';
-import { AndroidAgentAdsParameter, DliveAgentAdsParameter } from '@/util/userAgent/adsParameter';
-import { UserAgentKeyCodeMap } from '@/util/userAgent/keyCodeMap';
-import { UserAgentScreenSize } from '@/util/userAgent/screenSize';
+import { getOS } from '@/util/getOs.ts';
+import {
+    AndroidAgentAdsParameter,
+    NewidAgentAdsParameter,
+} from './adsParameter';
+import { AndroidKeyCodeMap, UserAgentKeyCodeMap } from './keyCodeMap';
+import { AndroidScreenSize, UserAgentScreenSize } from './screenSize';
 import {
     IAdsParameter,
     IKeyCodeMap,
     IScreenDimension,
     IUserAgent,
-    UserAgentOS
+    UserAgentOS,
 } from '@/type/userAgent';
 
 interface IUserAgentConstructor {
@@ -15,7 +18,7 @@ interface IUserAgentConstructor {
         type: UserAgentOS,
         adsParameter: IAdsParameter,
         keyCodeMap: IKeyCodeMap,
-        screenSize: IScreenDimension
+        screenSize: IScreenDimension,
     ): IUserAgent;
 }
 
@@ -24,7 +27,7 @@ function createAgent(
     type: UserAgentOS,
     adsParameter: IAdsParameter,
     keyCodeMap: IKeyCodeMap,
-    screenSize: IScreenDimension
+    screenSize: IScreenDimension,
 ): IUserAgent {
     return new builder(type, adsParameter, keyCodeMap, screenSize);
 }
@@ -36,7 +39,7 @@ export class UserAgentImpl implements IUserAgent {
         public readonly type: UserAgentOS,
         public readonly adsParameter: IAdsParameter,
         public readonly keyCodeMap: IKeyCodeMap,
-        public readonly screenSize: IScreenDimension
+        public readonly screenSize: IScreenDimension,
     ) {
         this.type = type;
         this.adsParameter = adsParameter;
@@ -56,8 +59,8 @@ export class UserAgentImpl implements IUserAgent {
                     this,
                     os,
                     new AndroidAgentAdsParameter(os),
-                    new UserAgentKeyCodeMap(),
-                    new UserAgentScreenSize()
+                    new AndroidKeyCodeMap(),
+                    new AndroidScreenSize(),
                 );
                 break;
             }
@@ -65,9 +68,9 @@ export class UserAgentImpl implements IUserAgent {
                 userAgent = createAgent(
                     this,
                     os,
-                    new DliveAgentAdsParameter(os),
+                    new NewidAgentAdsParameter(os),
                     new UserAgentKeyCodeMap(),
-                    new UserAgentScreenSize()
+                    new UserAgentScreenSize(),
                 );
         }
 

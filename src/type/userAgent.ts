@@ -1,6 +1,6 @@
 export const UserAgentOS = {
     ANDROID: 'android',
-    DEFAULT: 'DLIVE'
+    DEFAULT: 'DLIVE',
 } as const;
 export type UserAgentOS = (typeof UserAgentOS)[keyof typeof UserAgentOS];
 

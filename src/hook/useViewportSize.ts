@@ -26,7 +26,7 @@ export const useViewportSize = (direction: FlexDirection): Return => {
                     : getScreenHeight() - rect.top;
             setSize(viewportSize);
         },
-        [direction]
+        [direction],
     );
 
     return { ref, setRef, size };

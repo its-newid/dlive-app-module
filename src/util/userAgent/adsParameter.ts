@@ -1,6 +1,6 @@
 import { IAdsParameter, UserAgentOS } from '@/type/userAgent';
 
-const ADS_APP_NAME = 'diva';
+const ADS_APP_NAME = 'bingekorea';
 
 export abstract class UserAgentAdsParameter implements IAdsParameter {
     private readonly appName = ADS_APP_NAME;
@@ -9,7 +9,7 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
         private readonly os: UserAgentOS,
         private bundleId: string,
         private appstoreUrl: string = '',
-        private appVersion: string = import.meta.env.VITE_APP_VERSION ?? ''
+        private appVersion: string = '',
     ) {}
 
     public get params() {
@@ -22,7 +22,7 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
             ifaType: this.getIfaType(),
             ifa: this.getIfa(),
             lmt: this.getLmt(),
-            appVersion: this.appVersion
+            appVersion: this.appVersion,
         };
     }
 
@@ -37,10 +37,13 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
     }
 }
 
-export class DliveAgentAdsParameter extends UserAgentAdsParameter {
+export class NewidAgentAdsParameter extends UserAgentAdsParameter {
     constructor(os: UserAgentOS) {
-        // FIXME: diva로 앱 이름 변경
-        super(os, encodeURIComponent('diva'), encodeURIComponent('diva.net'));
+        super(
+            os,
+            encodeURIComponent('bingekorea'),
+            encodeURIComponent('bingekorea.net'),
+        );
     }
 
     getIfaType(): string {
@@ -52,10 +55,10 @@ export class AndroidAgentAdsParameter extends UserAgentAdsParameter {
     constructor(os: UserAgentOS) {
         super(
             os,
-            encodeURIComponent('net.itsnewid.app.android.diva'),
+            encodeURIComponent('kr.dlive.app.android.fasttv'),
             encodeURIComponent(
-                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.diva'
-            )
+                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.bingekorea',
+            ),
         );
     }
 

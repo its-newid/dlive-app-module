@@ -5,7 +5,11 @@ import LogoErr from '@/asset/icLogoErr.svg';
 import { ENV_MODE, EnvType } from '@/app/environment';
 import { IExtendableStyledComponent } from '@/type/common';
 
-export function Logo({ ...rest }: IExtendableStyledComponent) {
+interface LogoProps
+    extends React.SVGProps<SVGSVGElement>,
+        IExtendableStyledComponent {}
+
+export function Logo({ ...rest }: LogoProps) {
     if (!ENV_MODE) return;
 
     const Component = getLogo(ENV_MODE);

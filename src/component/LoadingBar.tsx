@@ -17,7 +17,7 @@ const Animation = (theme: DefaultTheme) => keyframes`
   }
 `;
 
-const LoadingBarContainer = styled.div`
+const LoadingBarContainer = styled.div<LoadingBarProps>`
     ${(props: LoadingBarProps) => css`
         width: ${props.width ? props.width : '100%'};
         height: ${props.height ? props.height : '8rem'};

@@ -1,4 +1,4 @@
-import { Episode, ThumbType } from './common';
+import { Episode, Optional, ThumbType } from './common';
 
 export type Channel = {
     contentId: string;
@@ -7,9 +7,9 @@ export type Channel = {
     no: number;
     logoUrl: string;
     detailUrl: string;
-    streamUrl: string;
+    liveUrl: string;
     schedule: ChannelEpisode[];
-    // categoryIdx: Optional<number>;
+    categoryIdx: Optional<number>;
     thumbUrl: ThumbType;
     tag: string;
 };

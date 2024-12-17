@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react';
-import { Nullable, Optional } from '../../../../type/common';
-import { LinearVideoState, videoState, VideoState } from '../../../../atom/screen/linear';
+import { Nullable, Optional } from '@/type/common';
+import { LinearVideoState, videoState, VideoState } from '@/atom/screen/linear';
 import { useAtom } from 'jotai';
 import { VideoConfig } from '@/component/Video';
 
@@ -17,18 +17,20 @@ type VideoReturn = {
     setLoop: (loop: boolean) => void;
     setSrc: (src: string) => void;
     setAutoPlay: (autoplay: boolean) => void;
-    videoRef: RefObject<HTMLVideoElement | null>;
+    videoRef: RefObject<HTMLVideoElement>;
     videoCallback: (node: Nullable<HTMLVideoElement>) => void;
 };
 
-export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoReturn => {
-    const playerRef = useRef<HTMLVideoElement | null>(null);
+export const useVideo = ({
+    config = defaultVideoConfig,
+}: VideoProps): VideoReturn => {
+    const playerRef = useRef<Nullable<HTMLVideoElement>>(null);
 
     const _config = { ...defaultVideoConfig, ...config };
     const configRef = useRef<VideoConfig>({
         muted: _config.muted,
         autoplay: _config.autoplay,
-        loop: _config.loop
+        loop: _config.loop,
     });
 
     const [state, setState] = useAtom(videoState);
@@ -101,10 +103,14 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
         }
     }, [state]);
 
-    const manageEventListeners = (node: Nullable<HTMLVideoElement>, action: 'add' | 'remove') => {
+    const manageEventListeners = (
+        node: Nullable<HTMLVideoElement>,
+        action: 'add' | 'remove',
+    ) => {
         if (!node) return;
 
-        const method = action === 'add' ? 'addEventListener' : 'removeEventListener';
+        const method =
+            action === 'add' ? 'addEventListener' : 'removeEventListener';
         node[method]('emptied', handleEmptied);
         node[method]('loadedmetadata', handleLoad);
     };
@@ -120,7 +126,7 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
                 manageEventListeners(node, 'add');
             }
         },
-        [handleEmptied, handleLoad]
+        [handleEmptied, handleLoad],
     );
 
     useEffect(() => {
@@ -138,12 +144,12 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
         setMute,
         setLoop,
         setSrc,
-        setAutoPlay
+        setAutoPlay,
     };
 };
 
 const defaultVideoConfig: VideoConfig = {
     autoplay: false,
     muted: true,
-    loop: false
+    loop: false,
 };

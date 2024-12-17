@@ -12,7 +12,10 @@ import { Marquee } from '../../../../component/Marquee';
 import { atom, useAtomValue } from 'jotai';
 // import { LoadThumbnail } from '../LoadThumbnail';
 import { Channel, ChannelEpisode } from '../../../../type/linear';
-import { currentScheduleState, findChannelSelector } from '../../../../atom/screen';
+import {
+    currentScheduleState,
+    findChannelSelector,
+} from '../../../../atom/screen';
 import { useTranslation } from 'react-i18next';
 import { LoadThumbnail } from '../LoadThumbnail';
 import { ScheduleRemainingTime } from '../ScheduleRemainingTime';
@@ -57,7 +60,11 @@ function EpisodeInfo() {
 }
 export default EpisodeInfo;
 
-function Info({ info }: { info: { schedule: ChannelEpisode; channel: Channel } }) {
+function Info({
+    info,
+}: {
+    info: { schedule: ChannelEpisode; channel: Channel };
+}) {
     const deferredValue = useDeferredValue(info);
     const { schedule, channel } = useDeferredValue(deferredValue);
     const { t } = useTranslation();
@@ -72,7 +79,11 @@ function Info({ info }: { info: { schedule: ChannelEpisode; channel: Channel } }
             />
             <Detail>
                 <ChannelInfo>
-                    <span>{t('guide_episode_info_channel_number', { no: channel?.no })}</span>
+                    <span>
+                        {t('guide_episode_info_channel_number', {
+                            no: channel?.no,
+                        })}
+                    </span>
                     <span>{channel?.title}</span>
                 </ChannelInfo>
                 <>
@@ -82,7 +93,9 @@ function Info({ info }: { info: { schedule: ChannelEpisode; channel: Channel } }
                         enabled={info === deferredValue}
                         animationStyle='oneWayReset'
                     />
-                    <Description id={'ep-desc'}>{schedule.description}</Description>
+                    <Description id={'ep-desc'}>
+                        {schedule.description}
+                    </Description>
                     <Time schedule={deferredValue.schedule} />
                 </>
             </Detail>
@@ -91,7 +104,8 @@ function Info({ info }: { info: { schedule: ChannelEpisode; channel: Channel } }
 }
 
 function Time({ schedule }: { schedule: ChannelEpisode }) {
-    const { value, maxValue, remainingValue, timeRange } = useScheduleProgress(schedule);
+    const { value, maxValue, remainingValue, timeRange } =
+        useScheduleProgress(schedule);
 
     const isOnAir = useMemo(() => {
         const current = Date.now();

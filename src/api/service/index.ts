@@ -11,17 +11,15 @@ export class HttpService {
 
         this.api = axios.create({
             baseURL,
-            headers
+            headers,
         });
     }
 
-    public async fetchData<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    public async fetchData<T>(
+        url: string,
+        config?: AxiosRequestConfig,
+    ): Promise<T> {
         const response = await this.api.get<T>(url, config);
-        return response.data;
-    }
-
-    public async post<T>(url: string, data: object): Promise<T> {
-        const response = await this.api.post(url, data);
         return response.data;
     }
 }

@@ -1,24 +1,23 @@
 import { IExtendableStyledComponent } from '@/type/common';
 import Clickable, { ClickableProps } from './Clickable';
 import { ForwardedRef, forwardRef } from 'react';
-import useRes from '@/hook/useRes';
-import { R } from '@/lang/resoureces';
 import styled from 'styled-components';
+import { t } from 'i18next';
 
 type AgreeButtonProps = IExtendableStyledComponent & ClickableProps;
 
-export const AgreeButton = forwardRef<HTMLDivElement, AgreeButtonProps>(function AgreeButton(
-    { className, ...rest }: AgreeButtonProps,
-    ref: ForwardedRef<HTMLDivElement>
-) {
-    const setLang = useRes();
-
-    return (
-        <Container className={className} {...rest} ref={ref}>
-            <span id={'agree-btn'}>{setLang(R.id.onboarding_agree)}</span>
-        </Container>
-    );
-});
+export const AgreeButton = forwardRef<HTMLDivElement, AgreeButtonProps>(
+    function AgreeButton(
+        { className, ...rest }: AgreeButtonProps,
+        ref: ForwardedRef<HTMLDivElement>,
+    ) {
+        return (
+            <Container className={className} {...rest} ref={ref}>
+                <span id={'agree-btn'}>{t('onboarding_agree')}</span>
+            </Container>
+        );
+    },
+);
 
 const Container = styled(Clickable)`
     width: fit-content;

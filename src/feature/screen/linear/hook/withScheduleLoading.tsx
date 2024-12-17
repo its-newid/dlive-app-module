@@ -12,7 +12,8 @@ export const withScheduleLoading = (WrappedComponent: React.ComponentType) => {
             if (!scheduleEnabled) return;
 
             const handleClick = (event: MouseEvent) => event.stopPropagation();
-            const handleDown = (event: KeyboardEvent) => event.stopPropagation();
+            const handleDown = (event: KeyboardEvent) =>
+                event.stopPropagation();
             window.addEventListener('mousedown', handleClick, true);
             window.addEventListener('keydown', handleDown, true);
             return () => {

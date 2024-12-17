@@ -1,5 +1,6 @@
 import {
     Children,
+    cloneElement,
     createContext,
     forwardRef,
     isValidElement,
@@ -8,7 +9,7 @@ import {
     useContext,
     useEffect,
     useRef,
-    useState
+    useState,
 } from 'react';
 import styled from 'styled-components';
 import Clickable, { ClickableProps } from './Clickable';
@@ -27,7 +28,8 @@ function ModalTitle({ children }: ModalTitleProps) {
 const ModalTitleType = (<ModalTitle />).type;
 function getModalTitle(children: ReactNode): ReactElement | null {
     const titleChild = Children.toArray(children).find(
-        (child): child is ReactElement => isValidElement(child) && child.type === ModalTitleType
+        (child): child is ReactElement =>
+            isValidElement(child) && child.type === ModalTitleType,
     );
     return titleChild || null;
 }
@@ -42,7 +44,7 @@ const ModalDescriptionType = (<ModalDescription />).type;
 function getModalDescription(children: ReactNode): ReactElement | null {
     const descriptionChild = Children.toArray(children).find(
         (child): child is ReactElement =>
-            isValidElement(child) && child.type === ModalDescriptionType
+            isValidElement(child) && child.type === ModalDescriptionType,
     );
     return descriptionChild || null;
 }
@@ -50,33 +52,28 @@ function getModalDescription(children: ReactNode): ReactElement | null {
 interface ModalButtonProps extends Pick<ClickableProps, 'onClick'> {
     children?: ReactNode;
 }
-const ModalButton = forwardRef<HTMLDivElement, ModalButtonProps>(function ModalButton(
-    { children, onClick }: ModalButtonProps,
-    ref
-) {
-    const { selectedIndex, onClose } = useModalContext();
+const ModalButton = forwardRef<HTMLDivElement, ModalButtonProps>(
+    function ModalButton({ children, onClick }: ModalButtonProps, ref) {
+        const { onClose } = useModalContext();
 
-    const handleToggle = () => {
-        onClick?.();
-        onClose();
-    };
+        const handleToggle = () => {
+            onClick?.();
+            onClose();
+        };
 
-    return (
-        <Button
-            onClick={handleToggle}
-            ref={ref}
-            aria-labelledby={`modal-msg modal-btn-${selectedIndex}`}
-        >
-            {children}
-        </Button>
-    );
-});
+        return (
+            <Button onClick={handleToggle} ref={ref}>
+                {children}
+            </Button>
+        );
+    },
+);
 const ModalButtonType = (<ModalButton />).type;
 function getModalButtons(children: ReactNode): ReactElement[] {
     return Children.toArray(children)
         .filter(
             (child): child is ReactElement =>
-                isValidElement(child) && child.type === ModalButtonType
+                isValidElement(child) && child.type === ModalButtonType,
         )
         .slice(0, 2);
 }
@@ -103,7 +100,11 @@ interface ModalRootProps {
     context: IModal;
 }
 
-function ModalRoot({ children, initialButtonIndex = -1, context }: ModalRootProps) {
+function ModalRoot({
+    children,
+    initialButtonIndex = -1,
+    context,
+}: ModalRootProps) {
     const buttonRefs = useRef<Nullable<HTMLDivElement>[]>([]);
 
     const [selectedIndex, setSelectedIndex] = useState(initialButtonIndex);
@@ -112,7 +113,7 @@ function ModalRoot({ children, initialButtonIndex = -1, context }: ModalRootProp
     const providerValue = {
         selectedIndex,
         setSelectedIndex,
-        ...context
+        ...context,
     };
 
     const modalTitle = getModalTitle(children);
@@ -127,7 +128,7 @@ function ModalRoot({ children, initialButtonIndex = -1, context }: ModalRootProp
             const delta = keyCode === LEFT ? -1 : 1;
 
             setSelectedIndex((prevState) =>
-                coerceIn(prevState + delta, 0, modalButtons.length - 1)
+                coerceIn(prevState + delta, 0, modalButtons.length - 1),
             );
         }
     };
@@ -151,7 +152,7 @@ function ModalRoot({ children, initialButtonIndex = -1, context }: ModalRootProp
     return (
         <ModalContext.Provider value={providerValue}>
             <Container onKeyDown={onDefaultUIEvent(handleKeyDown)}>
-                <Inner aria-live={'polite'}>
+                <Inner>
                     <MessageContainer id={'modal-msg'}>
                         {modalTitle}
                         {modalDescription}
@@ -159,10 +160,11 @@ function ModalRoot({ children, initialButtonIndex = -1, context }: ModalRootProp
                     {modalButtons.length && (
                         <ButtonContainer>
                             {modalButtons.map((button, index) =>
-                                React.cloneElement(button, {
+                                cloneElement(button, {
                                     key: index,
-                                    ref: (el: HTMLDivElement) => (buttonRefs.current[index] = el)
-                                })
+                                    ref: (el: HTMLDivElement) =>
+                                        (buttonRefs.current[index] = el),
+                                } as ModalButtonProps),
                             )}
                         </ButtonContainer>
                     )}
@@ -175,7 +177,7 @@ function ModalRoot({ children, initialButtonIndex = -1, context }: ModalRootProp
 export const Modal = Object.assign(ModalRoot, {
     Title: ModalTitle,
     Description: ModalDescription,
-    Button: ModalButton
+    Button: ModalButton,
 });
 
 const Container = styled.div`
