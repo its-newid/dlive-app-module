@@ -7,7 +7,11 @@ import { useScheduleUpdater } from '@/hook/useScheduleUpdater';
 import { useVisibility } from '@/hook/useVisibilityChange';
 import { Optional } from '@/type/common';
 import { Channel, ChannelEpisode } from '@/type/linear';
-import { findChannelSelector, onAirScheduleEndTimeState, onAirScheduleState } from '@/atom/screen';
+import {
+    findChannelSelector,
+    onAirScheduleEndTimeState,
+    onAirScheduleState,
+} from '@/atom/screen';
 import { VideoErrorState, videoErrorState } from '@/atom/screen/linear';
 import { writeWatchHistory } from '@/atom/app';
 
@@ -15,16 +19,20 @@ const WATCH_TIME_THRESHOLD_SECONDS = 10;
 
 export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
     const setSchedule = useSetAtom(onAirScheduleState);
-    const [scheduleEndTime, setScheduleEndTime] = useAtom(onAirScheduleEndTimeState);
+    const [scheduleEndTime, setScheduleEndTime] = useAtom(
+        onAirScheduleEndTimeState,
+    );
 
     const setWatchHistory = useSetAtom(writeWatchHistory);
 
     const getChannel = useAtomCallback(
         useCallback((get, _, schedule: ChannelEpisode) => {
             return get(findChannelSelector(schedule));
-        }, [])
+        }, []),
     );
-    const getCurrentSchedule = useAtomCallback(useCallback((get) => get(onAirScheduleState), []));
+    const getCurrentSchedule = useAtomCallback(
+        useCallback((get) => get(onAirScheduleState), []),
+    );
     const currentSchedule = getCurrentSchedule();
     const prevSchedule = usePrevious(currentSchedule);
 
@@ -35,7 +43,9 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
     const prevVisible = usePrevious(visible);
 
     const errorState = useAtomValue(videoErrorState);
-    const getAsyncErrorState = useAtomCallback(useCallback((get) => get(videoErrorState), []));
+    const getAsyncErrorState = useAtomCallback(
+        useCallback((get) => get(videoErrorState), []),
+    );
 
     const initTime = () => {
         subscribeToUpdateCallback(undefined);
@@ -55,8 +65,8 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
                 setWatchHistory({
                     type: 'linear',
                     content: {
-                        contentId: channel.contentId
-                    }
+                        contentId: channel.contentId,
+                    },
                 });
 
                 // const schedule = getCurrentSchedule();
@@ -80,7 +90,10 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
 
     // const trackEvent = usePostAnalyticsEvent();
     const trackWatchTimeEvent = useCallback(
-        (schedule: Optional<ChannelEpisode>, currentTime: number = toTimestamp(Date.now())) => {
+        (
+            schedule: Optional<ChannelEpisode>,
+            currentTime: number = toTimestamp(Date.now()),
+        ) => {
             const { current: scheduleEnterTime } = scheduleEnterTimeRef;
 
             if (scheduleEnterTime === -1) return;
@@ -107,14 +120,14 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
 
             scheduleEnterTimeRef.current = -1;
         },
-        []
+        [],
     );
 
     const subscribeToUpdateCallback = useScheduleUpdater({
         channel,
         scheduleEndTime,
         setSchedule,
-        setScheduleEndTime
+        setScheduleEndTime,
     });
 
     useEffect(() => {

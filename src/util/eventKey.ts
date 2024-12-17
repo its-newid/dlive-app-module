@@ -12,7 +12,7 @@ export const ENTER = userAgent.keyCodeMap.enter,
     CHANNEL_DOWN = userAgent.keyCodeMap.channelDown;
 
 export type DefaultUIEventHandler = <E extends UIEvent>(
-    func: EventListener<E>
+    func: EventListener<E>,
 ) => (event: E) => void;
 
 export const onDefaultUIEvent: DefaultUIEventHandler = (func) => (event) => {
