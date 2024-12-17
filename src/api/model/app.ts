@@ -1,4 +1,4 @@
-import { ThumbType } from '@/type/common';
+import { ContentType, ThumbType } from '@/type/common';
 
 export type LinearResponse = {
     no: number;
@@ -23,18 +23,17 @@ export type ScheduleResponse = {
     endAt: number;
 };
 
-// export type CategoryResponse = {
-//     idx: number;
-//     name: string;
-//     linear: CategoryContentResponse[];
-//     avod: CategoryContentResponse[];
-// };
+export type CategoryResponse = {
+    idx: number;
+    name: string;
+    linear: CategoryContentResponse[];
+};
 
-// type CategoryContentResponse = {
-//     idx: number;
-//     categoryIdx: number;
-//     contentId: string;
-//     type: ContentType;
-//     thumbUrl: ThumbType;
-//     title: string;
-// };
+type CategoryContentResponse = {
+    idx: number;
+    categoryIdx: number;
+    contentId: string;
+    type: ContentType;
+    thumbUrl: ThumbType;
+    title: string;
+};

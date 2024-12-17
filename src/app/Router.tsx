@@ -1,4 +1,4 @@
-import { createHashRouter, RouterProvider } from 'react-router';
+import { createHashRouter, Navigate, RouterProvider } from 'react-router';
 import LiveScreen from '@/feature/screen/linear/LiveScreen';
 import { ErrorPage } from '@/component/ErrorPage.tsx';
 import LinearLayout from '@/component/layout/LinearLayout';
@@ -14,7 +14,11 @@ const router = createHashRouter([
         element: <LinearLayout />,
         children: [
             {
-                path: '/',
+                index: true,
+                element: <Navigate to='/live/newid_269' replace />
+            },
+            {
+                path: 'live/:id',
                 element: <LiveScreen />
             }
         ]

@@ -7,5 +7,8 @@
     "network_error_title": "There is a connection problem",
     "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
     "network_error_back": "Back",
-    "network_error_exit": "Exit"
+    "network_error_exit": "Exit",
+    "live_screen_channel_banner_guide": "Guide",
+    "guide_schedule_empty_my_list": "★을 눌러 즐겨찾는 채널을 추가해보세요",
+    "My List": "My List"
 }

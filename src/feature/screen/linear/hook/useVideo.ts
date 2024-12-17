@@ -16,7 +16,7 @@ type VideoReturn = {
     setMute: (muted: boolean) => void;
     setLoop: (loop: boolean) => void;
     setSrc: (src: string) => void;
-    setAutoPlay: (autoplay: boolean) => void;
+    setAutoPlay: (autoPlay: boolean) => void;
     videoRef: RefObject<HTMLVideoElement | null>;
     videoCallback: (node: Nullable<HTMLVideoElement>) => void;
 };
@@ -27,7 +27,7 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
     const _config = { ...defaultVideoConfig, ...config };
     const configRef = useRef<VideoConfig>({
         muted: _config.muted,
-        autoplay: _config.autoplay,
+        autoPlay: _config.autoPlay,
         loop: _config.loop
     });
 
@@ -53,13 +53,13 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
         }
     };
 
-    const setAutoPlay = (autoplay: boolean) => {
+    const setAutoPlay = (autoPlay: boolean) => {
         const { current: state } = configRef;
-        configRef.current = { ...state, autoplay: autoplay };
+        configRef.current = { ...state, autoPlay: autoPlay };
 
         const { current: player } = playerRef;
         if (player) {
-            player.autoplay = autoplay;
+            player.autoplay = autoPlay;
         }
     };
 
@@ -143,7 +143,7 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
 };
 
 const defaultVideoConfig: VideoConfig = {
-    autoplay: false,
+    autoPlay: false,
     muted: true,
     loop: false
 };

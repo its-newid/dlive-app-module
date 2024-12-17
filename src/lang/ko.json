@@ -1,5 +1,5 @@
 {
-    "guide_episode_info_channel_number": "채널 {no}",
+    "guide_episode_info_channel_number": "CH {no}",
     "guide_schedule_timeline_today": "오늘",
     "guide_schedule_timeline_tomorrow": "내일",
     "live_screen_channel_banner_my_list": "즐겨찾기",
@@ -7,5 +7,10 @@
     "network_error_title": "There is a connection problem",
     "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
     "network_error_back": "Back",
-    "network_error_exit": "Exit"
+    "network_error_exit": "Exit",
+    "live_screen_channel_banner_guide": "가이드",
+    "guide_schedule_empty_my_list": "★을 눌러 즐겨찾는 채널을 추가해보세요",
+    "detail_current_episode_left_minutes": "{minute}분 남음",
+    "My List": "즐겨찾는 채널",
+    "time": "{val, datetime}"
 }

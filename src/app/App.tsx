@@ -1,4 +1,4 @@
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
@@ -46,7 +46,11 @@ function App() {
                 <ThemeProvider theme={theme}>
                     <GlobalStyle />
                     <Navigation />
-                    <ReactQueryDevtools initialIsOpen={false} />
+                    {ENV_MODE !== EnvType.PROD && (
+                        <DevToolsContainer>
+                            <ReactQueryDevtools initialIsOpen={false} />
+                        </DevToolsContainer>
+                    )}
                 </ThemeProvider>
             </QueryClientProvider>
         </I18nextProvider>
@@ -54,3 +58,7 @@ function App() {
 }
 
 export default App;
+
+const DevToolsContainer = styled.div`
+    font-size: initial;
+`;

@@ -17,7 +17,6 @@ export type ChannelUpdateState = (typeof ChannelUpdateState)[keyof typeof Channe
 
 export function useParamsUpdate() {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [channelUpdateState, setChannelUpdateState] = useState<ChannelUpdateState>(
         ChannelUpdateState.PENDING
@@ -40,16 +39,14 @@ export function useParamsUpdate() {
     useEffect(() => {
         const currentChannel = getCurrentChannel();
         const channelId = id ?? currentChannel?.contentId;
+        console.log('channelId', channelId);
         if (!channelId) {
-            // FIXME: 채널 없을 때 에러 페이지 이동
-            navigate(RoutePath.ERROR);
             return;
         }
 
         const channel = getChannelById(channelId);
+        console.log('channel', channel);
         if (!channel) {
-            // FIXME: 채널 없을 때 에러 페이지 이동
-            navigate(RoutePath.ERROR);
             return;
         }
 

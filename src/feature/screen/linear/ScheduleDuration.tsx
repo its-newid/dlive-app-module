@@ -13,7 +13,7 @@ export function ScheduleDuration({ range }: Props) {
     const getLocaleTime = (millis: number) => {
         return t('time', {
             val: new Date(millis),
-            formatParams: { val: { hour: 'numeric', minute: 'numeric', hour12: true } }
+            formatParams: { val: { hour: 'numeric', minute: 'numeric', hour12: false } }
         });
     };
 

@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef, useMemo } from 'react';
 import styled from 'styled-components';
-import { ContainerComponent } from './layout/layout';
+import { ContainerComponent } from '@/component/layout/layout';
 import { IExtendableStyledComponent, KeyboardEventListener } from '../type/common';
 import { userAgent } from '@/util/userAgent';
 import { ENTER, onDefaultUIEvent } from '../util/eventKey';
@@ -33,7 +33,7 @@ function Clickable(
     ref: ForwardedRef<HTMLDivElement>
 ) {
     const enabled = useMemo(() => {
-        return userAgent.type !== (UserAgentOS.ANDROID || UserAgentOS.AMAZON);
+        return userAgent.type !== UserAgentOS.ANDROID;
     }, [userAgent]);
 
     const handleClick = () => onClick?.();

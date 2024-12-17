@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Nullable } from '@/type/common';
 import { ENTER } from '@/util/eventKey';
-import PlayIcon from '@/asset/icPlay.svg';
+import PlayIcon from '@/asset/icPlay.svg?react';
 import styled from 'styled-components';
 
 export function PlayOverlay({ onPlay }: { onPlay: () => void }) {

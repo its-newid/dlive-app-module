@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SVG from '@/asset/icArrowUp.svg';
+import SVG from '@/asset/icArrowUp.svg?react';
 
 function ArrowUp() {
     return <Image />;

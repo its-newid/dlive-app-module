@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Icon from '@/asset/icArrowUpTail.svg';
+import Icon from '@/asset/icArrowUpTail.svg?react';
 import { IExtendableStyledComponent } from '@/type/common';
 
 export function ArrowUpTail({ ...rest }: IExtendableStyledComponent) {

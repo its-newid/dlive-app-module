@@ -1,7 +1,7 @@
-import LogoProd from '@/asset/icSymbol.svg';
-import LogoDev from '@/asset/icSymbolDev.svg';
-import LogoLocal from '@/asset/icSymbolLocal.svg';
-import LogoErr from '@/asset/icSymbolErr.svg';
+import LogoProd from '@/asset/icSymbol.svg?react';
+import LogoDev from '@/asset/icSymbolDev.svg?react';
+import LogoLocal from '@/asset/icSymbolLocal.svg?react';
+import LogoErr from '@/asset/icSymbolErr.svg?react';
 import { ENV_MODE, EnvType } from '@/app/environment';
 import { IExtendableStyledComponent } from '@/type/common';
 

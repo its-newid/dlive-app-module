@@ -16,7 +16,9 @@ export function ErrorPage() {
     };
 
     const callbackRef = useCallback((node: HTMLDivElement) => {
-        node.focus();
+        if (node) {
+            node.focus();
+        }
     }, []);
 
     return (

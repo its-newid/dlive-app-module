@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorPage } from '../component/ErrorPage';
+import { ErrorPage } from '@/component/ErrorPage';
 import { LoadingSpinner } from '../component/LoadingSpinner';
 import styled from 'styled-components';
 import { useGetSchedule } from '@/api/scheduleQuery.ts';
