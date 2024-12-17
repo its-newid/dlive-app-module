@@ -39,13 +39,7 @@ function LiveScreen() {
         }
     }, [currentChannel, channelUpdateState]);
 
-    return (
-        <Container>
-            <Player url={liveUrl} />
-            <Banner />
-            <Guide />
-        </Container>
-    );
+    return <Player url={liveUrl} />;
 }
 export default withScheduleLoading(LiveScreen);
 
