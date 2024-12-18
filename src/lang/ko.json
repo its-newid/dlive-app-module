@@ -9,7 +9,7 @@
     "live_screen_channel_banner_full_description": "더보기",
     "live_screen_channel_banner_full_description_close": "닫기",
     "live_screen_channel_banner_loading": "정보를 불러오는 중 입니다. 잠시만 기다려주세요.",
-    "live_screen_mini_banner_loading": "Loading...",
+    "live_screen_mini_banner_loading": "로딩중...",
     "detail_current_episode_left_minutes": "{minute}분 남음",
     "guide_episode_info_channel_number": "채널 {no}",
     "guide_schedule_timeline_today": "오늘",
