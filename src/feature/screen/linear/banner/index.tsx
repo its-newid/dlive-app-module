@@ -66,7 +66,7 @@ function Banner() {
 
             const { keyCode } = event;
 
-            if (!isToastVisible && keyCode === ENTER) {
+            if (keyCode === ENTER) {
                 if (isVideoAutoplayBlocked) return;
 
                 showOverlay({ type: CHANNEL_BANNER });

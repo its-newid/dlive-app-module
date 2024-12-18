@@ -5,7 +5,7 @@ import {
     useMemo,
     useRef,
 } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import useOverlay from '../hook/useOverlay';
 import { ContentType, ErrorMessage, Nullable } from '@/type/common';
 import { ENTER, ESCAPE, LEFT, RIGHT } from '@/util/eventKey';
@@ -15,7 +15,7 @@ import { coerceIn } from '@/util/common';
 import { ButtonType, Child, ToolButton } from './ToolButton';
 import MoreIcon from '@/asset/icMore.svg';
 import { MyListButton as StyledMyListButton } from '@/component/MyListButton';
-import useToast, { TOAST_ANIMATION } from '../hook/useToast';
+import useToast from '../hook/useToast';
 import { RESET } from 'jotai/utils';
 import { channelNowState, selectedChannelSelector } from '@/atom/screen';
 import {
@@ -26,7 +26,6 @@ import {
     isFullDescriptionVisibleState,
     liveScreenOverlayState,
 } from '@/atom/screen/linear';
-import { Animation, Group } from '@/component/anim/Group';
 import { t } from 'i18next';
 
 export function Toolbar() {
@@ -44,7 +43,7 @@ export function Toolbar() {
         );
     }, []);
 
-    const { isToastVisible, message, showToast } = useToast();
+    const { isToastVisible, showToast, removeToast } = useToast();
     const { showOverlay, removeOverlay } = useOverlay();
 
     useEffect(() => {
@@ -74,6 +73,7 @@ export function Toolbar() {
             }
 
             const changeMenu = () => {
+                if (isToastVisible) return;
                 const delta = keyCode === LEFT ? -1 : 1;
                 const currentIndex = menuList.findIndex(
                     (menu) => menu === currentMenu,
@@ -91,7 +91,9 @@ export function Toolbar() {
                 [LEFT]: changeMenu,
                 [RIGHT]: changeMenu,
                 [ESCAPE]: () => {
-                    if (isFullDescriptionVisible) {
+                    if (isToastVisible) {
+                        removeToast();
+                    } else if (isFullDescriptionVisible) {
                         showOverlay({
                             type: LiveScreenOverlayType.CHANNEL_BANNER,
                             needDelay: true,
@@ -106,7 +108,7 @@ export function Toolbar() {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [currentMenu, isFullDescriptionVisible]);
+    }, [currentMenu, isFullDescriptionVisible, isToastVisible]);
 
     return (
         <>
@@ -126,11 +128,6 @@ export function Toolbar() {
                     <MoreButton menuRef={menuRef} />
                 </ToolbarRight>
             </Container>
-            {isToastVisible && (
-                <Toast $isVisible={isToastVisible} role={'status'}>
-                    {message}
-                </Toast>
-            )}
         </>
     );
 }
@@ -328,27 +325,3 @@ const ToolbarLeft = styled.div`
 `;
 
 const ToolbarRight = styled.div``;
-
-const Toast = styled.div<{ $isVisible: boolean }>`
-    position: absolute;
-    display: flex;
-    bottom: 0;
-    width: 100%;
-    height: 128rem;
-    align-items: center;
-    justify-content: center;
-    background: ${({ theme }) => theme.colors.main};
-    font: ${({ theme }) =>
-        `${theme.fonts.weight.bold} 38rem/46rem ${theme.fonts.family.pretendard}`};
-    color: ${({ theme }) => theme.colors.blackAlpha100};
-
-    ${({ $isVisible }) =>
-        $isVisible &&
-        css`
-            animation:
-                ${Group[Animation.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
-                ${Group[Animation.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
-                    ${TOAST_ANIMATION.DELAY}ms;
-        `};
-    animation-fill-mode: forwards;
-`;
