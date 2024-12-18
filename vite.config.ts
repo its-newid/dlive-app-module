@@ -17,16 +17,7 @@ export default defineConfig({
       targets: ["chrome >= 38"],
       polyfills: true,
     }),
-    svgr({
-      // https://react-svgr.com/docs/options/
-      svgrOptions: {
-        exportType: "default",
-        ref: true,
-        svgo: false,
-        titleProp: true,
-      },
-      include: "**/*.svg",
-    }),
+    svgr(),
   ],
   build: {
     cssTarget: "chrome38",

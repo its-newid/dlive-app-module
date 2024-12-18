@@ -1,7 +1,25 @@
 {
+    "onboarding_share": "정보 제공 선택권",
+    "onboarding_terms_of_use": "이용 약관",
+    "onboarding_privacy_policy": "개인정보보호 정책",
+    "onboarding_agree": "Agree",
+    "onboarding_main_share": "DO NOT SELL OR SHARE MY PERSONAL INFO",
+    "live_screen_channel_banner_guide": "가이드",
+    "live_screen_channel_banner_my_list": "즐겨찾기",
+    "live_screen_channel_banner_full_description": "더보기",
+    "live_screen_channel_banner_full_description_close": "닫기",
+    "live_screen_channel_banner_loading": "정보를 불러오는 중 입니다. 잠시만 기다려주세요.",
+    "live_screen_mini_banner_loading": "Loading...",
+    "detail_current_episode_left_minutes": "{minute}분 남음",
     "guide_episode_info_channel_number": "채널 {no}",
     "guide_schedule_timeline_today": "오늘",
     "guide_schedule_timeline_tomorrow": "내일",
-    "live_screen_channel_banner_my_list": "즐겨찾기",
-    "live_screen_channel_banner_full_description": "더보기"
-  }
+    "guide_schedule_empty_my_list": "Add your channel list",
+    "info_error_message": "Sorry, we’re failed to load the Information :(",
+    "network_error_title": "There is a connection problem",
+    "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
+    "network_error_back": "Back",
+    "network_error_exit": "Exit",
+    "app_query_error_message": "Sorry, we’re failed to load the Information",
+    "time": "{val, datetime}"
+}

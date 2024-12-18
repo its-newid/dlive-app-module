@@ -8,7 +8,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 
 export default tseslint.config(
     {
-        ignores: ['dist']
+        ignores: ['dist'],
     },
     {
         files: ['**/*.{ts,tsx,js,jsx}'],
@@ -18,38 +18,41 @@ export default tseslint.config(
             parser: tseslint.parser,
             globals: {
                 ...globals.browser,
-                ...globals.node
+                ...globals.node,
             },
             parserOptions: {
                 ecmaFeatures: {
-                    jsx: true
-                }
-            }
+                    jsx: true,
+                },
+            },
         },
         plugins: {
             '@typescript-eslint': tseslint.plugin,
             react: reactPlugin,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
-            prettier: prettierPlugin
+            prettier: prettierPlugin,
         },
         settings: {
             react: {
-                version: 'detect'
-            }
+                version: 'detect',
+            },
         },
         extends: [js.configs.recommended, ...tseslint.configs.recommended],
         rules: {
             'prettier/prettier': 'error',
             'react/prop-types': 'off',
             ...reactHooks.configs.recommended.rules,
-            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }]
-        }
+            'react-refresh/only-export-components': [
+                'warn',
+                { allowConstantExport: true },
+            ],
+        },
     },
     {
         files: ['*.js', '*.jsx'],
         rules: {
-            '@typescript-eslint/explicit-function-return-type': 'off'
-        }
-    }
+            '@typescript-eslint/explicit-function-return-type': 'off',
+        },
+    },
 );

@@ -1,7 +1,25 @@
 {
+    "onboarding_terms_of_use": "Terms of Use",
+    "onboarding_privacy_policy": "Privacy Policy",
+    "onboarding_share": "Your Privacy Choices",
+    "onboarding_agree": "Agree",
+    "onboarding_main_share": "DO NOT SELL OR SHARE MY PERSONAL INFO",
+    "live_screen_channel_banner_guide": "Guide",
+    "live_screen_channel_banner_my_list": "My List",
+    "live_screen_channel_banner_full_description": "More",
+    "live_screen_channel_banner_full_description_close": "Close",
+    "live_screen_channel_banner_loading": "Loading the channel information, Please wait.",
+    "live_screen_mini_banner_loading": "Loading...",
+    "detail_current_episode_left_minutes": "{minute}mins left",
     "guide_episode_info_channel_number": "Ch {no}",
     "guide_schedule_timeline_today": "Today",
     "guide_schedule_timeline_tomorrow": "Tomorrow",
-    "live_screen_channel_banner_my_list": "My List",
-    "live_screen_channel_banner_full_description": "More"
-  }
+    "guide_schedule_empty_my_list": "Add your channel list",
+    "info_error_message": "Sorry, we’re failed to load the Information :(",
+    "network_error_title": "There is a connection problem",
+    "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
+    "network_error_back": "Back",
+    "network_error_exit": "Exit",
+    "app_query_error_message": "Sorry, we’re failed to load the Information",
+    "time": "{val, datetime}"
+}
