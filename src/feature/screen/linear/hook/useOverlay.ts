@@ -54,7 +54,7 @@ const getOverlay = (type: LiveScreenOverlayType) => {
 
 const getTimeout = {
     [LiveScreenOverlayType.IDLE]: 0,
-    [LiveScreenOverlayType.CHANNEL_BANNER]: 5000,
+    [LiveScreenOverlayType.CHANNEL_BANNER]: 500000,
     [LiveScreenOverlayType.MINI_BANNER]: 5000,
     [LiveScreenOverlayType.SUBTITLE_TRACK_SHEET]: 5000,
     [LiveScreenOverlayType.GUIDE]: 300_000,

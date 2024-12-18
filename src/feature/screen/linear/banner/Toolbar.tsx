@@ -319,9 +319,6 @@ const Container = styled.div`
 const ToolbarLeft = styled.div`
     display: flex;
     align-items: center;
-    & > *:first-child {
-        margin-right: 26px;
-    }
     & > *:nth-child(2) {
         margin-right: 16px;
     }
