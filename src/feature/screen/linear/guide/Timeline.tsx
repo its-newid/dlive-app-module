@@ -11,6 +11,7 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { getRem, lerp } from '@/util/common';
 import { useReducerAtom } from 'jotai/utils';
 import { t } from 'i18next';
+import { useTimeBarOffset } from '@/feature/screen/linear/hook/useTimeBarOffset.ts';
 
 const TIME_BAR_BASE_WIDTH = 1694;
 
@@ -68,10 +69,7 @@ export function Indicator() {
 
     const timelineOffset = useAtomValue(timeBarOffsetState);
     const openingMillis = useAtomValue(openingMillisState);
-    const [, dispatch] = useReducerAtom(
-        timeBarOffsetState,
-        timeBarOffsetReducer,
-    );
+    const [_, dispatch] = useTimeBarOffset();
 
     const updateOffset = () => {
         const currentMillis = new Date().getTime();

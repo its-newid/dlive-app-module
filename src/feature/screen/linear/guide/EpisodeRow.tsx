@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { COMMON_SELECTED_ROW_INDEX } from '../hook/useListingsTable';
 import { ENTER, LEFT, RIGHT } from '@/util/eventKey';
-import { useReducerAtom } from 'jotai/utils';
+// import { useReducerAtom } from 'jotai/utils';
 import { RowChildProps } from './Listings';
 import { coerceAtLeast } from '@/util/common';
 import useOverlay from '../hook/useOverlay';
@@ -17,6 +17,8 @@ import {
 } from '@/atom/screen/linear';
 import { currentScheduleState, episodeSelector } from '@/atom/screen';
 import EpisodeCell, { EpisodeCellEventProps, RowState } from './EpisodeCell';
+import { useAtom } from 'jotai';
+import { useEffect, useReducer } from 'react';
 
 type EpisodeRowProps = RowChildProps & {
     onClickEpisode: (index: number) => void;
@@ -33,10 +35,13 @@ export function EpisodeRow({
     const hasEmptySchedule = visibleSchedule.length === 0;
     const setSchedule = useSetAtom(currentScheduleState);
 
-    const [, dispatch] = useReducerAtom(
-        timeBarOffsetState,
-        timeBarOffsetReducer,
-    );
+    const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
+
+    const [state, dispatch] = useReducer(timeBarOffsetReducer, timeBarOffset);
+
+    useEffect(() => {
+        setTimeBarOffset(state);
+    }, [state, setTimeBarOffset]);
 
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLDivElement>,

@@ -1,4 +1,10 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useReducer,
+} from 'react';
 import styled from 'styled-components';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import {
@@ -34,7 +40,7 @@ import { KeyboardEventListener, Nullable } from '@/type/common';
 import EpisodeCell, { EpisodeCellProps, RowState } from './EpisodeCell';
 import { useAtomCallback } from 'jotai/utils';
 import { ENTER, LEFT } from '@/util/eventKey';
-import { useReducerAtom } from 'jotai/utils';
+// import { useReducerAtom } from 'jotai/utils';
 import { t } from 'i18next';
 
 export const MY_LIST_CATEGORY_IDX = MyListCategory.idx;
@@ -66,10 +72,12 @@ export default function Listings() {
 
     const { itemNumbers, setRef } = useItemNumbersInListings();
 
-    const [, dispatch] = useReducerAtom(
-        timeBarOffsetState,
-        timeBarOffsetReducer,
-    );
+    const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
+    const [state, dispatch] = useReducer(timeBarOffsetReducer, timeBarOffset);
+
+    useEffect(() => {
+        setTimeBarOffset(state);
+    }, [state, setTimeBarOffset]);
 
     const visibleChannels = useMemo(() => {
         const selectedChannelIndex = channels.findIndex((channel) => {
