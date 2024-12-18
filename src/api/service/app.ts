@@ -9,13 +9,16 @@ export class AppService {
         this.service = service;
     }
 
-    public async fetchSchedule(params: ScheduleRequest): Promise<ScheduleResponse> {
+    public async fetchSchedule(
+        params: ScheduleRequest,
+    ): Promise<ScheduleResponse> {
         return this.service.fetchData('/v3/app/linear', { params });
     }
 }
 
 const executor = new HttpService(BASE_API_URL, {
     Authorization: `Bearer ${BEARER_TOKEN}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
 });
+
 export const appService = new AppService(executor);

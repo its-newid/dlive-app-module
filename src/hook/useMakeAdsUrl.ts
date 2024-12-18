@@ -20,7 +20,7 @@ const PLATFORM_OS = 'platform.os';
 export type ReplaceAdsParamsHandler = (
     url: string,
     impl: IAdsParameter,
-    additionalParams?: Record<string, string>
+    additionalParams?: Record<string, string>,
 ) => string;
 
 const isLimitAdTrackingEnabled = (lmt: string) => Number(lmt) === 1;
@@ -71,8 +71,17 @@ export function useMakeAdsUrl(): ReplaceAdsParamsHandler {
     const country = DEFAULT_LOCALE.country;
 
     return (url, impl, additionalParams = {}) => {
-        const { os, ua, appName, appVersion, bundleId, appstoreUrl, ifaType, ifa, lmt } =
-            impl.params;
+        const {
+            os,
+            ua,
+            appName,
+            appVersion,
+            bundleId,
+            appstoreUrl,
+            ifaType,
+            ifa,
+            lmt,
+        } = impl.params;
 
         const ipValue = ip;
 
@@ -87,8 +96,10 @@ export function useMakeAdsUrl(): ReplaceAdsParamsHandler {
             [APP_MODULE_VERSION]: appVersion,
             [IP]: encodeURIComponent(ipValue),
             [UA]: ua,
-            [IFA]: isLimitAdTrackingEnabled(lmt) ? uuid || DEVICE_ID : ifa || IFA,
-            ...additionalParams
+            [IFA]: isLimitAdTrackingEnabled(lmt)
+                ? uuid || DEVICE_ID
+                : ifa || IFA,
+            ...additionalParams,
         };
 
         let outputUrl = `${url}&${PLATFORM_OS}=${os}`;

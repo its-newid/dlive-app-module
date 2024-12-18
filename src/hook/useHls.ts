@@ -5,7 +5,7 @@ import Hls, {
     HlsConfig,
     LevelLoadedData,
     ManifestParsedData,
-    SubtitleTracksUpdatedData
+    SubtitleTracksUpdatedData,
 } from 'hls.js';
 import { Nullable } from '@/type/common';
 import { userAgent } from '@/util/userAgent';
@@ -20,7 +20,7 @@ type HlsEventCallback = {
 };
 
 type HlsProps = HlsEventCallback & {
-    videoRef: RefObject<HTMLVideoElement>;
+    videoRef: RefObject<HTMLVideoElement | null>;
     url: string;
     config: Partial<HlsConfig>;
     enabled?: boolean;
@@ -41,7 +41,7 @@ export const useHls = ({
     onLevelLoaded,
     videoRef,
     enabled = true,
-    onHandleAdsParams
+    onHandleAdsParams,
 }: HlsProps): HlsReturn => {
     const [hls, setHls] = useState<Nullable<Hls>>(null);
 
@@ -50,7 +50,7 @@ export const useHls = ({
         onError,
         onSubtitleUpdated,
         onFragLoaded,
-        onLevelLoaded
+        onLevelLoaded,
     });
 
     useLayoutEffect(() => {
@@ -59,9 +59,15 @@ export const useHls = ({
             onError,
             onSubtitleUpdated,
             onFragLoaded,
-            onLevelLoaded
+            onLevelLoaded,
         };
-    }, [onManifestParsed, onError, onSubtitleUpdated, onFragLoaded, onLevelLoaded]);
+    }, [
+        onManifestParsed,
+        onError,
+        onSubtitleUpdated,
+        onFragLoaded,
+        onLevelLoaded,
+    ]);
 
     useLayoutEffect(() => {
         if (!url || !videoRef.current || !enabled) {
@@ -69,7 +75,13 @@ export const useHls = ({
         }
 
         const {
-            current: { onManifestParsed, onLevelLoaded, onFragLoaded, onSubtitleUpdated, onError }
+            current: {
+                onManifestParsed,
+                onLevelLoaded,
+                onFragLoaded,
+                onSubtitleUpdated,
+                onError,
+            },
         } = callbacksRef;
 
         let adsUrl = url;
@@ -77,12 +89,16 @@ export const useHls = ({
 
         const newHls = new Hls({ ...config });
 
-        newHls.on(Hls.Events.MANIFEST_PARSED, (_, data) => onManifestParsed(data));
+        newHls.on(Hls.Events.MANIFEST_PARSED, (_, data) =>
+            onManifestParsed(data),
+        );
 
         newHls.on(Hls.Events.ERROR, (_, data) => onError(data));
 
         if (onSubtitleUpdated) {
-            newHls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED, (_, data) => onSubtitleUpdated(data));
+            newHls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED, (_, data) =>
+                onSubtitleUpdated(data),
+            );
         }
 
         if (onFragLoaded) {
@@ -90,7 +106,9 @@ export const useHls = ({
         }
 
         if (onLevelLoaded) {
-            newHls.on(Hls.Events.LEVEL_LOADED, (_, data) => onLevelLoaded(data));
+            newHls.on(Hls.Events.LEVEL_LOADED, (_, data) =>
+                onLevelLoaded(data),
+            );
         }
 
         newHls.loadSource(adsUrl);
@@ -113,13 +131,13 @@ const liveManifestLoadPolicy = {
     timeoutRetry: {
         maxNumRetry: 0,
         retryDelayMs: 0,
-        maxRetryDelayMs: 0
+        maxRetryDelayMs: 0,
     },
     errorRetry: {
         maxNumRetry: 0,
         retryDelayMs: 0,
-        maxRetryDelayMs: 0
-    }
+        maxRetryDelayMs: 0,
+    },
 };
 
 export const commonLinearHlsConfig: Partial<HlsConfig> = {
@@ -131,8 +149,8 @@ export const commonLinearHlsConfig: Partial<HlsConfig> = {
     backBufferLength: 1,
     nudgeMaxRetry: 10,
     manifestLoadPolicy: {
-        default: liveManifestLoadPolicy
-    }
+        default: liveManifestLoadPolicy,
+    },
 };
 
 const AVERAGE_BITRATE = 5000000;
@@ -148,13 +166,13 @@ const vodManifestLoadPolicy = {
     timeoutRetry: {
         maxNumRetry: 3,
         retryDelayMs: 1000,
-        maxRetryDelayMs: 5000
+        maxRetryDelayMs: 5000,
     },
     errorRetry: {
         maxNumRetry: 3,
         retryDelayMs: 1000,
-        maxRetryDelayMs: 5000
-    }
+        maxRetryDelayMs: 5000,
+    },
 };
 
 export const commonVodHlsConfig: Partial<HlsConfig> = {
@@ -168,6 +186,6 @@ export const commonVodHlsConfig: Partial<HlsConfig> = {
     maxBufferLength: MAX_BUFFER_LENGTH,
     nudgeMaxRetry: 3,
     manifestLoadPolicy: {
-        default: vodManifestLoadPolicy
-    }
+        default: vodManifestLoadPolicy,
+    },
 };

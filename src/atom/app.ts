@@ -52,14 +52,17 @@ export const isFirstLaunchState = atomWithStorage('isFirstLaunch', true);
 const initialMyListContent = Object.values(ContentType).reduce((acc, val) => {
     return { ...acc, [val]: [] };
 }, {} as TMyListContents);
-export const mylistState = atomWithStorage<TMyListContents>('favorite', initialMyListContent);
+export const mylistState = atomWithStorage<TMyListContents>(
+    'favorite',
+    initialMyListContent,
+);
 
 const initialWatchHistoryContent: TWatchedContent = {
-    linear: []
+    linear: [],
 };
 export const watchHistoryState = atomWithStorage<TWatchedContent>(
     'watch',
-    initialWatchHistoryContent
+    initialWatchHistoryContent,
 );
 
 const MAX_WATCH_HISTORY_COUNT = 30;
@@ -71,7 +74,7 @@ export const writeWatchHistory = atom(
         item: {
             content: LinearWatchHistory;
             type: ContentKind<ContentType>;
-        }
+        },
     ) => {
         const watchedContents = get(watchHistoryState);
         const { content, type } = item;
@@ -79,7 +82,9 @@ export const writeWatchHistory = atom(
         const history = watchedContents.linear;
         if (!history) return;
 
-        const existingIndex = history.findIndex((item) => item.contentId === content.contentId);
+        const existingIndex = history.findIndex(
+            (item) => item.contentId === content.contentId,
+        );
 
         if (existingIndex !== -1) {
             const updatedHistory = [...history];
@@ -92,7 +97,7 @@ export const writeWatchHistory = atom(
 
             set(watchHistoryState, {
                 ...watchedContents,
-                [type]: updatedHistory
+                [type]: updatedHistory,
             });
         } else {
             const updatedHistory = [...history];
@@ -104,10 +109,10 @@ export const writeWatchHistory = atom(
 
             set(watchHistoryState, {
                 ...watchedContents,
-                [type]: updatedHistory
+                [type]: updatedHistory,
             });
         }
-    }
+    },
 );
 
 export const deleteWatchHistory = atom(
@@ -118,30 +123,35 @@ export const deleteWatchHistory = atom(
         item: {
             content: LinearWatchHistory;
             type: ContentKind<ContentType>;
-        }
+        },
     ) => {
         const history = get(watchHistoryState);
 
         const existingIndex = history.linear?.findIndex(
-            (history) => history.contentId === item.content.contentId
+            (history) => history.contentId === item.content.contentId,
         );
         if (existingIndex === -1) return;
 
         set(watchHistoryState, {
             ...history,
-            linear: history.linear.filter((vod) => item.content.contentId !== vod.contentId)
+            linear: history.linear.filter(
+                (vod) => item.content.contentId !== vod.contentId,
+            ),
         });
-    }
+    },
 );
 
-export const clearWatchHistoryAtom = atom(null, (get, set, type: ContentKind<ContentType>) => {
-    const history = get(watchHistoryState);
+export const clearWatchHistoryAtom = atom(
+    null,
+    (get, set, type: ContentKind<ContentType>) => {
+        const history = get(watchHistoryState);
 
-    set(watchHistoryState, {
-        ...history,
-        [type]: []
-    });
-});
+        set(watchHistoryState, {
+            ...history,
+            [type]: [],
+        });
+    },
+);
 
 export const clearSearchHistoryAtom = atom(null, (_, set) => {
     set(searchKeywordHistoryState, []);
@@ -151,7 +161,10 @@ export const clearAllWatchHistoryAtom = atom(null, (_, set) => {
     set(watchHistoryState, initialWatchHistoryContent);
 });
 
-export const searchKeywordHistoryState = atomWithStorage<string[]>('searchKeywords', []);
+export const searchKeywordHistoryState = atomWithStorage<string[]>(
+    'searchKeywords',
+    [],
+);
 
 const MAX_SEARCH_HISTORY_COUNT = 10;
 export const searchKeywordHistorySelector = atom(
@@ -172,17 +185,17 @@ export const searchKeywordHistorySelector = atom(
         }
 
         set(searchKeywordHistoryState, [...histories, keyword]);
-    }
+    },
 );
 
 export const lastUpdatedTimeState = atomWithStorage<number>(
     'lastUpdatedTime',
     0,
-    createJSONStorage(() => sessionStorage)
+    createJSONStorage(() => sessionStorage),
 );
 
 export const ipState = atomWithStorage<string>(
     'ip',
     '',
-    createJSONStorage(() => sessionStorage)
+    createJSONStorage(() => sessionStorage),
 );

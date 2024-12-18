@@ -1,11 +1,24 @@
 import styled from 'styled-components';
 import { Outlet } from 'react-router';
+import { theme } from '@/style/theme';
+import Banner from '@/feature/screen/linear/banner';
+import Guide from '@/feature/screen/linear/guide';
+// import { useAtomValue } from 'jotai';
+// import { isFirstLaunchState } from '@/atom/app';
+// import { RoutePath } from '@/type/routePath';
 
 const LinearLayout = () => {
+    // const isFirstLaunch = useAtomValue(isFirstLaunchState);
+
+    // if (isFirstLaunch) {
+    //     return <Navigate to={RoutePath.ONBOARDING} replace />;
+    // }
+
     return (
         <Container>
             <Outlet />
-            <h1>LinearLayout</h1>
+            <Banner />
+            <Guide />
         </Container>
     );
 };
@@ -20,5 +33,5 @@ const Container = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #d1ffb8;
+    background-color: ${theme.colors.grey90};
 `;

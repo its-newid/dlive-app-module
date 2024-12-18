@@ -1,9 +1,14 @@
-import { CustomKeyboardEvent, FlexDirection, Nullable, Optional } from '@/type/common';
+import {
+    CustomKeyboardEvent,
+    FlexDirection,
+    Nullable,
+    Optional,
+} from '@/type/common';
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import { coerceAtLeast, coerceAtMost, coerceIn } from '@/util/common';
 import {
     calculateViewportItemNumbers,
-    getFlexDirection
+    getFlexDirection,
 } from '@/util/calculateViewportItemNumbers';
 import { DOWN, LEFT, RIGHT, UP } from '@/util/eventKey';
 import { getChildrenOfElement } from '@/util/getChildrenOfElement';
@@ -54,7 +59,8 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
     const getFirstVisibleItemIndex = () => {
         if (!selectedItemRef.current) return 0;
 
-        const targetIndex = getItemIndex(selectedItemRef.current) + 1 - getItemNumbers();
+        const targetIndex =
+            getItemIndex(selectedItemRef.current) + 1 - getItemNumbers();
         return coerceIn(targetIndex, 0, stateRef.current.elements.length - 1);
     };
     const getLastVisibleItemIndex = () => {
@@ -69,7 +75,7 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
             container: containerRef.current,
             gap: state.style.element.gap,
             firstVisibleItemIndex: state.firstVisibleItemIndex,
-            direction: state.style.direction
+            direction: state.style.direction,
         });
     };
 
@@ -86,14 +92,16 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
     function calculateTranslateOffset() {
         const { current: state } = stateRef;
 
-        return state.elements.slice(0, state.firstVisibleItemIndex).reduce((sum, element) => {
-            const dimension =
-                state.style.direction === FlexDirection.ROW
-                    ? element.offsetWidth
-                    : element.offsetHeight;
+        return state.elements
+            .slice(0, state.firstVisibleItemIndex)
+            .reduce((sum, element) => {
+                const dimension =
+                    state.style.direction === FlexDirection.ROW
+                        ? element.offsetWidth
+                        : element.offsetHeight;
 
-            return sum - dimension - state.style.element.gap;
-        }, 0);
+                return sum - dimension - state.style.element.gap;
+            }, 0);
     }
 
     const selectItem = ({ by, isAnimate = true }: SelectItemProps) => {
@@ -115,7 +123,7 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
         const offset = calculateTranslateOffset();
         updateTransform({
             value: offset,
-            isTransition: isAnimate
+            isTransition: isAnimate,
         });
     };
 
@@ -127,7 +135,8 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
         event.preventDefault();
 
         const { current: state } = stateRef;
-        if (!state.enabled || !selectedItemRef.current || !containerRef.current) return;
+        if (!state.enabled || !selectedItemRef.current || !containerRef.current)
+            return;
 
         const { keyCode } = event;
 
@@ -145,14 +154,14 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
         const targetIndex = coerceIn(
             getItemIndex(selectedItemRef.current) + delta,
             0,
-            state.elements.length - 1
+            state.elements.length - 1,
         );
 
         const firstItemIndex = state.firstVisibleItemIndex;
         if (targetIndex > getLastVisibleItemIndex()) {
             state.firstVisibleItemIndex = coerceAtMost(
                 firstItemIndex + 1,
-                stateRef.current.elements.length - 1
+                stateRef.current.elements.length - 1,
             );
         } else if (targetIndex < firstItemIndex) {
             state.firstVisibleItemIndex = coerceAtLeast(firstItemIndex - 1, 0);
@@ -177,7 +186,7 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
             const direction = getFlexDirection(node);
             if (direction === FlexDirection.COLUMN) {
                 window.addEventListener('wheel', handleWheel, {
-                    passive: false
+                    passive: false,
                 });
             }
 
@@ -190,38 +199,46 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
             stateRef.current = {
                 style: {
                     element: {
-                        gap
+                        gap,
                     },
-                    direction
+                    direction,
                 },
                 elements,
                 firstVisibleItemIndex:
-                    stateRef.current.firstVisibleItemIndex ?? getFirstVisibleItemIndex(),
-                enabled
+                    stateRef.current.firstVisibleItemIndex ??
+                    getFirstVisibleItemIndex(),
+                enabled,
             };
 
-            const selectedItem = elements.find((element) => element === selectedItemRef.current);
+            const selectedItem = elements.find(
+                (element) => element === selectedItemRef.current,
+            );
 
             if (enabled) {
                 selectItem({
-                    by: selectedItem ?? representativeItem
+                    by: selectedItem ?? representativeItem,
                 });
             }
         },
-        [items, enabled]
+        [items, enabled],
     );
 
     return {
         setBoxRef,
         selectItem,
-        getSelectedItemIndex
+        getSelectedItemIndex,
     };
 }
 
-const getGap: (element: HTMLElement, direction: FlexDirection) => number = (element, direction) => {
+const getGap: (element: HTMLElement, direction: FlexDirection) => number = (
+    element,
+    direction,
+) => {
     const gapAttribute = window.getComputedStyle(element);
     const gap =
-        direction === FlexDirection.ROW ? gapAttribute.marginRight : gapAttribute.marginBottom;
+        direction === FlexDirection.ROW
+            ? gapAttribute.marginRight
+            : gapAttribute.marginBottom;
 
     return parseInt(gap);
 };
@@ -240,10 +257,10 @@ const defaultState: State = {
     elements: [],
     style: {
         element: {
-            gap: 0
+            gap: 0,
         },
-        direction: FlexDirection.ROW
+        direction: FlexDirection.ROW,
     },
     firstVisibleItemIndex: 0,
-    enabled: false
+    enabled: false,
 };

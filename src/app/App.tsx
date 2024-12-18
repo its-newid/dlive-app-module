@@ -7,18 +7,7 @@ import Navigation from '@/app/Router';
 import GlobalStyle from '@/style/GlobalStyle';
 import { theme } from '@/style/theme';
 
-export const defaultQueryConfig = {
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    structuralSharing: true
-};
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: defaultQueryConfig
-    }
-});
+const queryClient = new QueryClient();
 
 function App() {
     return (

@@ -4,10 +4,15 @@ import {
     useCallback,
     useEffect,
     useMemo,
-    useRef
+    useRef,
 } from 'react';
 import styled from 'styled-components';
-import { Enable, IExtendableStyledComponent, KeyboardEventListener, Nullable } from '@/type/common';
+import {
+    Enable,
+    IExtendableStyledComponent,
+    KeyboardEventListener,
+    Nullable,
+} from '@/type/common';
 import { userAgent } from '@/util/userAgent';
 import { DOWN, UP } from '@/util/eventKey';
 import { coerceAtLeast, coerceAtMost, coerceIn } from '@/util/common';
@@ -33,7 +38,10 @@ export type ScrollableContentProps = Props &
         setScrollOffset: (offset: number) => void;
     };
 
-const ScrollableContent: ForwardRefRenderFunction<HTMLDivElement, ScrollableContentProps> = (
+const ScrollableContent: ForwardRefRenderFunction<
+    HTMLDivElement,
+    ScrollableContentProps
+> = (
     {
         className,
         content,
@@ -43,21 +51,21 @@ const ScrollableContent: ForwardRefRenderFunction<HTMLDivElement, ScrollableCont
         setScrollOffset,
         ...rest
     }: ScrollableContentProps,
-    callbackRef
+    callbackRef,
 ) => {
     const scrollRef = useRef<Nullable<HTMLDivElement>>(null);
     const contentRef = useCallback(
         (node: HTMLDivElement) => {
             enabled ? node?.focus() : node?.blur();
         },
-        [enabled]
+        [enabled],
     );
 
     const scrollHeight = scrollRef.current?.scrollHeight ?? 0;
     const clientHeight = scrollRef.current?.clientHeight ?? 0;
     const maxHeight = useMemo(
         () => scrollHeight - clientHeight || clientHeight,
-        [scrollHeight, clientHeight]
+        [scrollHeight, clientHeight],
     );
     const scrollStep: number = useMemo(() => clientHeight / 2, [clientHeight]);
 
@@ -69,7 +77,7 @@ const ScrollableContent: ForwardRefRenderFunction<HTMLDivElement, ScrollableCont
     const [up, down] = [UP, DOWN];
     const handleKeys = {
         [up]: coerceAtLeast(scrollOffset - scrollStep, MIN_HEIGHT),
-        [down]: coerceAtMost(scrollOffset + scrollStep, maxHeight)
+        [down]: coerceAtMost(scrollOffset + scrollStep, maxHeight),
     };
 
     const executeScroll = (offset: number) => {
@@ -101,19 +109,22 @@ const ScrollableContent: ForwardRefRenderFunction<HTMLDivElement, ScrollableCont
         const handleWheel = (event: WheelEvent) => {
             event.preventDefault();
 
-            if (!scrollRef.current || document.activeElement !== scrollRef.current) {
+            if (
+                !scrollRef.current ||
+                document.activeElement !== scrollRef.current
+            ) {
                 return;
             }
 
             const newOffset = coerceIn(
                 scrollRef.current.scrollTop + event.deltaY,
                 MIN_HEIGHT,
-                maxHeight
+                maxHeight,
             );
             handleScroll(newOffset, {
                 scrollTop: newOffset,
                 scrollHeight,
-                clientHeight
+                clientHeight,
             });
         };
 
@@ -145,7 +156,9 @@ const ScrollableContent: ForwardRefRenderFunction<HTMLDivElement, ScrollableCont
     );
 };
 
-export default forwardRef<HTMLDivElement, ScrollableContentProps>(ScrollableContent);
+export default forwardRef<HTMLDivElement, ScrollableContentProps>(
+    ScrollableContent,
+);
 
 const Container = styled.div.attrs({ tabIndex: 0 })`
     height: 100%;

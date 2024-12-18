@@ -9,5 +9,7 @@ export const containTabIndex = (node: HTMLElement): boolean => {
     }
 
     const children = node.children;
-    return children ? getChildrenOfElement(node).some((child) => containTabIndex(child)) : false;
+    return children
+        ? getChildrenOfElement(node).some((child) => containTabIndex(child))
+        : false;
 };

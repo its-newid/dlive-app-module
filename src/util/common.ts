@@ -8,7 +8,11 @@ export function coerceAtMost(value: number, maximumValue: number) {
     return value > maximumValue ? maximumValue : value.valueOf();
 }
 
-export function coerceIn(value: number, minimumValue: number, maximumValue: number) {
+export function coerceIn(
+    value: number,
+    minimumValue: number,
+    maximumValue: number,
+) {
     return Math.max(minimumValue, Math.min(value, maximumValue));
 }
 

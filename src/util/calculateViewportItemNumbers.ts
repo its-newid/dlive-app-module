@@ -12,7 +12,7 @@ export function calculateViewportItemNumbers({
     container,
     gap,
     firstVisibleItemIndex,
-    direction
+    direction,
 }: Props) {
     const isRow = direction === FlexDirection.ROW;
     const actualDimension = getActualDimension({ container, direction });
@@ -44,23 +44,33 @@ export function getFlexDirection(container: HTMLElement): FlexDirection {
     } else if (flexDirection.includes('column')) {
         return FlexDirection.COLUMN;
     } else {
-        throw new Error(`Unexpected value for flexDirection: ${attribute.flexDirection}`);
+        throw new Error(
+            `Unexpected value for flexDirection: ${attribute.flexDirection}`,
+        );
     }
 }
 
 export function getActualDimension({
     container,
-    direction
+    direction,
 }: Pick<Props, 'container' | 'direction'>) {
     const isRow = direction === FlexDirection.ROW;
     const computedStyle = window.getComputedStyle(container);
     const { marginLeft, marginRight, marginTop, marginBottom } = computedStyle;
 
-    const margin = (isRow ? [marginLeft, marginRight] : [marginTop, marginBottom])
+    const margin = (
+        isRow ? [marginLeft, marginRight] : [marginTop, marginBottom]
+    )
         .map(parseFloat)
         .reduce((acc, val) => acc + val, 0);
 
     return isRow
-        ? Math.min(userAgent.screenSize.getScreenWidth(), container.clientWidth - margin)
-        : Math.min(userAgent.screenSize.getScreenHeight(), container.clientHeight - margin);
+        ? Math.min(
+              userAgent.screenSize.getScreenWidth(),
+              container.clientWidth - margin,
+          )
+        : Math.min(
+              userAgent.screenSize.getScreenHeight(),
+              container.clientHeight - margin,
+          );
 }

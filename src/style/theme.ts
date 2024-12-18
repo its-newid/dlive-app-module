@@ -1,7 +1,7 @@
 import { DefaultTheme } from 'styled-components';
 
 const colors = {
-    main: '#d3f47c',
+    main: '#81F5FF',
     main2: '#f24684',
 
     whiteAlpha100: '#ffffff',
@@ -31,20 +31,20 @@ const colors = {
     grey80: '#2d2d2e',
     grey90: '#1c1c1c',
 
-    transparent: 'transparent'
+    transparent: 'transparent',
 };
 
 const fonts = {
     family: {
-        pretendard: 'pretendard'
+        pretendard: 'pretendard',
     },
 
     weight: {
         light: 100,
         normal: 400,
         medium: 500,
-        bold: 700
-    }
+        bold: 700,
+    },
 };
 
 const toBlack = 'brightness(0) saturate(100%)';
@@ -52,13 +52,13 @@ const filters = {
     grey0: `${toBlack} invert(100%) sepia(0%) saturate(7500%) hue-rotate(196deg) brightness(100%) contrast(103%)`,
     grey80: `${toBlack} invert(14%) sepia(0%) saturate(804%) hue-rotate(67deg) brightness(105%) contrast(92%)`,
     grey90: `${toBlack} invert(0%) sepia(9%) saturate(1145%) hue-rotate(330deg) brightness(103%) contrast(78%)`,
-    grey100: `${toBlack} invert(0%) sepia(90%) saturate(7460%) hue-rotate(79deg) brightness(87%) contrast(110%)`
+    grey100: `${toBlack} invert(0%) sepia(90%) saturate(7460%) hue-rotate(79deg) brightness(87%) contrast(110%)`,
 };
 
 export const theme: DefaultTheme = {
     colors,
     fonts,
-    filters
+    filters,
 };
 
 export type ColorTypes = typeof colors;

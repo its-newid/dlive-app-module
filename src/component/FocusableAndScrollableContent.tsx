@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
-import ScrollableContent, { ScrollableContentProps } from '@/component/ScrollableContent';
+import ScrollableContent, {
+    ScrollableContentProps,
+} from '@/component/ScrollableContent';
 
 export type FocusableScrollContentProps = ScrollableContentProps & {
     onFocusable: (canFocus: boolean) => void;

@@ -35,8 +35,14 @@ const generateTimes = (millis: number = new Date().getTime()) => {
 };
 
 export function floorToNearest30Minutes(date: Date = new Date()) {
-    return new Date(Math.floor(date.getTime() / TIME_SLOT_MILLIS) * TIME_SLOT_MILLIS);
+    return new Date(
+        Math.floor(date.getTime() / TIME_SLOT_MILLIS) * TIME_SLOT_MILLIS,
+    );
 }
+
+// function format24Hour(date: Date) {
+//     return dayjs(date).format('HH:mm');
+// }
 
 function format12Hour(date: Date) {
     return dayjs(date).format('hh:mm A');
@@ -48,4 +54,8 @@ export function formatYYYYMMDD(date: Date) {
 
 export function formatMMMDD(date: Date) {
     return dayjs(date).format('MMM DD');
+}
+
+export function formatMMDD(date: Date) {
+    return dayjs(date).format('MM/DD');
 }

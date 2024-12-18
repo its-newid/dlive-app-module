@@ -9,7 +9,7 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
         private readonly os: UserAgentOS,
         private bundleId: string,
         private appstoreUrl: string = '',
-        private appVersion: string = import.meta.env.VITE_APP_VERSION ?? ''
+        private appVersion: string = import.meta.env.VITE_APP_VERSION ?? '',
     ) {}
 
     public get params() {
@@ -22,7 +22,7 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
             ifaType: this.getIfaType(),
             ifa: this.getIfa(),
             lmt: this.getLmt(),
-            appVersion: this.appVersion
+            appVersion: this.appVersion,
         };
     }
 
@@ -54,8 +54,8 @@ export class AndroidAgentAdsParameter extends UserAgentAdsParameter {
             os,
             encodeURIComponent('net.itsnewid.app.android.diva'),
             encodeURIComponent(
-                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.diva'
-            )
+                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.diva',
+            ),
         );
     }
 
