@@ -77,19 +77,6 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                 <Row>
                     <Button
                         role={'button'}
-                        enabled={isOnline}
-                        onKeyDown={onDefaultUIEvent(handleHomeButtonKeyDown)}
-                        onClick={handleGoHome}
-                        ref={(node) => {
-                            if (node) {
-                                buttonRefs[Menu.HOME].current = node;
-                            }
-                        }}
-                    >
-                        <span id={'btn-0'}>{t('network_error_back')}</span>
-                    </Button>
-                    <Button
-                        role={'button'}
                         onKeyDown={onDefaultUIEvent(handleExitButtonKeyDown)}
                         onClick={handleExit}
                         enabled
@@ -99,7 +86,20 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                             }
                         }}
                     >
-                        <span id={'btn-1'}>{t('network_error_exit')}</span>
+                        <span id={'btn-0'}>{t('network_error_exit')}</span>
+                    </Button>
+                    <Button
+                        role={'button'}
+                        enabled={isOnline}
+                        onKeyDown={onDefaultUIEvent(handleHomeButtonKeyDown)}
+                        onClick={handleGoHome}
+                        ref={(node) => {
+                            if (node) {
+                                buttonRefs[Menu.HOME].current = node;
+                            }
+                        }}
+                    >
+                        <span id={'btn-1'}>{t('network_error_back')}</span>
                     </Button>
                 </Row>
             </Column>
@@ -125,11 +125,6 @@ const Title = styled.span`
     font: ${({ theme }) =>
         `${theme.fonts.weight.bold} 76rem/96rem ${theme.fonts.family.pretendard}`};
     color: ${({ theme }) => theme.colors.whiteAlpha95};
-
-    &:after {
-        content: ' :(';
-        color: ${({ theme }) => theme.colors.main};
-    }
 `;
 
 const Description = styled.span`
@@ -142,13 +137,13 @@ const Description = styled.span`
 
 const Row = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
 `;
 
 const Button = styled.div.attrs({ tabIndex: 0 })<{
     enabled: boolean;
 }>`
-    margin-top: 86rem;
+    margin-top: 162rem;
     width: fit-content;
     border-radius: 36rem;
     outline: none;
