@@ -1,26 +1,64 @@
-import LogoProd from '@/asset/icLogo.svg?react';
-import LogoDev from '@/asset/icLogoDev.svg?react';
-import LogoLocal from '@/asset/icLogoLocal.svg?react';
-import LogoErr from '@/asset/icLogoErr.svg?react';
-import { ENV_MODE, ENV_TYPE } from '@/app/environment';
+import styled from 'styled-components';
 import { IExtendableStyledComponent } from '@/type/common';
+import LogoWhite from '@/asset/icLogoWhite.png';
+import LogoColor from '@/asset/icLogoColor.png';
 
-export function Logo({ ...rest }: IExtendableStyledComponent) {
-    if (!ENV_MODE) return;
+export const LogoType = {
+    DEFAULT: 'default',
+    ONBOARDING: 'onboarding',
+} as const;
+export type LogoType = (typeof LogoType)[keyof typeof LogoType];
 
-    const Component = getLogo(ENV_MODE);
-    return <Component {...rest} />;
-}
-
-const getLogo = (environmentName: string) => {
-    switch (environmentName) {
-        case ENV_TYPE.DEV:
-            return LogoDev;
-        case ENV_TYPE.LOCAL:
-            return LogoLocal;
-        case ENV_TYPE.ERROR_CASE:
-            return LogoErr;
-        default:
-            return LogoProd;
-    }
+type LogoProps = IExtendableStyledComponent & {
+    logoType?: LogoType;
+    width?: number;
+    height?: number;
 };
+
+const logoConfig = {
+    [LogoType.DEFAULT]: {
+        img: LogoWhite,
+        width: 140,
+        height: 48,
+    },
+    [LogoType.ONBOARDING]: {
+        img: LogoColor,
+        width: 210,
+        height: 72,
+    },
+};
+
+const Logo = ({
+    logoType = LogoType.DEFAULT,
+    width,
+    height,
+    ...rest
+}: LogoProps) => {
+    const {
+        img,
+        width: defaultWidth,
+        height: defaultHeight,
+    } = logoConfig[logoType];
+    return (
+        <LogoWrapper
+            width={width || defaultWidth}
+            height={height || defaultHeight}
+            {...rest}
+        >
+            <Img src={img} alt='Logo' />
+        </LogoWrapper>
+    );
+};
+
+export default Logo;
+
+const LogoWrapper = styled.div<{ width: number; height: number }>`
+    width: ${({ width }) => width}rem;
+    height: ${({ height }) => height}rem;
+`;
+
+const Img = styled.img`
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+`;
