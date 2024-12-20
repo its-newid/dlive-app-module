@@ -1,41 +1,29 @@
-import { useAtomValue } from 'jotai';
 import {
     createHashRouter,
     RouterProvider,
     RouteObject,
-    Navigate,
+    // Navigate,
 } from 'react-router';
-import { channelNowState, channelsState } from '@/atom/screen';
+// import { channelNowState, channelsState } from '@/atom/screen';
 import LinearLayout from '@/component/layout/LinearLayout';
-import LiveScreen from '@/feature/screen/linear/LiveScreen';
+// import LiveScreen from '@/feature/screen/linear/LiveScreen';
 import withLoading from '@/app/withLoading';
 import { NetworkErrorPage } from '@/app/NetworkErrorPage';
 import { useDetectOnline } from '@/hook/useDetectOnline';
+import { RoutePath } from '@/type/routePath';
+import { ErrorPage } from '@/component/ErrorPage';
 
 function AppRouter() {
     const { isOnline, setOnline } = useDetectOnline();
-    const channelNow = useAtomValue(channelNowState);
-    const channels = useAtomValue(channelsState);
 
     const routes: RouteObject[] = [
         {
             path: '/',
             element: <LinearLayout />,
-            children: [
-                {
-                    index: true,
-                    element: (
-                        <Navigate
-                            to={`/live/${channelNow?.contentId || channels[0]?.contentId}`}
-                            replace
-                        />
-                    ),
-                },
-                {
-                    path: '/live/:id',
-                    element: <LiveScreen />,
-                },
-            ],
+        },
+        {
+            path: RoutePath.ERROR,
+            element: <ErrorPage />,
         },
     ];
 
