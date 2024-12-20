@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { ContentType, ThumbRatio, ThumbSizes } from '../../../../type/common';
+import { ContentType, ThumbRatio, ThumbSizes } from '@/type/common';
 import { useSetAtom } from 'jotai';
-import React, { useCallback } from 'react';
-import { ENTER, LEFT, onDefaultUIEvent } from '../../../../util/eventKey';
-import { MyListButton } from '../../../../component/MyListButton';
+import { useCallback } from 'react';
+import { ENTER, LEFT, onDefaultUIEvent } from '@/util/eventKey';
+import { MyListButton } from '@/component/MyListButton';
 import { MY_LIST_CATEGORY_IDX, RowChildProps } from './Listings';
 import { useAtomCallback } from 'jotai/utils';
 import useOverlay from '../hook/useOverlay';
@@ -13,15 +13,15 @@ import {
     ScheduleChannel,
     selectedChannelSelector,
     totalChannelState,
-} from '../../../../atom/screen';
+} from '@/atom/screen';
 import {
     currentScheduleFocusState,
     findAiringEpisode,
     LiveScreenOverlayType,
     ScheduleFocusState,
-} from '../../../../atom/screen/linear';
+} from '@/atom/screen/linear';
 import { RowState, rowStyle } from './EpisodeCell';
-import useMyList from '../../../../hook/useMyList';
+import useMyList from '@/hook/useMyList';
 
 type ChannelInfoProps = RowChildProps & {
     channel: ScheduleChannel;

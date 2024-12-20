@@ -1,5 +1,5 @@
 export const RoutePath = {
-    LIVE_SCREEN: '/live/:id',
+    LIVE_SCREEN: '/',
     ERROR: '/error',
     ONBOARDING: '/onboarding',
 } as const;

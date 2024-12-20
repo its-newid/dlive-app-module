@@ -1,13 +1,13 @@
 import { ForwardedRef, forwardRef, useMemo } from 'react';
 import styled from 'styled-components';
+import { ContainerComponent } from '@/type/layout';
 import {
     IExtendableStyledComponent,
     KeyboardEventListener,
-} from '../type/common';
+} from '@/type/common';
 import { userAgent } from '@/util/userAgent';
-import { ENTER, onDefaultUIEvent } from '../util/eventKey';
-import { UserAgentOS } from '../type/userAgent';
-import { ContainerComponent } from '@/type/layout';
+import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
+import { UserAgentOS } from '@/type/userAgent';
 
 export interface ClickableProps
     extends Omit<
@@ -80,7 +80,7 @@ export default forwardRef<HTMLDivElement, ContainerComponent<ClickableProps>>(
 );
 
 const Container = styled.div.attrs({ tabIndex: 0 })`
-    :focus {
+    &:focus {
         outline: none;
     }
 `;

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { useAtomCallback } from 'jotai/utils';
 import { useSetAtom } from 'jotai';
 import { Optional } from '@/type/common';
@@ -12,6 +12,7 @@ import {
     selectedChannelSelector,
 } from '@/atom/screen';
 import { LiveScreenOverlayType } from '@/atom/screen/linear';
+import { RoutePath } from '@/type/routePath';
 
 export const ChannelUpdateState = {
     PENDING: 'PENDING',
@@ -22,6 +23,7 @@ export type ChannelUpdateState =
 
 export function useParamsUpdate() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [channelUpdateState, setChannelUpdateState] =
         useState<ChannelUpdateState>(ChannelUpdateState.PENDING);
@@ -45,22 +47,22 @@ export function useParamsUpdate() {
     useEffect(() => {
         const currentChannel = getCurrentChannel();
         const channelId = id ?? currentChannel?.contentId;
-        // if (!channelId) {
-        //     navigate(RoutePath.ERROR);
-        //     return;
-        // }
+        if (!channelId) {
+            navigate(RoutePath.ERROR);
+            return;
+        }
 
-        // if (!channel) {
-        //     navigate(RoutePath.ERROR);
-        //     return;
-        // }
-
-        // FIXME: 채널 없을 때 에러 페이지 이동 처리 필요
-        if (!channelId) return;
         const channel = getChannelById(channelId);
+        if (!channel) {
+            // FIXME: 채널 없을 때 에러 페이지 이동
+            navigate(RoutePath.ERROR);
+            return;
+        }
 
         if (currentChannel?.contentId !== channelId) {
-            setChannelNow(channel);
+            // FIXME: 채널 없을 때 에러 페이지 이동
+            navigate(RoutePath.ERROR);
+            return;
         }
 
         setChannelUpdateState(ChannelUpdateState.SUCCESS);

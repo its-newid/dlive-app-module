@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
+// import { useNavigate } from 'react-router';
+import { channelNowState, channelsState } from '@/atom/screen';
 import { CHANNEL_DOWN, CHANNEL_UP, DOWN, UP } from '@/util/eventKey';
 import { mod } from '@/util/common';
-import { makeKeyboardEvent } from '@/util/makeKeyboardEvent';
-import { channelNowState, channelsState } from '@/atom/screen';
 
 export function useChannelZapping({
     enable,
@@ -32,20 +32,38 @@ export function useChannelZapping({
         channel && setChannelsNow(channel);
         callback?.();
     }
+    // const navigate = useNavigate();
 
-    const handleWheel = (event: WheelEvent) =>
-        dispatchEvent(makeKeyboardEvent('keydown')(event));
+    // const handleKeyDown = useCallback(
+    //     (event: KeyboardEvent) => {
+    //         const { keyCode } = event;
+    //         if (![UP, DOWN, CHANNEL_UP, CHANNEL_DOWN].includes(keyCode)) return;
+
+    //         const delta = keyCode === UP || keyCode === CHANNEL_UP ? -1 : 1;
+    //         const currentIndex = channels.findIndex(
+    //             (ch) => ch.contentId === channelNow?.contentId,
+    //         );
+    //         const channel =
+    //             channels[
+    //                 (currentIndex + delta + channels.length) % channels.length
+    //             ];
+    //         if (channel) {
+    //             setChannelsNow(channel);
+    //             navigate(`/live/${channel.contentId}`, { replace: true });
+    //         }
+    //         callback?.();
+    //     },
+    //     [channels, channelNow, setChannelsNow, navigate, callback],
+    // );
 
     useEffect(() => {
         if (!enable) return;
 
         window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('wheel', handleWheel);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('wheel', handleWheel);
         };
-    }, [channels, channelNow, enable, callback]);
+    }, [enable, handleKeyDown]);
 
     return { channelNow };
 }

@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { ContentType, Nullable } from '@/type/common';
 import { ENTER, ESCAPE, LEFT, RIGHT } from '@/util/eventKey';
@@ -9,9 +9,7 @@ import { coerceIn } from '@/util/common';
 import { ButtonType, Child, ToolButton } from './ToolButton';
 import MoreIcon from '@/asset/icMore.svg?react';
 import { MyListButton as StyledMyListButton } from '@/component/MyListButton';
-import useToast, {
-    TOAST_ANIMATION,
-} from '@/feature/screen/linear/hook/useToast';
+import useToast from '@/feature/screen/linear/hook/useToast';
 import { RESET } from 'jotai/utils';
 import { channelNowState, selectedChannelSelector } from '@/atom/screen';
 import {
@@ -23,7 +21,6 @@ import {
     liveScreenOverlayState,
 } from '@/atom/screen/linear';
 import { t } from 'i18next';
-import { AnimationType, Group } from '@/component/anim/Group';
 import useOverlay from '@/feature/screen/linear/hook/useOverlay';
 
 export function Toolbar() {
@@ -38,7 +35,7 @@ export function Toolbar() {
         return Object.values(ChannelBannerToolMenu);
     }, []);
 
-    const { isToastVisible, message, showToast } = useToast();
+    const { isToastVisible, showToast, removeToast } = useToast();
     const { showOverlay, removeOverlay } = useOverlay();
 
     useEffect(() => {
@@ -68,6 +65,7 @@ export function Toolbar() {
             }
 
             const changeMenu = () => {
+                if (isToastVisible) return;
                 const delta = keyCode === LEFT ? -1 : 1;
                 const currentIndex = menuList.findIndex(
                     (menu) => menu === currentMenu,
@@ -78,25 +76,34 @@ export function Toolbar() {
                     menuList.length - 1,
                 );
                 setMenu(menuList[targetIndex]);
-                showOverlay({ type: LiveScreenOverlayType.CHANNEL_BANNER });
+                showOverlay({
+                    type: LiveScreenOverlayType.CHANNEL_BANNER,
+                    needDelay: true,
+                });
             };
 
             const handleAction = {
                 [LEFT]: changeMenu,
                 [RIGHT]: changeMenu,
-                [ESCAPE]: isFullDescriptionVisible
-                    ? showOverlay({
-                          type: LiveScreenOverlayType.CHANNEL_BANNER,
-                          needDelay: true,
-                      })
-                    : removeOverlay,
+                [ESCAPE]: () => {
+                    if (isToastVisible) {
+                        removeToast();
+                    } else if (isFullDescriptionVisible) {
+                        showOverlay({
+                            type: LiveScreenOverlayType.CHANNEL_BANNER,
+                            needDelay: true,
+                        });
+                    } else {
+                        removeOverlay();
+                    }
+                },
             };
             handleAction[keyCode]?.();
         }
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [currentMenu, isFullDescriptionVisible]);
+    }, [currentMenu, isFullDescriptionVisible, isToastVisible]);
 
     return (
         <>
@@ -116,15 +123,6 @@ export function Toolbar() {
                     <MoreButton menuRef={menuRef} />
                 </ToolbarRight>
             </Container>
-            {isToastVisible && (
-                <Toast
-                    $isVisible={isToastVisible}
-                    role={'status'}
-                    aria-label={message}
-                >
-                    {message}
-                </Toast>
-            )}
         </>
     );
 }
@@ -311,12 +309,10 @@ const Container = styled.div`
     padding: 6rem 72rem 50rem;
     background: ${({ theme }) => theme.colors.grey90};
 `;
+
 const ToolbarLeft = styled.div`
     display: flex;
     align-items: center;
-    & > *:first-child {
-        margin-right: 26px;
-    }
     & > *:nth-child(2) {
         margin-right: 16px;
     }
@@ -326,26 +322,3 @@ const ToolbarLeft = styled.div`
 `;
 
 const ToolbarRight = styled.div``;
-
-const Toast = styled.div<{ $isVisible: boolean }>`
-    position: absolute;
-    display: flex;
-    bottom: 0;
-    width: 100%;
-    height: 128rem;
-    align-items: center;
-    justify-content: center;
-    background: ${({ theme }) => theme.colors.main};
-    font: ${({ theme }) =>
-        `${theme.fonts.weight.bold} 38rem/46rem ${theme.fonts.family.pretendard}`};
-    color: ${({ theme }) => theme.colors.blackAlpha100};
-    ${({ $isVisible }) =>
-        $isVisible &&
-        css`
-            animation:
-                ${Group[AnimationType.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
-                ${Group[AnimationType.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
-                    ${TOAST_ANIMATION.DELAY}ms;
-        `};
-    animation-fill-mode: forwards;
-`;

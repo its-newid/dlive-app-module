@@ -77,11 +77,6 @@ const DateInfo = styled.div`
     z-index: 1;
 `;
 
-// const DaySlot = styled.span`
-//     margin-left: 40rem;
-//     font-weight: bold;
-//     color: ${({ theme }) => theme.colors.whiteAlpha77};
-// `;
 const DateSlot = styled.span`
     margin-left: 40rem;
     color: ${({ theme }) => theme.colors.whiteAlpha77};

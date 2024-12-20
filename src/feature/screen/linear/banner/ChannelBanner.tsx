@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Logo as StyledLogo } from '@/component/Logo';
+import StyledLogo from '@/component/Logo';
 import { Toolbar as BannerBottom } from './Toolbar';
 import { ChannelBannerInfo as Info } from './ChannelBannerInfo';
 import { useAtomValue } from 'jotai';
@@ -60,8 +60,8 @@ const Logo = styled(StyledLogo)`
     position: absolute;
     top: 80rem;
     left: 72rem;
-    width: 154rem;
-    height: 56rem;
+    width: 140rem;
+    height: 48rem;
 `;
 
 const BannerContainer = styled.div`

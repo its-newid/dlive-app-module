@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import { atom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { Logo } from '@/component/Logo';
+import Logo from '@/component/Logo';
 import { EpisodeInfoLoader as InfoLoading } from '@/feature/screen/linear/guide/EpisodeInfoLoader';
 import Info from '@/feature/screen/linear/guide/EpisodeInfo/Info';
 import { currentScheduleState, findChannelSelector } from '@/atom/screen';
@@ -55,6 +55,7 @@ const Container = styled.div`
 const RightTopLogo = styled(Logo)`
     position: absolute;
     right: 0;
-    width: 154rem;
-    height: 56rem;
+    width: 140rem;
+    height: 48rem;
+    opacity: 0.7;
 `;
