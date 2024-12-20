@@ -20,6 +20,8 @@
     "network_error_description": "Check the network status. \nIf the Back button is active, it’s been restored.",
     "network_error_back": "Back",
     "network_error_exit": "Exit",
-    "app_query_error_message": "Sorry, we’re failed to load the Information",
-    "time": "{val, datetime}"
+    "app_query_error_title": "Sorry, we’re failed to load the Information",
+    "app_query_error_description": "Please exit the app and run it again",
+    "time": "{val, datetime}",
+    "press_back_again_to_exit": "Press BACK button once more to exit"
 }
