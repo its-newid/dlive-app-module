@@ -40,9 +40,8 @@ import { KeyboardEventListener, Nullable } from '@/type/common';
 import EpisodeCell, { EpisodeCellProps, RowState } from './EpisodeCell';
 import { useAtomCallback } from 'jotai/utils';
 import { ENTER, LEFT } from '@/util/eventKey';
-// import { useReducerAtom } from 'jotai/utils';
 import { t } from 'i18next';
-import { useReducerAtom } from 'jotai/utils';
+import { useReducerAtom } from '@/atom/app.ts';
 
 export const MY_LIST_CATEGORY_IDX = MyListCategory.idx;
 

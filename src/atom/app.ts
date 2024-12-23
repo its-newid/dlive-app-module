@@ -1,8 +1,9 @@
 import { atomWithLocalStorage } from '../util/localStorage.atom';
-import { atom } from 'jotai';
+import { atom, PrimitiveAtom, useAtom } from 'jotai';
 import { ContentType } from '../type/common';
 import { ChannelEpisode } from '../type/linear';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
+import { useCallback } from 'react';
 
 export type TMyListContents = {
     [val in ContentType]: string[];
@@ -89,3 +90,15 @@ export const lastUpdatedTimeState = atomWithStorage<number>(
     0,
     createJSONStorage(() => sessionStorage),
 );
+
+export function useReducerAtom<Value, Action>(
+    anAtom: PrimitiveAtom<Value>,
+    reducer: (v: Value, a: Action) => Value,
+) {
+    const [state, setState] = useAtom(anAtom);
+    const dispatch = useCallback(
+        (action: Action) => setState((prev) => reducer(prev, action)),
+        [setState, reducer],
+    );
+    return [state, dispatch] as const;
+}

@@ -10,7 +10,7 @@ import { formatMMMDD, useTimeline } from '../hook/useTimeline';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { getRem, lerp } from '@/util/common';
 import { t } from 'i18next';
-import { useReducerAtom } from 'jotai/utils';
+import { useReducerAtom } from '@/atom/app.ts';
 
 const TIME_BAR_BASE_WIDTH = 1474;
 

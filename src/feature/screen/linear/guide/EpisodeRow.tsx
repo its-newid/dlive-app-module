@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { COMMON_SELECTED_ROW_INDEX } from '../hook/useListingsTable';
 import { ENTER, LEFT, RIGHT } from '@/util/eventKey';
-import { useReducerAtom } from 'jotai/utils';
 import { RowChildProps } from './Listings';
 import { coerceAtLeast } from '@/util/common';
 import useOverlay from '../hook/useOverlay';
@@ -17,6 +16,7 @@ import {
 } from '@/atom/screen/linear';
 import { currentScheduleState, episodeSelector } from '@/atom/screen';
 import EpisodeCell, { EpisodeCellEventProps, RowState } from './EpisodeCell';
+import { useReducerAtom } from '@/atom/app.ts';
 
 type EpisodeRowProps = RowChildProps & {
     onClickEpisode: (index: number) => void;
