@@ -11,7 +11,7 @@ import { getRem, lerp } from '@/util/common';
 import { t } from 'i18next';
 import { useTimeBarOffset } from '@/feature/screen/linear/hook/useTimeBarOffset.ts';
 
-const TIME_BAR_BASE_WIDTH = 1694;
+const TIME_BAR_BASE_WIDTH = 1474;
 
 export function Timeline() {
     const openingMillis = useAtomValue(openingMillisState);
