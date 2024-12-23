@@ -20,7 +20,7 @@ type HlsEventCallback = {
 };
 
 type HlsProps = HlsEventCallback & {
-    videoRef: RefObject<HTMLVideoElement>;
+    videoRef: RefObject<Nullable<HTMLVideoElement>>;
     url: string;
     config: Partial<HlsConfig>;
     enabled?: boolean;
