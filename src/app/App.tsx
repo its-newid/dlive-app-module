@@ -25,12 +25,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-    // const setIsFirstLaunch = useSetAtom(isFirstLaunchState);
-    // useEffect(() => {
-    //     if (ENV_MODE !== EnvType.PROD) {
-    //         setIsFirstLaunch(true);
-    //     }
-    // }, []);
+    const setIsFirstLaunch = useSetAtom(isFirstLaunchState);
+    useEffect(() => {
+        if (ENV_MODE !== EnvType.PROD) {
+            setIsFirstLaunch(true);
+        }
+    }, []);
 
     useEffect(() => {
         const handleClick = (event: MouseEvent) => event.preventDefault();

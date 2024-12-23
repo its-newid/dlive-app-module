@@ -8,14 +8,14 @@ import { RoutePath } from '@/type/routePath.ts';
 import LiveScreen from '@/feature/screen/linear';
 
 const LinearLayout = () => {
-    // const isFirstLaunch = useAtomValue(isFirstLaunchState);
+    const isFirstLaunch = useAtomValue(isFirstLaunchState);
 
     // todo 추후 onboarding 페이지 추가시
     //  !isFirstLaunch 에서 isFirstLaunch로 변경 예정
 
-    // if (isFirstLaunch) {
-    //     return <Navigate to={RoutePath.ONBOARDING} replace />;
-    // }
+    if (isFirstLaunch) {
+        return <Navigate to={RoutePath.ONBOARDING} replace />;
+    }
 
     return (
         <Container>

@@ -3,7 +3,9 @@ const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 const CDN_URL = import.meta.env.VITE_CDN_URL;
 
-const ERROR_VIDEO_URL = CDN_URL + '/img/bgErrorBlack.mp4';
+// const ERROR_VIDEO_URL = CDN_URL + '/img/bgErrorBlack.mp4';
+const ERROR_VIDEO_URL =
+    'https://external-client.its-newid.net/source/bgErrorKr.mp4';
 
 const DEFAULT_LOCALE = {
     lang: 'en',
