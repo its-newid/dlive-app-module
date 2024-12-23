@@ -80,7 +80,6 @@ export function useListingsTable<T>({
         const [columnIndex] = index;
         const targetColumn = styleRef.current.columns[columnIndex];
         if (!targetColumn) return;
-
         const fixedIndex = columnIndex - 2;
 
         const [_, translateY] = getTransformMatrixValues(containerRef.current);
@@ -90,8 +89,9 @@ export function useListingsTable<T>({
             offset: translateY,
         });
 
+        // 밑에 공백 조정
         const adjustedIndex = isInViewport ? fixedIndex : fixedIndex + 1;
-        const offset = -110 * coerceIn(adjustedIndex, 0, 3);
+        const offset = -110 * coerceIn(adjustedIndex, 0, 1);
         setOffset(offset);
     };
 
@@ -113,20 +113,38 @@ export function useListingsTable<T>({
 
         if (keyCode === UP || keyCode === DOWN) {
             const delta = keyCode === UP ? -1 : 1;
-            const [, rowIndex] = selectedIndex;
-            const targetColumnIndex = coerceIn(
-                selectedColumnIndex + delta,
+            const [currentChannelIndex, episodeIndex] = selectedIndex;
+
+            const targetChannelIndex = coerceIn(
+                currentChannelIndex + delta,
                 0,
                 style.columns.length - 1,
             );
 
             stateRef.current.selectedColumnItem =
-                style.columns[targetColumnIndex];
-            const targetRowIndex = Math.min(
-                Math.min(2, rowIndex),
-                style.rows.length - 1,
-            );
-            selectItem([targetColumnIndex, targetRowIndex]);
+                style.columns[targetChannelIndex];
+
+            const newChannelRows = style.rows[targetChannelIndex];
+            const lastIndexOfNewChannel = newChannelRows.length - 1;
+            const targetEpisodeIndex =
+                // 현재 에피소드 인덱스가 2 미만이면 2로 조정 (fav/thumbnail 보호)
+                episodeIndex < COMMON_SELECTED_ROW_INDEX
+                    ? COMMON_SELECTED_ROW_INDEX
+                    : // 현재 에피소드 인덱스가 새 채널의 범위 내에 있으면 유지
+                      episodeIndex < newChannelRows.length
+                      ? episodeIndex
+                      : // 범위를 벗어났을 때:
+                        // 새 채널의 마지막 인덱스가 2보다 작으면 2 유지
+                        lastIndexOfNewChannel < COMMON_SELECTED_ROW_INDEX
+                        ? COMMON_SELECTED_ROW_INDEX
+                        : // 그렇지 않으면 마지막 인덱스 사용
+                          lastIndexOfNewChannel;
+            stateRef.current = {
+                ...stateRef.current,
+                selectedIndex: [targetChannelIndex, targetEpisodeIndex],
+            };
+
+            selectItem([targetChannelIndex, targetEpisodeIndex]);
         }
 
         if (keyCode === LEFT || keyCode === RIGHT) {
@@ -197,7 +215,7 @@ export function useListingsTable<T>({
             );
             const rows = columns
                 .map((element) => findFocusableItem(element))
-                .filter((arr) => arr.length);
+                .filter((arr) => arr.length); // 빈 배열 제거
             styleRef.current = {
                 columns,
                 rows,
@@ -207,9 +225,11 @@ export function useListingsTable<T>({
             const { selectedIndex } = state;
             let newIndex: TableIndex;
             if (selectedIndex) {
+                // 기존 선택 위치 유지하되 채널만 업데이트
                 const [, selectedRowIndex] = selectedIndex;
                 newIndex = [selectedColumnIndex, selectedRowIndex];
             } else {
+                // 새로운 위치 (선택된 채널, 기본 row 인덱스)
                 newIndex = [selectedColumnIndex, COMMON_SELECTED_ROW_INDEX];
             }
             stateRef.current = {

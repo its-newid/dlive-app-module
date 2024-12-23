@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import {
@@ -21,7 +21,7 @@ import {
     timeBarOffsetReducer,
     timeBarOffsetState,
     timeBarOffsetValuesSelector,
-} from '../../../../atom/screen/linear';
+} from '@/atom/screen/linear';
 import {
     channelNowState,
     EmptyMyListItem,
@@ -35,8 +35,8 @@ import { KeyboardEventListener, Nullable } from '@/type/common';
 import EpisodeCell, { EpisodeCellProps, RowState } from './EpisodeCell';
 import { useAtomCallback } from 'jotai/utils';
 import { ENTER, LEFT } from '@/util/eventKey';
-import { useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useReducerAtom } from '@/atom/app';
 
 export const MY_LIST_CATEGORY_IDX = MyListCategory.idx; // -1
 
@@ -48,6 +48,7 @@ export default function Listings() {
         () => Array.from(channelMap.values()).flat(),
         [channelMap],
     );
+
     const getChannel = useAtomCallback(
         useCallback((get, _, channelId: string) => {
             return get(findChannelByIdSelector(channelId));
@@ -65,16 +66,16 @@ export default function Listings() {
     const timeBarOffsetValues = useAtomValue(timeBarOffsetValuesSelector);
     const selectedChannel = useAtomValue(selectedChannelState);
 
+    // container의 높이를 110rem으로 쪼갰을때 6개가 들어감, 그래서 itemNumbers는 6
     const { itemNumbers, setRef } = useItemNumbersInListings();
 
     const categories = useAtomValue(scheduleCategories);
 
-    const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
-    const [state, dispatch] = useReducer(timeBarOffsetReducer, timeBarOffset);
-
-    useEffect(() => {
-        setTimeBarOffset(state);
-    }, [state, setTimeBarOffset]);
+    // const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
+    const [_, dispatch] = useReducerAtom(
+        timeBarOffsetState,
+        timeBarOffsetReducer,
+    );
 
     const visibleChannels = useMemo(() => {
         const selectedChannelIndex = channels.findIndex((channel) => {
@@ -346,7 +347,6 @@ const List = styled.div.attrs<{ offset: number }>((props) => ({
 }))<{ offset: number }>`
     display: flex;
     flex-direction: column;
-    padding-top: 22rem;
 `;
 
 const RowContainer = styled.div`

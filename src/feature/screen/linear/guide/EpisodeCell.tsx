@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { KeyboardEventHandler } from 'react';
-import { SingleLineEllipsis } from '../../../../component/SingleLineEllipsis';
-import { MouseEventListener } from '../../../../type/common';
+import { SingleLineEllipsis } from '@/component/SingleLineEllipsis';
+import { MouseEventListener } from '@/type/common';
 
 export const RowState = {
     IDLE: 'idle',

@@ -169,16 +169,6 @@ const NavContainer = styled.div`
     height: 100%;
     align-items: center;
     background: ${({ theme }) => theme.colors.grey90};
-
-    :first-child {
-        /* padding-top: 36rem; */
-        /* border: 1px solid blue; */
-    }
-
-    /* :after {
-        content: '';
-        z-index: 1;
-    } */
 `;
 
 const Button = styled(Clickable)`

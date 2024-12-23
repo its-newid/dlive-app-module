@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Skeleton } from '@/component/Skeleton';
-import { useItemNumbersInListings } from '../hook/useListingsTable';
+import { useItemNumbersInListings } from '@/feature/screen/linear/hook/useListingsTable';
 
 export function ListingsLoader() {
     const { itemNumbers, setRef } = useItemNumbersInListings();

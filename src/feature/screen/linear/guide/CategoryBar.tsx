@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import {
     selectedScheduleCategoryIdxState,
     currentScheduleFocusState,
@@ -8,17 +9,15 @@ import {
     ScheduleCategory,
     ScheduleFocusState,
     LiveScreenOverlayType,
-} from '../../../../atom/screen/linear';
-import { useFlexBox } from '../../../../hook/useFlexBox';
+} from '@/atom/screen/linear';
 import { ENTER, LEFT, onDefaultUIEvent, RIGHT } from '@/util/eventKey';
 import { Flexbox } from '@/component/Flexbox';
-import useOverlay from '../hook/useOverlay';
+import useOverlay from '@/feature/screen/linear/hook/useOverlay';
 import { selectedChannelSelector, totalChannelState } from '@/atom/screen';
-import { Selectable } from '../../../../type/common';
-import { atom } from 'jotai';
-import { MyListCategory } from '../../../../type/category';
-import { SingleLineEllipsis } from '../../../../component/SingleLineEllipsis';
-import { useTranslation } from 'react-i18next';
+import { Selectable } from '@/type/common';
+import { MyListCategory } from '@/type/category';
+import { SingleLineEllipsis } from '@/component/SingleLineEllipsis';
+import { useFlexBox } from '@/hook/useFlexBox';
 
 export function CategoryBar() {
     const { t } = useTranslation();

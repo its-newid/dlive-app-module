@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RowChildProps } from './Listings';
 import { COMMON_SELECTED_ROW_INDEX } from '@/feature/screen/linear/hook/useListingsTable';
 import useOverlay from '../hook/useOverlay';
@@ -16,9 +16,11 @@ import {
     visibleWidthOfScheduleSlotState,
 } from '@/atom/screen/linear';
 import { currentScheduleState, episodeSelector } from '@/atom/screen';
-import EpisodeCell, { EpisodeCellEventProps, RowState } from './EpisodeCell';
-import { useAtom } from 'jotai';
-import { useReducer } from 'react';
+import EpisodeCell, {
+    EpisodeCellEventProps,
+    RowState,
+} from '@/feature/screen/linear/guide/EpisodeCell';
+import { useReducerAtom } from '@/atom/app';
 
 type EpisodeRowProps = RowChildProps & {
     onClickEpisode: (index: number) => void;
@@ -35,12 +37,16 @@ export function EpisodeRow({
     const hasEmptySchedule = visibleSchedule.length === 0;
     const setSchedule = useSetAtom(currentScheduleState);
 
-    const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
-    const [state, dispatch] = useReducer(timeBarOffsetReducer, timeBarOffset);
+    // const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
+    // const [state, dispatch] = useReducer(timeBarOffsetReducer, timeBarOffset);
+    const [, dispatch] = useReducerAtom(
+        timeBarOffsetState,
+        timeBarOffsetReducer,
+    );
 
-    useEffect(() => {
-        setTimeBarOffset(state);
-    }, [state, setTimeBarOffset]);
+    // useEffect(() => {
+    //     setTimeBarOffset(state);
+    // }, [state, setTimeBarOffset]);
 
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLDivElement>,
@@ -74,6 +80,7 @@ export function EpisodeRow({
                 type: LiveScreenOverlayType.GUIDE,
                 needDelay: true,
             });
+            // 아 이건 처음에 fav랑 thumbnail떄문에 그런거네
             const index =
                 visibleSchedule.indexOf(schedule) + COMMON_SELECTED_ROW_INDEX;
             onClickEpisode(index);
@@ -128,7 +135,8 @@ function EmptyEpisode({ ...rest }: { onFocus: () => void }) {
         <EpisodeCell
             width={'100vw'}
             states={[RowState.IDLE]}
-            title={'...'}
+            // title={'...'}
+            title={'방송정보없음'}
             {...rest}
         />
     );

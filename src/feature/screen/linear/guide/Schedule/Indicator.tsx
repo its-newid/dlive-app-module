@@ -1,25 +1,34 @@
-import { openingMillisState } from '@/atom/screen/linear';
-import { timeBarOffsetState } from '@/atom/screen/linear';
-import { lerp } from '@/util/common';
-import { useAtomValue } from 'jotai';
 import { useEffect, useLayoutEffect, useState } from 'react';
+import { useAtomValue } from 'jotai';
 import styled from 'styled-components';
-import { useTimeBarOffset } from './hook/useTimeBarOffset';
+import dayjs from 'dayjs';
+import { openingMillisState, timeBarOffsetReducer } from '@/atom/screen/linear';
+import { timeBarOffsetState } from '@/atom/screen/linear';
+import { useReducerAtom } from '@/atom/app';
 
-const TIME_BAR_BASE_WIDTH = 1694;
+const LAYOUT = {
+    SLOT_WIDTH: 600,
+    SLOT_COUNT: 24,
+    SLOT_GAP: 8,
+    TOTAL_WIDTH: 600 * 24 + 8 * 23,
+} as const;
 
 export function Indicator() {
     const [offset, setOffset] = useState(0);
     const timelineOffset = useAtomValue(timeBarOffsetState);
     const openingMillis = useAtomValue(openingMillisState);
-    const [_, dispatch] = useTimeBarOffset();
+    const [, dispatch] = useReducerAtom(
+        timeBarOffsetState,
+        timeBarOffsetReducer,
+    );
 
     const updateOffset = () => {
-        const currentMillis = new Date().getTime();
-        const diffMin = (currentMillis - openingMillis) / 60_000;
-        const alpha = Math.floor(diffMin) / 60;
-        const offset = lerp(0, TIME_BAR_BASE_WIDTH, alpha);
-        setOffset(offset);
+        const currentTime = dayjs();
+        const baseTime = dayjs(openingMillis);
+        const diffMin = currentTime.diff(baseTime, 'minute');
+        const position = (diffMin / 720) * LAYOUT.TOTAL_WIDTH;
+
+        setOffset(position);
     };
 
     useLayoutEffect(() => {

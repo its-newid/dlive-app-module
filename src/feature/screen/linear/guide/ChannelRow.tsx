@@ -1,13 +1,16 @@
+import { useCallback } from 'react';
+import { useSetAtom } from 'jotai';
 import styled from 'styled-components';
 import { ContentType, ThumbRatio, ThumbSizes } from '@/type/common';
-import { useSetAtom } from 'jotai';
-import { useCallback } from 'react';
 import { ENTER, LEFT, onDefaultUIEvent } from '@/util/eventKey';
 import { MyListButton } from '@/component/MyListButton';
-import { MY_LIST_CATEGORY_IDX, RowChildProps } from './Listings';
+import {
+    MY_LIST_CATEGORY_IDX,
+    RowChildProps,
+} from '@/feature/screen/linear/guide/Listings';
 import { useAtomCallback } from 'jotai/utils';
-import useOverlay from '../hook/useOverlay';
-import { LoadThumbnail } from '../LoadThumbnail';
+import useOverlay from '@/feature/screen/linear/hook/useOverlay';
+import { LoadThumbnail } from '@/feature/screen/linear/LoadThumbnail';
 import {
     currentScheduleState,
     ScheduleChannel,
@@ -20,7 +23,7 @@ import {
     LiveScreenOverlayType,
     ScheduleFocusState,
 } from '@/atom/screen/linear';
-import { RowState, rowStyle } from './EpisodeCell';
+import { RowState, rowStyle } from '@/feature/screen/linear/guide/EpisodeCell';
 import useMyList from '@/hook/useMyList';
 
 type ChannelInfoProps = RowChildProps & {

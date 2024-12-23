@@ -2,20 +2,18 @@ import React, { useLayoutEffect, Suspense, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSetAtom } from 'jotai';
 import { Nav } from '@/feature/screen/linear/guide/Nav';
-// import { CategoryBar } from '@/feature/screen/linear/guide/CategoryBar';
 import {
     currentScheduleFocusState,
     LiveScreenOverlayType,
     openingMillisState,
     ScheduleFocusState,
 } from '@/atom/screen/linear';
-
 import { ESCAPE } from '@/util/eventKey';
 import { Timeline as Header } from '@/feature/screen/linear/guide/Schedule/Timeline';
 import { Indicator } from '@/feature/screen/linear/guide/Schedule/Indicator';
 import { ListingsLoader } from '@/feature/screen/linear/guide/ListingsLoader';
-import { floorToNearest30Minutes } from '../../hook/useTimeline';
-import useOverlay from '../../hook/useOverlay';
+import { floorToNearest30Minutes } from '@/feature/screen/linear/hook/useTimeline';
+import useOverlay from '@/feature/screen/linear/hook/useOverlay';
 const Listings = React.lazy(
     () => import('@/feature/screen/linear/guide/Listings'),
 );
@@ -64,7 +62,6 @@ const Main = () => {
         <MainContainer>
             <Shadow />
             <Nav />
-            {/* <CategoryBar /> */}
             <Suspense fallback={<ListingsLoader />}>
                 <Listings />
                 <Indicator />

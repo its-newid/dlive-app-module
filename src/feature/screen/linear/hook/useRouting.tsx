@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { useAtomCallback } from 'jotai/utils';
 import { useSetAtom } from 'jotai';
-import { Optional } from '@/type/common';
-import { Channel } from '@/type/linear';
 
 import useOverlay from '@/feature/screen/linear/hook/useOverlay';
 import {
@@ -28,12 +26,6 @@ export function useParamsUpdate() {
     const [channelUpdateState, setChannelUpdateState] =
         useState<ChannelUpdateState>(ChannelUpdateState.PENDING);
 
-    const setChannelNow = useAtomCallback(
-        useCallback((_, set, channel: Optional<Channel>) => {
-            set(channelNowState, channel);
-        }, []),
-    );
-
     const getCurrentChannel = useAtomCallback(
         useCallback((get) => get(channelNowState), []),
     );
@@ -54,13 +46,11 @@ export function useParamsUpdate() {
 
         const channel = getChannelById(channelId);
         if (!channel) {
-            // FIXME: 채널 없을 때 에러 페이지 이동
             navigate(RoutePath.ERROR);
             return;
         }
 
         if (currentChannel?.contentId !== channelId) {
-            // FIXME: 채널 없을 때 에러 페이지 이동
             navigate(RoutePath.ERROR);
             return;
         }

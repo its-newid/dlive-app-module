@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 import { useAtomValue } from 'jotai';
+import EpisodeInfo from '@/feature/screen/linear/guide/EpisodeInfo';
+import Schedule from '@/feature/screen/linear/guide/Schedule';
 import {
     liveScreenOverlayState,
     LiveScreenOverlayType,
 } from '@/atom/screen/linear';
-
-import EpisodeInfo from './EpisodeInfo';
-import Schedule from './Schedule';
 
 function Guide() {
     const currentOverlay = useAtomValue(liveScreenOverlayState);

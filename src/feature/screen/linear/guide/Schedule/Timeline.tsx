@@ -1,16 +1,17 @@
-import styled from 'styled-components';
+import { useEffect, useMemo } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
+import styled from 'styled-components';
+import { getRem } from '@/util/common';
 import {
     openingMillisState,
     timeBarVisibleWidthState,
 } from '@/atom/screen/linear';
-import { useEffect, useMemo } from 'react';
-import { getRem } from '@/util/common';
-// import { useTranslation } from 'react-i18next';
-import { formatMMDD } from '../../hook/useTimeline';
-import { useTimeline } from '../../hook/useTimeline';
+import {
+    formatMMDD,
+    useTimeline,
+} from '@/feature/screen/linear/hook/useTimeline';
 
-const TIME_BAR_BASE_WIDTH = 1694;
+const TIME_BAR_BASE_WIDTH = 1478;
 
 const getDayName = (date: Date) => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -76,7 +77,6 @@ const DateInfo = styled.div`
     background-color: ${({ theme }) => theme.colors.grey80};
     z-index: 1;
 `;
-
 const DateSlot = styled.span`
     margin-left: 40rem;
     color: ${({ theme }) => theme.colors.whiteAlpha77};

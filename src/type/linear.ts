@@ -15,8 +15,8 @@ export type Channel = {
 };
 
 export type ChannelEpisode = Episode & {
+    channelId: string;
+    thumbUrl: string;
     startAt: number;
     endAt: number;
-    thumbUrl: string;
-    channelId: string;
 };

@@ -28,7 +28,6 @@ export function ChannelBannerInfo() {
         return atom((get) => {
             const channelInfo = get(channelNowState);
             const schedule = get(onAirScheduleState);
-            console.log('channelInfo:', channelInfo, 'schedule:', schedule);
             return {
                 channelInfo,
                 schedule,
