@@ -10,8 +10,6 @@ interface LogoProps
         IExtendableStyledComponent {}
 
 export function Logo({ ...rest }: LogoProps) {
-    if (!ENV_MODE) return;
-
     const Component = getLogo(ENV_MODE);
     return <Component {...rest} />;
 }
