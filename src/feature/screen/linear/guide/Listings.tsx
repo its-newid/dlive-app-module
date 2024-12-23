@@ -42,6 +42,7 @@ import { useAtomCallback } from 'jotai/utils';
 import { ENTER, LEFT } from '@/util/eventKey';
 // import { useReducerAtom } from 'jotai/utils';
 import { t } from 'i18next';
+import { useReducerAtom } from 'jotai/utils';
 
 export const MY_LIST_CATEGORY_IDX = MyListCategory.idx;
 
@@ -72,12 +73,10 @@ export default function Listings() {
 
     const { itemNumbers, setRef } = useItemNumbersInListings();
 
-    const [timeBarOffset, setTimeBarOffset] = useAtom(timeBarOffsetState);
-    const [state, dispatch] = useReducer(timeBarOffsetReducer, timeBarOffset);
-
-    useEffect(() => {
-        setTimeBarOffset(state);
-    }, [state, setTimeBarOffset]);
+    const [, dispatch] = useReducerAtom(
+        timeBarOffsetState,
+        timeBarOffsetReducer,
+    );
 
     const visibleChannels = useMemo(() => {
         const selectedChannelIndex = channels.findIndex((channel) => {

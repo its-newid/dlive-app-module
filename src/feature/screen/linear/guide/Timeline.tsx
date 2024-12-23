@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
     openingMillisState,
+    timeBarOffsetReducer,
     timeBarOffsetState,
     timeBarVisibleWidthState,
 } from '@/atom/screen/linear';
@@ -9,7 +10,7 @@ import { formatMMMDD, useTimeline } from '../hook/useTimeline';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { getRem, lerp } from '@/util/common';
 import { t } from 'i18next';
-import { useTimeBarOffset } from '@/feature/screen/linear/hook/useTimeBarOffset.ts';
+import { useReducerAtom } from 'jotai/utils';
 
 const TIME_BAR_BASE_WIDTH = 1474;
 
@@ -67,8 +68,10 @@ export function Indicator() {
 
     const timelineOffset = useAtomValue(timeBarOffsetState);
     const openingMillis = useAtomValue(openingMillisState);
-    const [_, dispatch] = useTimeBarOffset();
-
+    const [, dispatch] = useReducerAtom(
+        timeBarOffsetState,
+        timeBarOffsetReducer,
+    );
     const updateOffset = () => {
         const currentMillis = new Date().getTime();
         const diffMin = (currentMillis - openingMillis) / 60_000;

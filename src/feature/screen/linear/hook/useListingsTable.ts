@@ -91,7 +91,8 @@ export function useListingsTable<T>({
         });
 
         const adjustedIndex = isInViewport ? fixedIndex : fixedIndex + 1;
-        const offset = -110 * coerceIn(adjustedIndex, 0, 3);
+        const offset =
+            adjustedIndex > 0 ? -110 : -110 * coerceIn(adjustedIndex, 0, 3);
         setOffset(offset);
     };
 
