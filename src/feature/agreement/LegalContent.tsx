@@ -12,13 +12,13 @@ import {
 import { t } from 'i18next';
 
 type LegalContentProps = {
-    title: string;
+    $title: string;
     content: string;
     setIsReachedBottom: (isReachedBottom: boolean) => void;
 };
 
 export function LegalContent({
-    title,
+    $title,
     content,
     setIsReachedBottom,
 }: LegalContentProps) {
@@ -27,7 +27,7 @@ export function LegalContent({
     const [canContentFocus, setCanContentFocus] = useAtom(canContentFocusState);
     const selectedMenu = useAtomValue(currentSelectedItemState);
 
-    const isVisible = selectedMenu?.type === title;
+    const isVisible = selectedMenu?.type === $title;
     const enabled = currentFocus === AgreementFocusState.CONTENT;
 
     const handleScroll = (info: ScrollInfo) => {
@@ -50,11 +50,11 @@ export function LegalContent({
     return (
         <>
             {isVisible && (
-                <Container onMouseDown={handleMouseDown} enabled={enabled}>
+                <Container onMouseDown={handleMouseDown} $enabled={enabled}>
                     <Title id={'title'}>{t(`${selectedMenu?.title}`)}</Title>
                     <Description
                         content={content}
-                        enabled={enabled}
+                        $enabled={enabled}
                         onFocusable={setCanContentFocus}
                         scrollOffset={scrollOffset}
                         setScrollOffset={setScrollOffset}
@@ -66,7 +66,7 @@ export function LegalContent({
     );
 }
 
-const Container = styled.div<{ enabled: boolean }>`
+const Container = styled.div<{ $enabled: boolean }>`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -81,7 +81,7 @@ const Container = styled.div<{ enabled: boolean }>`
     }
 
     .scrollable-div {
-        pointer-events: ${({ enabled }) => (enabled ? 'auto' : 'none')};
+        pointer-events: ${({ $enabled }) => ($enabled ? 'auto' : 'none')};
     }
 `;
 

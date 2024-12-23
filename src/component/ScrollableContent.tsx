@@ -45,7 +45,7 @@ const ScrollableContent: ForwardRefRenderFunction<
     {
         className,
         content,
-        enabled,
+        $enabled,
         onScroll,
         scrollOffset,
         setScrollOffset,
@@ -56,9 +56,9 @@ const ScrollableContent: ForwardRefRenderFunction<
     const scrollRef = useRef<Nullable<HTMLDivElement>>(null);
     const contentRef = useCallback(
         (node: HTMLDivElement) => {
-            enabled ? node?.focus() : node?.blur();
+            $enabled ? node?.focus() : node?.blur();
         },
-        [enabled],
+        [$enabled],
     );
 
     const scrollHeight = scrollRef.current?.scrollHeight ?? 0;

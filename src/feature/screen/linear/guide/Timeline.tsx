@@ -2,14 +2,12 @@ import styled from 'styled-components';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
     openingMillisState,
-    timeBarOffsetReducer,
     timeBarOffsetState,
     timeBarVisibleWidthState,
 } from '@/atom/screen/linear';
 import { formatMMMDD, useTimeline } from '../hook/useTimeline';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { getRem, lerp } from '@/util/common';
-import { useReducerAtom } from 'jotai/utils';
 import { t } from 'i18next';
 import { useTimeBarOffset } from '@/feature/screen/linear/hook/useTimeBarOffset.ts';
 

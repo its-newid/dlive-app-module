@@ -29,7 +29,7 @@ export const useVideo = ({
     const _config = { ...defaultVideoConfig, ...config };
     const configRef = useRef<VideoConfig>({
         muted: _config.muted,
-        autoplay: _config.autoplay,
+        $autoplay: _config.$autoplay,
         loop: _config.loop,
     });
 
@@ -57,7 +57,7 @@ export const useVideo = ({
 
     const setAutoPlay = (autoplay: boolean) => {
         const { current: state } = configRef;
-        configRef.current = { ...state, autoplay: autoplay };
+        configRef.current = { ...state, $autoplay: autoplay };
 
         const { current: player } = playerRef;
         if (player) {
@@ -149,7 +149,7 @@ export const useVideo = ({
 };
 
 const defaultVideoConfig: VideoConfig = {
-    autoplay: false,
+    $autoplay: false,
     muted: true,
     loop: false,
 };

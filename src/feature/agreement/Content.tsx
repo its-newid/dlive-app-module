@@ -34,7 +34,7 @@ function Content({ onAgree }: { onAgree: () => void }) {
     const legalComponent = Object.entries(legal).map(([title, data], index) => (
         <LegalContent
             key={index}
-            title={title}
+            $title={title}
             content={data.content}
             setIsReachedBottom={setIsReachedBottom}
         />

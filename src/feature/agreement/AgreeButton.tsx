@@ -44,25 +44,25 @@ export default function AgreeButton({ onAgree }: { onAgree: () => void }) {
         <Button
             onClick={onAgree}
             onArrowKeyDown={handleArrowKeyDown}
-            isToastVisible={isToastVisible}
+            $isToastVisible={isToastVisible}
             ref={agreeRef}
         />
     );
 }
 
-const Button = styled(StyledAgreeButton)<{ isToastVisible: boolean }>`
+const Button = styled(StyledAgreeButton)<{ $isToastVisible: boolean }>`
     width: 100%;
     padding: 14rem 0;
     margin-top: 64rem;
-    background-color: ${({ theme, isToastVisible }) =>
-        isToastVisible ? '#3c3c3d' : theme.colors.grey10};
+    background-color: ${({ theme, $isToastVisible }) =>
+        $isToastVisible ? '#3c3c3d' : theme.colors.grey10};
 
     span {
         display: flex;
         justify-content: center;
         align-items: center;
-        color: ${({ theme, isToastVisible }) =>
-            isToastVisible ? theme.colors.whiteAlpha25 : theme.colors.grey90};
+        color: ${({ theme, $isToastVisible }) =>
+            $isToastVisible ? theme.colors.whiteAlpha25 : theme.colors.grey90};
     }
 
     &:hover:not(:focus) {

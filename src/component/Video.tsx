@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ERROR_VIDEO_URL } from '../app/environment';
 
 export type VideoConfig = {
-    autoplay: boolean;
+    $autoplay: boolean;
     muted: boolean;
     loop: boolean;
 };
