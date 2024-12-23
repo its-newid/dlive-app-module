@@ -1,12 +1,5 @@
-import {
-    createHashRouter,
-    RouterProvider,
-    RouteObject,
-    // Navigate,
-} from 'react-router';
-// import { channelNowState, channelsState } from '@/atom/screen';
+import { createHashRouter, RouterProvider, RouteObject } from 'react-router';
 import LinearLayout from '@/component/layout/LinearLayout';
-// import LiveScreen from '@/feature/screen/linear/LiveScreen';
 import withLoading from '@/app/withLoading';
 import { NetworkErrorPage } from '@/app/NetworkErrorPage';
 import { useDetectOnline } from '@/hook/useDetectOnline';
