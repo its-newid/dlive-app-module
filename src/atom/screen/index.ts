@@ -5,7 +5,6 @@ import { ContentType, Nullable, Optional } from '@/type/common';
 import { MyListCategory } from '@/type/category';
 import { mylistState, watchHistoryState } from '@/atom/app';
 import {
-    linearCategoriesState,
     scheduleCategories,
     selectedScheduleCategoryIdxState,
 } from '@/atom/screen/linear';
@@ -22,12 +21,19 @@ export const channelSelector = atomFamily((id: string) =>
 
 export const onAirScheduleState = atom<Optional<ChannelEpisode>>(undefined);
 export const onAirScheduleEndTimeState = atom<number>(-1);
-export const episodeSelector = atomFamily((id: string) =>
+
+export const episodeSelector = atomFamily((contentId: string) =>
     atom((get) => {
         const channels = get(channelsState);
-        return channels
-            .flatMap((channel) => channel.schedule)
-            .find((schedule) => schedule.contentId === id);
+        for (let i = 0; i < channels.length; i++) {
+            const schedule = channels[i].schedule;
+            for (let j = 0; j < schedule.length; j++) {
+                if (schedule[j].contentId === contentId) {
+                    return schedule[j];
+                }
+            }
+        }
+        return undefined;
     }),
 );
 
@@ -90,6 +96,7 @@ export const selectedChannelSelector = atom(
         set(selectedScheduleCategoryIdxState, targetChannel.categoryIdx ?? -1);
     },
 );
+
 export const currentScheduleState = atom<Nullable<ChannelEpisode>>(null);
 
 export type ScheduleChannel = Pick<
@@ -105,14 +112,33 @@ export const EmptyMyListItem: ScheduleChannel = {
     title: '',
 };
 
-export const channelsByPriorityState = atom<ScheduleChannel[]>((get) => {
-    const channels = get(channelsState);
-    const categories = get(linearCategoriesState);
+// export const channelsByPriorityState = atom<ScheduleChannel[]>((get) => {
+//     const channels = get(channelsState);
+//     const categories = get(linearCategoriesState);
 
-    return categories?.flatMap((category) =>
-        channels.filter((channel) => channel.categoryIdx === category.idx),
-    );
-});
+//     return categories?.flatMap((category) =>
+//         channels.filter((channel) => channel.categoryIdx === category.idx),
+//     );
+// });
+// export const channelsByPriorityState = atom<ScheduleChannel[]>((get) => {
+//     const channels = get(channelsState);
+//     const categories = get(linearCategoriesState);
+
+//     if (!categories) return [];
+
+//     const result: ScheduleChannel[] = [];
+
+//     for (let i = 0; i < categories.length; i++) {
+//         const categoryIdx = categories[i].idx;
+//         for (let j = 0; j < channels.length; j++) {
+//             if (channels[j].categoryIdx === categoryIdx) {
+//                 result.push(channels[j]);
+//             }
+//         }
+//     }
+
+//     return result;
+// });
 
 export const myListChannelsState = atom<ScheduleChannel[]>((get) => {
     const channels = get(channelsState);
@@ -175,23 +201,15 @@ export const totalChannelState = atom<Map<number, ScheduleChannel[]>>((get) => {
 });
 export const scheduleEnabledState = atom(false);
 
-type PromotionContent = { contentId: string; type: ContentType };
-export const promotionState = atom<Nullable<PromotionContent>>(null);
-
 export const readInitialChannel = atom((get) => {
-    const promotion = get(promotionState);
     const channels = get(channelsState);
     const watchHistory = get(watchHistoryState);
 
     const recentlyWatchedChannelId =
         watchHistory[ContentType.LINEAR]?.slice(-1)?.[0]?.contentId;
-    const promotionChannelId =
-        promotion?.type === ContentType.LINEAR ? promotion?.contentId : null;
 
     const initialChannel = channels.find(
-        (channel) =>
-            channel.contentId === recentlyWatchedChannelId ||
-            channel.contentId === promotionChannelId,
+        (channel) => channel.contentId === recentlyWatchedChannelId,
     );
 
     return initialChannel || channels?.[0];

@@ -114,8 +114,6 @@ export type TimeBarOffsetValues = {
     max: number;
 };
 
-// const MAX_TIME_BAR_OFFSET = Math.round(TIME_SLOT_MAX_MILLIS / TIME_SLOT_MILLIS);
-// FIXME: 추후 변경 예정
 const MAX_TIME_BAR_OFFSET = TIME_SLOT_MAX_MILLIS / TIME_SLOT_MILLIS - 2;
 export const timeBarOffsetValuesSelector = atom<TimeBarOffsetValues>((get) => {
     return {
@@ -141,20 +139,6 @@ export const timeBarOffsetReducer = (
         throw new Error('unknown action type');
     }
 };
-// export const timeBarOffsetReducer = (
-//     prev: number,
-//     action: { type: 'INCREMENT' | 'DECREMENT' | 'RESET' }
-// ) => {
-//     if (action.type === 'INCREMENT') {
-//         return Math.min(prev + 3, MAX_TIME_BAR_OFFSET);
-//     } else if (action.type === 'DECREMENT') {
-//         return Math.max(prev - 3, 0);
-//     } else if (action.type === 'RESET') {
-//         return 0;
-//     } else {
-//         throw new Error('unknown action type');
-//     }
-// };
 
 export const openingMillisState = atom<number>(
     floorToNearest30Minutes().getTime(),
@@ -188,13 +172,11 @@ export const scheduleCategories = atom<ScheduleCategory[]>((get) => {
 export const selectedScheduleCategoryIdxState = atom(0);
 
 export const visibleTimesInTimeBar = atom((get) => {
-    const openingMillis = get(openingMillisState); // 현재 시간을 가장 가까운 30분 단위로 내림한 시점의 밀리초 값
+    const openingMillis = get(openingMillisState);
     const timeBarOffset = get(timeBarOffsetState);
 
     const start = openingMillis + timeBarOffset * TIME_SLOT_MILLIS;
-    // FIXME: 추후 변경 예정
-    // const end = start + TIME_SLOT_MILLIS * 2;
-    const end = start + TIME_SLOT_MILLIS * 3;
+    const end = start + TIME_SLOT_MILLIS * 2;
     return [start, end];
 });
 
@@ -215,6 +197,7 @@ export const scheduleOfChannelSelector = atomFamily((id: string) =>
     atom((get) => {
         const openingMillis = get(openingMillisState);
         const channel = get(channelSelector(id));
+
         return channel
             ? channel.schedule.filter(
                   (schedule) => toMillis(schedule.endAt) > openingMillis,
@@ -271,16 +254,29 @@ export const currentToolbarMenuState = atomWithReset<ChannelBannerToolMenu>(
     ChannelBannerToolMenu.GUIDE,
 );
 
-export const findAiringEpisode = (
-    schedule: ChannelEpisode[],
-    current: number = new Date().getTime(),
-) => {
-    return schedule.find(isEpisodeAiring(current));
-};
+// export const findAiringEpisode = (
+//     schedule: ChannelEpisode[],
+//     current: number = new Date().getTime(),
+// ) => {
+//     return schedule.find(isEpisodeAiring(current));
+// };
 
+// export const isEpisodeAiring =
+//     (current: number = new Date().getTime()) =>
+//     (schedule: ChannelEpisode) => {
+//         const { startAt, endAt } = schedule;
+//         return toMillis(startAt) < current && toMillis(endAt) >= current;
+//     };
 export const isEpisodeAiring =
-    (current: number = new Date().getTime()) =>
+    (current: number = Date.now()) =>
     (schedule: ChannelEpisode) => {
         const { startAt, endAt } = schedule;
         return toMillis(startAt) < current && toMillis(endAt) >= current;
     };
+
+export const findAiringEpisode = (
+    schedule: ChannelEpisode[],
+    current: number = Date.now(),
+) => {
+    return schedule.find(isEpisodeAiring(current));
+};

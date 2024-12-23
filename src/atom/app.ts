@@ -1,9 +1,11 @@
-// import { getLanguage, splitLanguageAndCountry } from '@/hook/loadLocaleMessage';
-import { atom } from 'jotai';
+import { atom, useAtom } from 'jotai';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-// import { DEFAULT_LOCALE } from '@/app/environment';
 import { ContentKind, ContentType } from '@/type/common';
 import { ChannelEpisode } from '@/type/linear';
+import { PrimitiveAtom } from 'jotai/vanilla';
+import { useCallback } from 'react';
+// import { DEFAULT_LOCALE } from '@/app/environment';
+// import { getLanguage, splitLanguageAndCountry } from '@/hook/loadLocaleMessage';
 
 // type TLocale = {
 //     lang: string;
@@ -15,7 +17,6 @@ export type TMyListContents = {
 };
 
 export type LinearWatchHistory = Pick<ChannelEpisode, 'contentId'>;
-
 export type TWatchedContent = {
     linear: LinearWatchHistory[];
 };
@@ -66,6 +67,7 @@ export const watchHistoryState = atomWithStorage<TWatchedContent>(
 );
 
 const MAX_WATCH_HISTORY_COUNT = 30;
+
 export const writeWatchHistory = atom(
     null,
     (
@@ -81,37 +83,18 @@ export const writeWatchHistory = atom(
 
         const history = watchedContents.linear;
         if (!history) return;
-
-        const existingIndex = history.findIndex(
-            (item) => item.contentId === content.contentId,
+        const filteredHistory = history.filter(
+            (item) => item.contentId !== content.contentId,
         );
+        const updatedHistory = [
+            ...filteredHistory.slice(-(MAX_WATCH_HISTORY_COUNT - 1)),
+            content,
+        ];
 
-        if (existingIndex !== -1) {
-            const updatedHistory = [...history];
-            updatedHistory.splice(existingIndex, 1);
-
-            if (updatedHistory.length >= MAX_WATCH_HISTORY_COUNT) {
-                updatedHistory.shift();
-            }
-            updatedHistory.push(content);
-
-            set(watchHistoryState, {
-                ...watchedContents,
-                [type]: updatedHistory,
-            });
-        } else {
-            const updatedHistory = [...history];
-
-            if (updatedHistory.length >= MAX_WATCH_HISTORY_COUNT) {
-                updatedHistory.shift();
-            }
-            updatedHistory.push(content);
-
-            set(watchHistoryState, {
-                ...watchedContents,
-                [type]: updatedHistory,
-            });
-        }
+        set(watchHistoryState, {
+            ...watchedContents,
+            [type]: updatedHistory,
+        });
     },
 );
 
@@ -153,40 +136,9 @@ export const clearWatchHistoryAtom = atom(
     },
 );
 
-export const clearSearchHistoryAtom = atom(null, (_, set) => {
-    set(searchKeywordHistoryState, []);
-});
-
 export const clearAllWatchHistoryAtom = atom(null, (_, set) => {
     set(watchHistoryState, initialWatchHistoryContent);
 });
-
-export const searchKeywordHistoryState = atomWithStorage<string[]>(
-    'searchKeywords',
-    [],
-);
-
-const MAX_SEARCH_HISTORY_COUNT = 10;
-export const searchKeywordHistorySelector = atom(
-    (get) => {
-        const list = get(searchKeywordHistoryState);
-        return [...list].reverse();
-    },
-    (get, set, keyword: string) => {
-        const histories = get(searchKeywordHistoryState);
-
-        if (histories.includes(keyword)) {
-            const index = histories.indexOf(keyword);
-            histories.splice(index, 1);
-        }
-
-        if (histories.length >= MAX_SEARCH_HISTORY_COUNT) {
-            histories.shift();
-        }
-
-        set(searchKeywordHistoryState, [...histories, keyword]);
-    },
-);
 
 export const lastUpdatedTimeState = atomWithStorage<number>(
     'lastUpdatedTime',
@@ -199,3 +151,15 @@ export const ipState = atomWithStorage<string>(
     '',
     createJSONStorage(() => sessionStorage),
 );
+
+export function useReducerAtom<Value, Action>(
+    anAtom: PrimitiveAtom<Value>,
+    reducer: (v: Value, a: Action) => Value,
+) {
+    const [state, setState] = useAtom(anAtom);
+    const dispatch = useCallback(
+        (action: Action) => setState((prev) => reducer(prev, action)),
+        [setState, reducer],
+    );
+    return [state, dispatch] as const;
+}

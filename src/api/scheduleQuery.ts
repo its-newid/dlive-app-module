@@ -24,13 +24,13 @@ import { toMillis } from '@/util/common';
 
 export const useGetSchedule = () => {
     const [isReady, setIsReady] = useState(false);
-    const { lang, country } = DEFAULT_LOCALE;
+    const [channelNow, setChannelNow] = useAtom(channelNowState);
     const setLastAppQueryTime = useSetAtom(lastUpdatedTimeState);
     const setChannels = useSetAtom(channelsState);
     const getInitialChannel = useAtomCallback(
         useCallback((get) => get(readInitialChannel), []),
     );
-    const [channelNow, setChannelNow] = useAtom(channelNowState);
+    const { lang, country } = DEFAULT_LOCALE;
 
     const { data, isLoading, isError, isRefetching, refetch } = useQuery({
         queryKey: [QueryKeys.SCHEDULE],
@@ -50,8 +50,7 @@ export const useGetSchedule = () => {
     });
 
     useEffect(() => {
-        if (!data || isRefetching) return; // 데이터가 없거나, 데이터가 업데이트 중인 경우 아무 작업도 하지 않고 리턴
-        console.log('data', data);
+        if (!data || isRefetching) return;
         setChannels(data);
         setLastAppQueryTime(Date.now());
         setChannelNow(getInitialChannel());
@@ -62,20 +61,17 @@ export const useGetSchedule = () => {
         useCallback((get, set, channel: Channel | null) => {
             if (!channel) return;
 
-            // 현재 시간 기준으로 방송 중인 에피소드 찾기
-            const current = new Date().getTime();
+            const current = Date.now();
             const schedule =
                 get(scheduleOfChannelSelector(channel.contentId)) ?? [];
             const airingEpisode = findAiringEpisode(schedule, current);
 
-            // 스케줄 상태 업데이트
             set(onAirScheduleState, airingEpisode);
             set(
                 onAirScheduleEndTimeState,
                 airingEpisode ? toMillis(airingEpisode.endAt) : -1,
             );
 
-            // 시청 기록 추가 로직
             if (airingEpisode) {
                 set(writeWatchHistory, {
                     type: 'linear',
@@ -110,7 +106,7 @@ const mapToChannel = (channel: LinearResponse): Channel => {
 
     return {
         ...rest,
-        categoryIdx: 1, // 카테고리 값이 실제로 없지만 추후 활용을 위해서 모든 카테고리인���스값에 1을 부여
+        categoryIdx: 1,
         schedule: schedule.map((schedule) => ({
             ...schedule,
             channelId: channel.contentId,
