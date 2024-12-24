@@ -1,11 +1,8 @@
-const NODE_ENV = import.meta.env.NODE_ENV;
-const ENV_MODE = import.meta.env.VITE_ENVIRONMENT_NAME;
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 const APP_VERSION = import.meta.env.VITE_VERSION;
 const CDN_URL = import.meta.env.VITE_CDN_URL;
 
-const CONTACT_EMAIL = 'app-marketing@its-newid.com';
 const ERROR_VIDEO_URL = CDN_URL + '/img/bgErrorBlack.mp4';
 
 const DEFAULT_LOCALE = {
@@ -13,22 +10,11 @@ const DEFAULT_LOCALE = {
     country: 'US',
 };
 
-const ENV_TYPE = {
-    PROD: 'production',
-    DEV: 'development',
-    ERROR_CASE: 'error',
-    LOCAL: 'local',
-} as const;
-
 export {
-    NODE_ENV,
-    ENV_MODE,
     BASE_API_URL,
     BEARER_TOKEN,
     APP_VERSION,
     CDN_URL,
-    CONTACT_EMAIL,
     ERROR_VIDEO_URL,
     DEFAULT_LOCALE,
-    ENV_TYPE,
 };

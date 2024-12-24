@@ -54,7 +54,7 @@ export function LegalContent({
                     <Title id={'title'}>{t(`${selectedMenu?.title}`)}</Title>
                     <Description
                         content={content}
-                        enabled={enabled}
+                        $enabled={enabled}
                         onFocusable={setCanContentFocus}
                         scrollOffset={scrollOffset}
                         setScrollOffset={setScrollOffset}

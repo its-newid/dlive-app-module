@@ -45,7 +45,7 @@ const ScrollableContent: ForwardRefRenderFunction<
     {
         className,
         content,
-        enabled,
+        $enabled,
         onScroll,
         scrollOffset,
         setScrollOffset,
@@ -56,9 +56,9 @@ const ScrollableContent: ForwardRefRenderFunction<
     const scrollRef = useRef<Nullable<HTMLDivElement>>(null);
     const contentRef = useCallback(
         (node: HTMLDivElement) => {
-            enabled ? node?.focus() : node?.blur();
+            $enabled ? node?.focus() : node?.blur();
         },
-        [enabled],
+        [$enabled],
     );
 
     const scrollHeight = scrollRef.current?.scrollHeight ?? 0;
@@ -164,11 +164,11 @@ const Container = styled.div.attrs({ tabIndex: 0 })`
     overflow-x: hidden;
     overflow-y: auto;
     padding-right: 48rem;
-    :focus {
+    &:focus {
         outline: none;
     }
 
-    :focus::-webkit-scrollbar-thumb {
+    &:focus::-webkit-scrollbar-thumb {
         background-color: ${({ theme }) => theme.colors.main};
     }
 

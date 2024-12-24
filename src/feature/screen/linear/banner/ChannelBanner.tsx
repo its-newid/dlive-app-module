@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StyledLogo from '@/component/Logo';
+import { Logo as StyledLogo } from '@/component/Logo';
 import { Toolbar as BannerBottom } from './Toolbar';
 import { ChannelBannerInfo as Info } from './ChannelBannerInfo';
 import { useAtomValue } from 'jotai';

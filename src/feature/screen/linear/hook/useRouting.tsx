@@ -47,14 +47,12 @@ export function useParamsUpdate() {
         const currentChannel = getCurrentChannel();
         const channelId = id ?? currentChannel?.contentId;
         if (!channelId) {
-            // FIXME: 채널 없을 때 에러 페이지 이동
             navigate(RoutePath.ERROR);
             return;
         }
 
         const channel = getChannelById(channelId);
         if (!channel) {
-            // FIXME: 채널 없을 때 에러 페이지 이동
             navigate(RoutePath.ERROR);
             return;
         }

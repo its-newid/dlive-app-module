@@ -6,6 +6,7 @@ import Navigation from '@/app/Router';
 import { usePreventFocusLoss } from '@/hook/usePreventFocusLoss';
 import GlobalStyle from '@/style/GlobalStyle';
 import { theme } from '@/style/theme';
+import { CDN_URL } from '@/app/environment.ts';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,7 @@ function App() {
         <I18nextProvider i18n={i18n}>
             <QueryClientProvider client={queryClient}>
                 <ThemeProvider theme={theme}>
-                    <GlobalStyle />
+                    <GlobalStyle theme={theme} cdnUrl={CDN_URL} />
                     <Navigation />
                 </ThemeProvider>
             </QueryClientProvider>

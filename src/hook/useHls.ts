@@ -20,7 +20,7 @@ type HlsEventCallback = {
 };
 
 type HlsProps = HlsEventCallback & {
-    videoRef: RefObject<HTMLVideoElement>;
+    videoRef: RefObject<Nullable<HTMLVideoElement>>;
     url: string;
     config: Partial<HlsConfig>;
     enabled?: boolean;
@@ -32,14 +32,14 @@ type HlsReturn = {
 };
 
 export const useHls = ({
-                           url,
-                           config,
-                           onManifestParsed,
-                           onError,
-                           videoRef,
-                           enabled = true,
-                           onHandleAdsParams,
-                       }: HlsProps): HlsReturn => {
+    url,
+    config,
+    onManifestParsed,
+    onError,
+    videoRef,
+    enabled = true,
+    onHandleAdsParams,
+}: HlsProps): HlsReturn => {
     const [hls, setHls] = useState<Nullable<Hls>>(null);
 
     const callbacksRef = useRef({

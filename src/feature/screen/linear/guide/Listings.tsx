@@ -42,7 +42,6 @@ export const MY_LIST_CATEGORY_IDX = MyListCategory.idx; // -1
 
 export default function Listings() {
     const setSelectedChannel = useSetAtom(selectedChannelSelector);
-    const { t } = useTranslation();
     const channelMap = useAtomValue(totalChannelState);
     const channels = useMemo(
         () => Array.from(channelMap.values()).flat(),
@@ -137,7 +136,7 @@ export default function Listings() {
                 if (firstChannel !== channel) continue;
 
                 if (categoryIdx === MyListCategory.idx) {
-                    header = <RowHeader title={t(MyListCategory.name)} />;
+                    header = <RowHeader title={MyListCategory.name} />;
                     break;
                 }
 

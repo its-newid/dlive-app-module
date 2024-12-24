@@ -28,7 +28,7 @@ const logoConfig = {
     },
 };
 
-const Logo = ({
+export const Logo = ({
     logoType = LogoType.DEFAULT,
     width,
     height,
@@ -49,8 +49,6 @@ const Logo = ({
         </LogoWrapper>
     );
 };
-
-export default Logo;
 
 const LogoWrapper = styled.div<{ width: number; height: number }>`
     width: ${({ width }) => width}rem;

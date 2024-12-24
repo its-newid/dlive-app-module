@@ -68,20 +68,6 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
                         contentId: channel.contentId,
                     },
                 });
-
-                // const schedule = getCurrentSchedule();
-                // if (schedule) {
-                //     const params = {
-                //         content_id: channel.contentId,
-                //         content_title: channel.title,
-                //         program_id: schedule.contentId,
-                //         program_title: schedule.title
-                //     };
-                //     // trackEvent.mutate({
-                //     //     // eventType: AnalyticsEventType.LINEAR_WATCH,
-                //     //     params
-                //     // });
-                // }
             }
 
             initTime();
@@ -105,18 +91,6 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
 
             const channel = getChannel(schedule);
             if (!channel) return;
-
-            // const params = {
-            //     content_id: channel.contentId,
-            //     content_title: channel.title,
-            //     program_id: schedule.contentId,
-            //     program_title: schedule.title,
-            //     total_sec: watchTime
-            // };
-            // trackEvent.mutate({
-            //     eventType: AnalyticsEventType.LINEAR_WATCH_TIME,
-            //     params
-            // });
 
             scheduleEnterTimeRef.current = -1;
         },

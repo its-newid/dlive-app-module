@@ -1,9 +1,9 @@
 import { UserAgentOS } from '@/type/userAgent';
 
 export function closeApp(os: UserAgentOS) {
-    const { ANDROID } = UserAgentOS;
+    const { DEFAULT } = UserAgentOS;
     switch (os) {
-        case ANDROID:
+        case DEFAULT:
             Android.exit();
             break;
         default:

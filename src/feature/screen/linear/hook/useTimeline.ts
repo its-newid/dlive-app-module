@@ -49,14 +49,6 @@ function format24Hour(date: Date) {
     return dayjs(date).format('HH:mm');
 }
 
-export function formatYYYYMMDD(date: Date) {
-    return dayjs(date).format('YYYY-MM-DD');
-}
-
-export function formatMMMDD(date: Date) {
-    return dayjs(date).format('MMM DD');
-}
-
 export function formatMMDD(date: Date) {
     return dayjs(date).format('MM/DD');
 }
