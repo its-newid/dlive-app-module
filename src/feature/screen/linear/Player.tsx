@@ -16,7 +16,7 @@ import {
 } from '@/atom/screen/linear';
 import { useAtom } from 'jotai';
 import { Skeleton } from '@/component/Skeleton';
-import useOverlay from './hook/useOverlay';
+import useOverlay from '@/feature/screen/linear/hook/useOverlay';
 import { useAtomCallback } from 'jotai/utils';
 import { VideoErrorName } from '@/type/common';
 import { PlayOverlay } from '@/component/PlayOverlay';
@@ -24,9 +24,9 @@ import { useMakeLinearAdsParameters } from './hook/useMakeLinearAdsParameters';
 import { userAgent } from '@/util/userAgent';
 import { UserAgentOS } from '@/type/userAgent';
 
-type LiveVideoProps = {
+interface LiveVideoProps {
     url: string;
-};
+}
 
 export default function Player({ url }: LiveVideoProps) {
     const {

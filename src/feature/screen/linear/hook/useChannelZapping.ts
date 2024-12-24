@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import { CHANNEL_DOWN, CHANNEL_UP, DOWN, UP } from '@/util/eventKey';
 import { mod } from '@/util/common';
-import { makeKeyboardEvent } from '@/util/makeKeyboardEvent';
 import { channelNowState, channelsState } from '@/atom/screen';
 
 export function useChannelZapping({
@@ -33,17 +32,12 @@ export function useChannelZapping({
         callback?.();
     }
 
-    const handleWheel = (event: WheelEvent) =>
-        dispatchEvent(makeKeyboardEvent('keydown')(event));
-
     useEffect(() => {
         if (!enable) return;
 
         window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('wheel', handleWheel);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('wheel', handleWheel);
         };
     }, [channels, channelNow, enable, callback]);
 

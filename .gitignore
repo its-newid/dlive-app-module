@@ -26,8 +26,5 @@ dist-ssr
 # ENV
 .env*
 
-# SAMPLE DATA
-sample_linear_data.json
-
-# TSBUILDINFO
+# TypeScript build info
 .tsbuildinfo*

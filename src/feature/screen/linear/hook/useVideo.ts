@@ -4,12 +4,12 @@ import { LinearVideoState, videoState, VideoState } from '@/atom/screen/linear';
 import { useAtom } from 'jotai';
 import { VideoConfig } from '@/component/Video';
 
-export type VideoProps = {
+export interface VideoProps {
     config?: Partial<VideoConfig>;
     src?: string;
-};
+}
 
-type VideoReturn = {
+interface VideoReturn {
     readonly videoConfig: VideoConfig;
     readonly videoState: LinearVideoState;
     videoPlay: () => Optional<Promise<void>>;
@@ -17,19 +17,19 @@ type VideoReturn = {
     setLoop: (loop: boolean) => void;
     setSrc: (src: string) => void;
     setAutoPlay: (autoplay: boolean) => void;
-    videoRef: RefObject<HTMLVideoElement>;
+    videoRef: RefObject<HTMLVideoElement | null>;
     videoCallback: (node: Nullable<HTMLVideoElement>) => void;
-};
+}
 
 export const useVideo = ({
     config = defaultVideoConfig,
 }: VideoProps): VideoReturn => {
-    const playerRef = useRef<Nullable<HTMLVideoElement>>(null);
+    const playerRef = useRef<HTMLVideoElement | null>(null);
 
     const _config = { ...defaultVideoConfig, ...config };
     const configRef = useRef<VideoConfig>({
         muted: _config.muted,
-        autoplay: _config.autoplay,
+        autoPlay: _config.autoPlay,
         loop: _config.loop,
     });
 
@@ -55,13 +55,13 @@ export const useVideo = ({
         }
     };
 
-    const setAutoPlay = (autoplay: boolean) => {
+    const setAutoPlay = (autoPlay: boolean) => {
         const { current: state } = configRef;
-        configRef.current = { ...state, autoplay: autoplay };
+        configRef.current = { ...state, autoPlay: autoPlay };
 
         const { current: player } = playerRef;
         if (player) {
-            player.autoplay = autoplay;
+            player.autoplay = autoPlay;
         }
     };
 
@@ -149,7 +149,7 @@ export const useVideo = ({
 };
 
 const defaultVideoConfig: VideoConfig = {
-    autoplay: false,
+    autoPlay: false,
     muted: true,
     loop: false,
 };

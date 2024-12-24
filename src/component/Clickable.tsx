@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef, useMemo } from 'react';
 import styled from 'styled-components';
-import { ContainerComponent } from './layout/layout';
+import { ContainerComponent } from '@/type/layout';
 import {
     IExtendableStyledComponent,
     KeyboardEventListener,
@@ -80,7 +80,7 @@ export default forwardRef<HTMLDivElement, ContainerComponent<ClickableProps>>(
 );
 
 const Container = styled.div.attrs({ tabIndex: 0 })`
-    :focus {
+    &:focus {
         outline: none;
     }
 `;

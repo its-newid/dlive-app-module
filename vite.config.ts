@@ -14,23 +14,31 @@ export default defineConfig({
   plugins: [
     react(),
     legacy({
-      targets: ["chrome >= 38"],
+      targets: ["chrome >= 69"],
       polyfills: true,
     }),
-    svgr({
-      // https://react-svgr.com/docs/options/
-      svgrOptions: {
-        exportType: "default",
-        ref: true,
-        svgo: false,
-        titleProp: true,
-      },
-      include: "**/*.svg",
-    }),
+    svgr(),
   ],
   build: {
-    cssTarget: "chrome38",
+    cssTarget: "chrome69",
     assetsDir: "",
-    minify: "terser",
+    minify: "terser", // 주석처리하면 esbuild 사용.
+    // rollupOptions: {
+    //   output: {
+    //     manualChunks: undefined,
+    //     entryFileNames: 'dlive-entry-[name]-[hash].js',
+    //     chunkFileNames: 'dlive-chunk-[name]-[hash].js',
+    //     assetFileNames: 'dlive-asset-[name]-[hash].[ext]'
+    //   }
+    // },
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+        entryFileNames: '[name].js',  // hash 제거
+        assetFileNames: '[name].[ext]',  // hash 제거
+        dir: 'dist'  // 출력 디렉토리 지정
+      }
+    },
+    chunkSizeWarningLimit: 1500, // tv앱은 앱 설치 시점에 이미 웹 리소스가 모두 다운로드되므로 파일 I/O 최소화가 더 중요.
   },
 });

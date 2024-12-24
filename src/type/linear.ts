@@ -1,6 +1,6 @@
-import { Episode, Optional, ThumbType } from './common';
+import { Optional, Episode, ThumbType } from '@/type/common';
 
-export type Channel = {
+export interface Channel {
     contentId: string;
     title: string;
     description: string;
@@ -12,11 +12,11 @@ export type Channel = {
     categoryIdx: Optional<number>;
     thumbUrl: ThumbType;
     tag: string;
-};
+}
 
 export type ChannelEpisode = Episode & {
+    channelId: string;
+    thumbUrl: string;
     startAt: number;
     endAt: number;
-    thumbUrl: string;
-    channelId: string;
 };

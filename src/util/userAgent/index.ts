@@ -1,10 +1,10 @@
-import { getOS } from '@/util/getOs.ts';
+import { getOS } from '@/util/getOs';
 import {
     AndroidAgentAdsParameter,
-    NewidAgentAdsParameter,
-} from './adsParameter';
-import { AndroidKeyCodeMap, UserAgentKeyCodeMap } from './keyCodeMap';
-import { AndroidScreenSize, UserAgentScreenSize } from './screenSize';
+    DliveAgentAdsParameter,
+} from '@/util/userAgent/adsParameter';
+import { UserAgentKeyCodeMap } from '@/util/userAgent/keyCodeMap';
+import { UserAgentScreenSize } from '@/util/userAgent/screenSize';
 import {
     IAdsParameter,
     IKeyCodeMap,
@@ -13,14 +13,12 @@ import {
     UserAgentOS,
 } from '@/type/userAgent';
 
-interface IUserAgentConstructor {
-    new (
-        type: UserAgentOS,
-        adsParameter: IAdsParameter,
-        keyCodeMap: IKeyCodeMap,
-        screenSize: IScreenDimension,
-    ): IUserAgent;
-}
+type IUserAgentConstructor = new (
+    type: UserAgentOS,
+    adsParameter: IAdsParameter,
+    keyCodeMap: IKeyCodeMap,
+    screenSize: IScreenDimension,
+) => IUserAgent;
 
 function createAgent(
     builder: IUserAgentConstructor,
@@ -59,8 +57,8 @@ export class UserAgentImpl implements IUserAgent {
                     this,
                     os,
                     new AndroidAgentAdsParameter(os),
-                    new AndroidKeyCodeMap(),
-                    new AndroidScreenSize(),
+                    new UserAgentKeyCodeMap(),
+                    new UserAgentScreenSize(),
                 );
                 break;
             }
@@ -68,7 +66,7 @@ export class UserAgentImpl implements IUserAgent {
                 userAgent = createAgent(
                     this,
                     os,
-                    new NewidAgentAdsParameter(os),
+                    new DliveAgentAdsParameter(os),
                     new UserAgentKeyCodeMap(),
                     new UserAgentScreenSize(),
                 );

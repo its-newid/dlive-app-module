@@ -16,7 +16,7 @@ import Clickable, { ClickableProps } from './Clickable';
 import { LEFT, onDefaultUIEvent, RIGHT } from '@/util/eventKey';
 import { coerceIn } from '@/util/common';
 import { Nullable } from '@/type/common';
-import { Animation, Group } from './anim/Group';
+import { AnimationType, Group } from './anim/Group';
 import { IModal } from '@/hook/useModal';
 
 interface ModalTitleProps {
@@ -194,7 +194,7 @@ const Container = styled.div`
         rgba(27, 28, 29, 0.3) 0.02%,
         #000000 70.83%
     );
-    animation: ${Group[Animation.FADE_IN]} 300ms ease-out;
+    animation: ${Group[AnimationType.FADE_IN]} 300ms ease-out;
 `;
 
 const Inner = styled.div`

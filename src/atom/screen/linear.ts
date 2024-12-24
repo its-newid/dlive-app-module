@@ -6,26 +6,40 @@ import {
     TIME_SLOT_MAX_MILLIS,
     TIME_SLOT_MILLIS,
 } from '@/feature/screen/linear/hook/useTimeline';
-import { channelSelector } from './index';
-import { Optional, ScreenOverlayConfig, VideoErrorName } from '@/type/common';
+import { channelSelector } from '@/atom/screen';
+import {
+    ContentType,
+    Optional,
+    ScreenOverlayConfig,
+    VideoErrorName,
+} from '@/type/common';
+import { Category, MyListCategory } from '@/type/category';
 import { ChannelEpisode } from '@/type/linear';
 import { userAgent } from '@/util/userAgent';
 import { UserAgentOS } from '@/type/userAgent';
+
+export const linearCategoriesState = atom((get) => {
+    const categories = get(categoriesState);
+    return categories.filter((category) =>
+        category.linear.some((content) => content.type === ContentType.LINEAR),
+    );
+});
+
+export const categoriesState = atom<Category[]>([]);
 
 export const LiveScreenOverlayType = {
     IDLE: 'idle',
     CHANNEL_BANNER: 'channelBanner',
     MINI_BANNER: 'miniBanner',
-    SUBTITLE_TRACK_SHEET: 'subtitleTrackSheet',
     GUIDE: 'guide',
     FULL_DESCRIPTION: 'fullDescription',
 } as const;
 export type LiveScreenOverlayType =
     (typeof LiveScreenOverlayType)[keyof typeof LiveScreenOverlayType];
-export type LiveScreenOverlay = {
+export interface LiveScreenOverlay {
     type: LiveScreenOverlayType;
     timeout: number;
-};
+}
 
 export const ScheduleFocusState = {
     NAV: 0,
@@ -39,8 +53,7 @@ export const ChannelBannerToolMenu = {
     HOME: 0,
     GUIDE: 1,
     MY_LIST: 2,
-    SUBTITLE_TRACK_SHEET: 3,
-    FULL_DESCRIPTION: 4,
+    FULL_DESCRIPTION: 3,
 } as const;
 export type ChannelBannerToolMenu =
     (typeof ChannelBannerToolMenu)[keyof typeof ChannelBannerToolMenu];
@@ -95,11 +108,11 @@ export const isVideoAutoplayBlockedState = atom((get) => {
 
 export const timeBarOffsetState = atom(0);
 
-export type TimeBarOffsetValues = {
+export interface TimeBarOffsetValues {
     min: number;
     value: number;
     max: number;
-};
+}
 
 const MAX_TIME_BAR_OFFSET = TIME_SLOT_MAX_MILLIS / TIME_SLOT_MILLIS - 2;
 export const timeBarOffsetValuesSelector = atom<TimeBarOffsetValues>((get) => {
@@ -137,6 +150,25 @@ export const currentScheduleFocusState = atom<ScheduleFocusState>(
 
 export const timeBarVisibleWidthState = atom<number>(0);
 
+export interface ScheduleCategory {
+    idx: number;
+    name: string;
+}
+
+export const scheduleCategories = atom<ScheduleCategory[]>((get) => {
+    const categories = get(linearCategoriesState);
+    if (!categories || !categories) return [];
+
+    const total = categories.map(({ idx, name }) => ({
+        idx,
+        name,
+    }));
+
+    // 일반(전체 채널) 카테고리 추가
+    const normalCategory = { idx: 1, name: '전체 채널' };
+    return [MyListCategory, normalCategory, ...total];
+});
+
 export const selectedScheduleCategoryIdxState = atom(0);
 
 export const visibleTimesInTimeBar = atom((get) => {
@@ -144,7 +176,7 @@ export const visibleTimesInTimeBar = atom((get) => {
     const timeBarOffset = get(timeBarOffsetState);
 
     const start = openingMillis + timeBarOffset * TIME_SLOT_MILLIS;
-    const end = start + TIME_SLOT_MILLIS * 3; // 1hours
+    const end = start + TIME_SLOT_MILLIS * 2;
     return [start, end];
 });
 
@@ -165,6 +197,7 @@ export const scheduleOfChannelSelector = atomFamily((id: string) =>
     atom((get) => {
         const openingMillis = get(openingMillisState);
         const channel = get(channelSelector(id));
+
         return channel
             ? channel.schedule.filter(
                   (schedule) => toMillis(schedule.endAt) > openingMillis,
@@ -221,16 +254,16 @@ export const currentToolbarMenuState = atomWithReset<ChannelBannerToolMenu>(
     ChannelBannerToolMenu.GUIDE,
 );
 
-export const findAiringEpisode = (
-    schedule: ChannelEpisode[],
-    current: number = new Date().getTime(),
-) => {
-    return schedule.find(isEpisodeAiring(current));
-};
-
 export const isEpisodeAiring =
-    (current: number = new Date().getTime()) =>
+    (current: number = Date.now()) =>
     (schedule: ChannelEpisode) => {
         const { startAt, endAt } = schedule;
         return toMillis(startAt) < current && toMillis(endAt) >= current;
     };
+
+export const findAiringEpisode = (
+    schedule: ChannelEpisode[],
+    current: number = Date.now(),
+) => {
+    return schedule.find(isEpisodeAiring(current));
+};

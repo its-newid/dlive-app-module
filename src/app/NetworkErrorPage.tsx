@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ENTER, ESCAPE, LEFT, onDefaultUIEvent, RIGHT } from '@/util/eventKey';
 import { Optional } from '@/type/common';
@@ -77,7 +77,7 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                 <Row>
                     <Button
                         role={'button'}
-                        enabled={isOnline}
+                        $enabled={isOnline}
                         onKeyDown={onDefaultUIEvent(handleHomeButtonKeyDown)}
                         onClick={handleGoHome}
                         ref={(node) => {
@@ -92,7 +92,7 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                         role={'button'}
                         onKeyDown={onDefaultUIEvent(handleExitButtonKeyDown)}
                         onClick={handleExit}
-                        enabled
+                        $enabled
                         ref={(node) => {
                             if (node) {
                                 buttonRefs[Menu.EXIT].current = node;
@@ -146,7 +146,7 @@ const Row = styled.div`
 `;
 
 const Button = styled.div.attrs({ tabIndex: 0 })<{
-    enabled: boolean;
+    $enabled: boolean;
 }>`
     margin-top: 86rem;
     width: fit-content;
@@ -162,8 +162,8 @@ const Button = styled.div.attrs({ tabIndex: 0 })<{
         text-align: center;
         font: ${({ theme }) =>
             `${theme.fonts.weight.bold} 36rem/44rem ${theme.fonts.family.pretendard}`};
-        color: ${({ theme, enabled }) =>
-            enabled ? theme.colors.whiteAlpha95 : theme.colors.whiteAlpha50};
+        color: ${({ theme, $enabled }) =>
+            $enabled ? theme.colors.whiteAlpha95 : theme.colors.whiteAlpha50};
     }
 
     :focus {
@@ -176,11 +176,11 @@ const Button = styled.div.attrs({ tabIndex: 0 })<{
 
     :hover:not(:focus) {
         > span {
-            color: ${({ theme, enabled }) =>
-                enabled && theme.colors.whiteAlpha95};
+            color: ${({ theme, $enabled }) =>
+                $enabled && theme.colors.whiteAlpha95};
         }
 
-        background-color: ${({ theme, enabled }) =>
-            enabled && theme.colors.grey50};
+        background-color: ${({ theme, $enabled }) =>
+            $enabled && theme.colors.grey50};
     }
 `;

@@ -1,5 +1,5 @@
 import React, { ForwardedRef, forwardRef } from 'react';
-import Clickable, { ClickableProps } from '../../../../component/Clickable';
+import Clickable, { ClickableProps } from '@/component/Clickable';
 import styled, { css } from 'styled-components';
 
 export const ButtonType = {
@@ -9,10 +9,10 @@ export const ButtonType = {
 } as const;
 export type ButtonType = (typeof ButtonType)[keyof typeof ButtonType];
 
-export type Child = {
+export interface Child {
     type: ButtonType;
     elements: React.ReactNode;
-};
+}
 
 type Props = ClickableProps & {
     item: Child;
@@ -50,7 +50,7 @@ const StyledButton = styled(Clickable)<{ $type: ButtonType }>`
     border-radius: 36rem;
     color: ${({ theme }) => theme.colors.whiteAlpha95};
     font-family: ${({ theme }) => theme.fonts.family.pretendard};
-    ${({ $type }) => $toolButtonStyle[$type]};
+    ${({ type }) => toolButtonStyle[type]};
 
     svg {
         color: ${({ theme }) => theme.colors.grey10};

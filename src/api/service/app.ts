@@ -1,6 +1,6 @@
-import { HttpService } from './index';
+import { HttpService } from '@/api/service/index';
 import { BASE_API_URL, BEARER_TOKEN } from '@/app/environment';
-import { ScheduleRequest, ScheduleResponse } from '../model/schedule';
+import { ScheduleRequest, ScheduleResponse } from '@/api/model/schedule';
 
 export class AppService {
     private service: HttpService;
@@ -20,4 +20,5 @@ const executor = new HttpService(BASE_API_URL, {
     Authorization: `Bearer ${BEARER_TOKEN}`,
     'Content-Type': 'application/json',
 });
+
 export const appService = new AppService(executor);

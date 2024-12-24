@@ -3,8 +3,11 @@ import { atomFamily } from 'jotai/utils';
 import { Channel, ChannelEpisode } from '@/type/linear';
 import { ContentType, Nullable, Optional } from '@/type/common';
 import { MyListCategory } from '@/type/category';
-import { mylistState, watchHistoryState } from '../app';
-import { selectedScheduleCategoryIdxState } from './linear';
+import { mylistState, watchHistoryState } from '@/atom/app';
+import {
+    scheduleCategories,
+    selectedScheduleCategoryIdxState,
+} from '@/atom/screen/linear';
 
 export const channelsState = atom<Channel[]>([]);
 export const channelNowState = atom<Optional<Channel>>(undefined);
@@ -17,12 +20,18 @@ export const channelSelector = atomFamily((id: string) =>
 
 export const onAirScheduleState = atom<Optional<ChannelEpisode>>(undefined);
 export const onAirScheduleEndTimeState = atom<number>(-1);
-export const episodeSelector = atomFamily((id: string) =>
+export const episodeSelector = atomFamily((contentId: string) =>
     atom((get) => {
         const channels = get(channelsState);
-        return channels
-            .flatMap((channel) => channel.schedule)
-            .find((schedule) => schedule.contentId === id);
+        for (let i = 0; i < channels.length; i++) {
+            const schedule = channels[i].schedule;
+            for (let j = 0; j < schedule.length; j++) {
+                if (schedule[j].contentId === contentId) {
+                    return schedule[j];
+                }
+            }
+        }
+        return undefined;
     }),
 );
 
@@ -85,6 +94,7 @@ export const selectedChannelSelector = atom(
         set(selectedScheduleCategoryIdxState, targetChannel.categoryIdx ?? -1);
     },
 );
+
 export const currentScheduleState = atom<Nullable<ChannelEpisode>>(null);
 
 export type ScheduleChannel = Pick<
@@ -111,7 +121,7 @@ export const myListChannelsState = atom<ScheduleChannel[]>((get) => {
         const categoryIdx = MyListCategory.idx;
         return {
             ...origin,
-            categoryIdx: categoryIdx,
+            categoryIdx,
         };
     });
 
@@ -138,17 +148,25 @@ export const totalChannelState = atom<Map<number, ScheduleChannel[]>>((get) => {
         },
     );
     const myListChannels = get(myListChannelsState);
+    const categories = get(scheduleCategories);
 
     const map = new Map<number, ScheduleChannel[]>();
 
-    if (myListChannels.length) {
-        map.set(-1, myListChannels);
-    } else {
-        map.set(-1, [EmptyMyListItem]);
+    for (const category of categories) {
+        if (category.idx === MyListCategory.idx) {
+            if (myListChannels.length) {
+                map.set(category.idx, myListChannels);
+            } else {
+                map.set(category.idx, [EmptyMyListItem]);
+            }
+            continue;
+        }
+
+        const channels: ScheduleChannel[] = allChannel.filter(
+            (channel) => channel.categoryIdx === category.idx,
+        );
+        map.set(category.idx, channels);
     }
-
-    map.set(1, allChannel);
-
     return map;
 });
 

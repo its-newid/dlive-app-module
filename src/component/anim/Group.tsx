@@ -1,5 +1,4 @@
 import { keyframes } from 'styled-components';
-import { Keyframes } from 'styled-components/dist/types';
 
 const SlideIn = keyframes`
   from {
@@ -42,17 +41,18 @@ const FadeOut = keyframes`
   }
 `;
 
-export const Animation = {
+export const AnimationType = {
     SLIDE_IN: 0,
     SLIDE_OUT: 1,
     FADE_IN: 2,
     FADE_OUT: 3,
 } as const;
-export type Animation = (typeof Animation)[keyof typeof Animation];
 
-export const Group: Record<Animation, Keyframes> = {
-    [Animation.SLIDE_IN]: SlideIn,
-    [Animation.SLIDE_OUT]: SlideOut,
-    [Animation.FADE_IN]: FadeIn,
-    [Animation.FADE_OUT]: FadeOut,
+export type AnimationType = (typeof AnimationType)[keyof typeof AnimationType];
+
+export const Group: Record<AnimationType, ReturnType<typeof keyframes>> = {
+    [AnimationType.SLIDE_IN]: SlideIn,
+    [AnimationType.SLIDE_OUT]: SlideOut,
+    [AnimationType.FADE_IN]: FadeIn,
+    [AnimationType.FADE_OUT]: FadeOut,
 };
