@@ -72,7 +72,9 @@ const Content = styled.div`
     flex-direction: column;
 `;
 
-const Container = styled(Content)`
+const Container = styled(Content).attrs({
+    tabIndex: 0,
+})`
     position: absolute;
     top: 30%;
     left: 0;
@@ -81,8 +83,11 @@ const Container = styled(Content)`
     border-top-right-radius: 16rem;
     border-bottom-right-radius: 16rem;
     background-color: rgba(17, 24, 39, 0.5);
-`;
 
+    &:focus {
+        outline: none;
+    }
+`;
 const ChannelNo = styled.span`
     font: ${({ theme }) =>
         `${theme.fonts.weight.bold} 56rem/66rem ${theme.fonts.family.pretendard}`};
