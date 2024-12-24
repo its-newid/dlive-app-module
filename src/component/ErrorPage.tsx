@@ -16,13 +16,18 @@ export function ErrorPage() {
     };
 
     const callbackRef = useCallback((node: HTMLDivElement) => {
-        node.focus();
+        if (node) {
+            node.focus();
+        }
     }, []);
 
     return (
         <Container>
             <Column>
-                <Title id={'desc'}>{t('app_query_error_message')}</Title>
+                <Title id={'title'}>{t('app_query_error_title')}</Title>
+                <Description id={'desc'}>
+                    {t('app_query_error_description')}
+                </Description>
                 <Row>
                     <Button
                         role={'button'}
@@ -59,15 +64,23 @@ const Title = styled.span`
         `${theme.fonts.weight.bold} 76rem/96rem ${theme.fonts.family.pretendard}`};
     color: ${({ theme }) => theme.colors.whiteAlpha95};
 
-    :after {
+    &:after {
         content: ' :(';
         color: ${({ theme }) => theme.colors.main};
     }
 `;
 
+const Description = styled.span`
+    margin-top: 24rem;
+    font: ${({ theme }) =>
+        `${theme.fonts.weight.normal} 36rem/44rem ${theme.fonts.family.pretendard}`};
+    color: ${({ theme }) => theme.colors.whiteAlpha64};
+    white-space: pre-wrap;
+`;
+
 const Row = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
 `;
 
 const Button = styled.div.attrs({ tabIndex: 0 })`
@@ -77,7 +90,7 @@ const Button = styled.div.attrs({ tabIndex: 0 })`
     outline: none;
     padding: 14rem 30rem;
 
-    :first-child {
+    &:first-child {
         margin-right: 24rem;
     }
 
@@ -88,7 +101,7 @@ const Button = styled.div.attrs({ tabIndex: 0 })`
         color: ${({ theme }) => theme.colors.whiteAlpha95};
     }
 
-    :focus {
+    &:focus {
         > span {
             color: ${({ theme }) => theme.colors.grey90};
         }
@@ -96,7 +109,7 @@ const Button = styled.div.attrs({ tabIndex: 0 })`
         background: ${({ theme }) => theme.colors.main};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         > span {
             color: ${({ theme }) => theme.colors.whiteAlpha95};
         }

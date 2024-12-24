@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { IExtendableStyledComponent } from '@/type/common';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 type Props = IExtendableStyledComponent & {
     leftMillis: number;
 };
 
 export function ScheduleRemainingTime({ className, leftMillis }: Props) {
+    const { t } = useTranslation();
     const min = Math.floor(leftMillis / 1000 / 60);
 
     return (

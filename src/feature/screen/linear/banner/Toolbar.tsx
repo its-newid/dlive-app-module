@@ -200,9 +200,9 @@ const MyListButton = ({ menuRef, ...rest }: ButtonProps) => {
     const { isMyList, toggleMyList } = useMyList();
     const isMyListChannel = currentChannel
         ? isMyList({
-              contentId: currentChannel.contentId,
-              type: ContentType.LINEAR,
-          })
+            contentId: currentChannel.contentId,
+            type: ContentType.LINEAR,
+        })
         : false;
 
     const type = useMemo(() => ChannelBannerToolMenu.MY_LIST, []);
@@ -233,10 +233,10 @@ const MyListButton = ({ menuRef, ...rest }: ButtonProps) => {
         showOverlay({ type: LiveScreenOverlayType.CHANNEL_BANNER });
         setToolbarMenu(ChannelBannerToolMenu.MY_LIST);
         currentChannel &&
-            toggleMyList({
-                contentId: currentChannel.contentId,
-                type: ContentType.LINEAR,
-            });
+        toggleMyList({
+            contentId: currentChannel.contentId,
+            type: ContentType.LINEAR,
+        });
     };
 
     return (
@@ -265,24 +265,24 @@ const MoreButton = ({ menuRef, ...rest }: ButtonProps) => {
 
     const elements: Child = isFullDescriptionVisible
         ? {
-              type: ButtonType.TEXT_ONLY,
-              elements: (
-                  <span key={type}>
+            type: ButtonType.TEXT_ONLY,
+            elements: (
+                <span key={type}>
                       {t('live_screen_channel_banner_full_description_close')}
                   </span>
-              ),
-          }
+            ),
+        }
         : {
-              type: ButtonType.BOTH,
-              elements: (
-                  <>
-                      <MoreIcon key={`${type}.img`} />
-                      <span key={type}>
+            type: ButtonType.BOTH,
+            elements: (
+                <>
+                    <MoreIcon key={`${type}.img`} />
+                    <span key={type}>
                           {t('live_screen_channel_banner_full_description')}
                       </span>
-                  </>
-              ),
-          };
+                </>
+            ),
+        };
 
     const handleClick = () => {
         if (!isFullDescriptionVisible) {
@@ -342,12 +342,12 @@ const Toast = styled.div<{ $isVisible: boolean }>`
     justify-content: center;
     background: ${({ theme }) => theme.colors.main};
     font: ${({ theme }) =>
-        `${theme.fonts.weight.bold} 38rem/46rem ${theme.fonts.family.pretendard}`};
+    `${theme.fonts.weight.bold} 38rem/46rem ${theme.fonts.family.pretendard}`};
     color: ${({ theme }) => theme.colors.blackAlpha100};
 
     ${({ $isVisible }) =>
-        $isVisible &&
-        css`
+    $isVisible &&
+    css`
             animation:
                 ${Group[Animation.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
                 ${Group[Animation.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms

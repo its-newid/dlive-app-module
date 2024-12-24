@@ -6,7 +6,7 @@ import { LoadingBar as StyledLoadingBar } from '@/component/LoadingBar';
 import { MiniBannerLoader as Loading } from './MiniBannerLoader';
 import { Marquee } from '@/component/Marquee';
 import { useTimeRage } from '@/hook/useProgress';
-import { LoadThumbnail } from '../LoadThumbnail';
+import { LoadThumbnail } from '@/feature/screen/linear/LoadThumbnail';
 import { Optional, ThumbRatio, ThumbSizes } from '@/type/common';
 import { atom } from 'jotai';
 import { ChannelEpisode } from '@/type/linear';

@@ -3,6 +3,8 @@ import { atom } from 'jotai';
 import { ContentType } from '../type/common';
 import { ChannelEpisode } from '../type/linear';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
+import { PrimitiveAtom } from 'jotai/vanilla';
+import { useCallback } from 'react';
 
 export type TMyListContents = {
     [val in ContentType]: string[];
@@ -21,7 +23,8 @@ export const isFirstLaunchState = atomWithLocalStorage('isFirstLaunch', true);
 const initialMyListContent = Object.values(ContentType).reduce((acc, val) => {
     return { ...acc, [val]: [] };
 }, {} as TMyListContents);
-export const mylistState = atomWithLocalStorage<TMyListContents>(
+
+export const mylistState = atomWithStorage<TMyListContents>(
     'favorite',
     initialMyListContent,
 );
@@ -29,12 +32,14 @@ export const mylistState = atomWithLocalStorage<TMyListContents>(
 const initialWatchHistoryContent: TWatchedContent = {
     linear: [],
 };
-export const watchHistoryState = atomWithLocalStorage<TWatchedContent>(
+
+export const watchHistoryState = atomWithStorage<TWatchedContent>(
     'watch',
     initialWatchHistoryContent,
 );
 
 const MAX_WATCH_HISTORY_COUNT = 30;
+
 export const writeWatchHistory = atom(
     null,
     (
@@ -84,8 +89,21 @@ export const writeWatchHistory = atom(
     },
 );
 
+
 export const lastUpdatedTimeState = atomWithStorage<number>(
     'lastUpdatedTime',
     0,
     createJSONStorage(() => sessionStorage),
 );
+
+export function useReducerAtom<Value, Action>(
+    anAtom: PrimitiveAtom<Value>,
+    reducer: (v: Value, a: Action) => Value,
+) {
+    const [state, setState] = useAtom(anAtom);
+    const dispatch = useCallback(
+        (action: Action) => setState((prev) => reducer(prev, action)),
+        [setState, reducer],
+    );
+    return [state, dispatch] as const;
+}

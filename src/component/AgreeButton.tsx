@@ -1,8 +1,8 @@
 import { IExtendableStyledComponent } from '@/type/common';
-import Clickable, { ClickableProps } from './Clickable';
+import Clickable, { ClickableProps } from '@/component/Clickable';
 import { ForwardedRef, forwardRef } from 'react';
 import styled from 'styled-components';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 type AgreeButtonProps = IExtendableStyledComponent & ClickableProps;
 
@@ -11,6 +11,8 @@ export const AgreeButton = forwardRef<HTMLDivElement, AgreeButtonProps>(
         { className, ...rest }: AgreeButtonProps,
         ref: ForwardedRef<HTMLDivElement>,
     ) {
+        const { t } = useTranslation();
+
         return (
             <Container className={className} {...rest} ref={ref}>
                 <span id={'agree-btn'}>{t('onboarding_agree')}</span>

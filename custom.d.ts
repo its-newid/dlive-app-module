@@ -1,5 +1,9 @@
 declare module '*.jpg';
 declare module '*.png';
+declare module '*.json' {
+    const value: any;
+    export default value;
+}
 
 declare module 'uuid' {
     const v4: () => string;

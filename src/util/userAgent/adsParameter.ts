@@ -9,7 +9,7 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
         private readonly os: UserAgentOS,
         private bundleId: string,
         private appstoreUrl: string = '',
-        private appVersion: string = '',
+        private appVersion: string = import.meta.env.VITE_APP_VERSION ?? '',
     ) {}
 
     public get params() {
@@ -37,17 +37,13 @@ export abstract class UserAgentAdsParameter implements IAdsParameter {
     }
 }
 
-export class NewidAgentAdsParameter extends UserAgentAdsParameter {
+export class DliveAgentAdsParameter extends UserAgentAdsParameter {
     constructor(os: UserAgentOS) {
-        super(
-            os,
-            encodeURIComponent('bingekorea'),
-            encodeURIComponent('bingekorea.net'),
-        );
+        super(os, encodeURIComponent('diva'), encodeURIComponent('diva.net'));
     }
 
     getIfaType(): string {
-        return 'newid';
+        return 'dlive';
     }
 }
 
@@ -57,7 +53,7 @@ export class AndroidAgentAdsParameter extends UserAgentAdsParameter {
             os,
             encodeURIComponent('kr.dlive.app.android.fasttv'),
             encodeURIComponent(
-                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.bingekorea',
+                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.diva',
             ),
         );
     }

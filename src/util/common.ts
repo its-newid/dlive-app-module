@@ -1,4 +1,4 @@
-import { userAgent } from './userAgent';
+import { userAgent } from '@/util/userAgent';
 
 export function coerceAtLeast(value: number, minimumValue: number) {
     return value < minimumValue ? minimumValue : value.valueOf();
@@ -36,4 +36,9 @@ export const getRem = () => {
     return userAgent.screenSize.getScreenHeight() * 0.0926;
 };
 
+export function isItemEmpty<T>(array: T[], at: number): boolean {
+    return !array[at];
+}
+
 export type TableIndex = [column: number, row: number];
+

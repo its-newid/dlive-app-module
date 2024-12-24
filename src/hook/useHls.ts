@@ -32,14 +32,14 @@ type HlsReturn = {
 };
 
 export const useHls = ({
-    url,
-    config,
-    onManifestParsed,
-    onError,
-    videoRef,
-    enabled = true,
-    onHandleAdsParams,
-}: HlsProps): HlsReturn => {
+                           url,
+                           config,
+                           onManifestParsed,
+                           onError,
+                           videoRef,
+                           enabled = true,
+                           onHandleAdsParams,
+                       }: HlsProps): HlsReturn => {
     const [hls, setHls] = useState<Nullable<Hls>>(null);
 
     const callbacksRef = useRef({

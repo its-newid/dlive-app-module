@@ -16,17 +16,19 @@ import {
 import useToast, { TOAST_ANIMATION } from '../hook/useToast';
 import { closeApp } from '@/util/closeApp';
 import { userAgent } from '@/util/userAgent';
-import { Animation, Group } from '@/component/anim/Group';
+import { AnimationType, Group } from '@/component/anim/Group';
+import { useTranslation } from 'react-i18next';
 
 function Banner() {
     const { IDLE, MINI_BANNER, CHANNEL_BANNER, FULL_DESCRIPTION } =
         LiveScreenOverlayType;
-
     const { showOverlay } = useOverlay();
     const currentOverlay = useAtomValue(liveScreenOverlayState);
     const isVideoAutoplayBlocked = useAtomValue(isVideoAutoplayBlockedState);
     const setToolbarMenu = useSetAtom(currentToolbarMenuState);
     const { isToastVisible, message, showToast } = useToast();
+
+    const { t } = useTranslation();
 
     const isCurrentOverlayIncludes = useCallback(
         (types: LiveScreenOverlayType[]) =>
@@ -73,7 +75,7 @@ function Banner() {
             }
 
             if (keyCode === ESCAPE) {
-                showToast('뒤로가기를 한 번 더 누르면 앱이 종료됩니다');
+                showToast(t('press_back_again_to_exit'));
                 event.stopPropagation();
             }
 
@@ -103,7 +105,7 @@ function Banner() {
                 <ChannelBanner />
             )}
             {isToastVisible && (
-                <Toast isVisible={isToastVisible} role={'status'}>
+                <Toast $isVisible={isToastVisible} role={'status'}>
                     {message}
                 </Toast>
             )}
@@ -121,7 +123,7 @@ const Container = styled.div`
     height: 100%;
 `;
 
-const Toast = styled.div<{ isVisible: boolean }>`
+const Toast = styled.div<{ $isVisible: boolean }>`
     position: absolute;
     display: flex;
     bottom: 0;
@@ -134,12 +136,12 @@ const Toast = styled.div<{ isVisible: boolean }>`
         `${theme.fonts.weight.bold} 38rem/46rem ${theme.fonts.family.pretendard}`};
     color: ${({ theme }) => theme.colors.blackAlpha100};
 
-    ${({ isVisible }) =>
-        isVisible &&
+    ${({ $isVisible }) =>
+        $isVisible &&
         css`
             animation:
-                ${Group[Animation.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
-                ${Group[Animation.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
+                ${Group[AnimationType.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
+                ${Group[AnimationType.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
                     ${TOAST_ANIMATION.DELAY}ms;
         `};
     animation-fill-mode: forwards;

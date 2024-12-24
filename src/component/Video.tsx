@@ -1,12 +1,12 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import styled from 'styled-components';
-import { ERROR_VIDEO_URL } from '../app/environment';
+import { ERROR_VIDEO_URL } from '@/app/environment';
 
-export type VideoConfig = {
-    autoplay: boolean;
+export interface VideoConfig {
+    autoPlay: boolean;
     muted: boolean;
     loop: boolean;
-};
+}
 
 type VideoProps = Partial<VideoConfig> & {
     src?: string;
