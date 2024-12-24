@@ -2,7 +2,7 @@ import { RowContent } from '@/type/common';
 
 export const MyListCategory = {
     idx: -1,
-    name: 'My List',
+    name: '즐겨찾는 채널',
 } as const;
 
 export type Category = {
