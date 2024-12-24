@@ -17,7 +17,7 @@ interface VideoReturn {
     setLoop: (loop: boolean) => void;
     setSrc: (src: string) => void;
     setAutoPlay: (autoplay: boolean) => void;
-    videoRef: RefObject<HTMLVideoElement | null>;
+    videoRef: RefObject<Nullable<HTMLVideoElement>>;
     videoCallback: (node: Nullable<HTMLVideoElement>) => void;
 }
 

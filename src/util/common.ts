@@ -36,9 +36,4 @@ export const getRem = () => {
     return userAgent.screenSize.getScreenHeight() * 0.0926;
 };
 
-export function isItemEmpty<T>(array: T[], at: number): boolean {
-    return !array[at];
-}
-
 export type TableIndex = [column: number, row: number];
-

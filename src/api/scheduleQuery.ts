@@ -22,6 +22,8 @@ import {
 } from '@/atom/screen/linear';
 import { toMillis } from '@/util/common';
 
+export const SCHEDULE_STALE_TIME = 1000 * 60 * 60 * 24;
+
 export const useGetSchedule = () => {
     const [isReady, setIsReady] = useState(false);
     const [channelNow, setChannelNow] = useAtom(channelNowState);
