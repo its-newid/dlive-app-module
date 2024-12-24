@@ -22,7 +22,6 @@
 
     /* Linting */
     "strict": true,
-    "strictNullChecks": false,
   },
   "include": ["src", "custom.d.ts"]
 }
