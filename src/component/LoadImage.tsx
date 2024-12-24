@@ -13,8 +13,14 @@ export interface LoadImageProps extends ClickableProps, ImgProps {
 }
 
 function LoadImage(
-    { src, alt = '', placeholderColor = theme.colors.grey80, children, ...rest }: LoadImageProps,
-    ref: ForwardedRef<HTMLDivElement>
+    {
+        src,
+        alt = '',
+        placeholderColor = theme.colors.grey80,
+        children,
+        ...rest
+    }: LoadImageProps,
+    ref: ForwardedRef<HTMLDivElement>,
 ) {
     const { isImgLoaded, setImgRef } = useImageLoaded(src ?? '');
     return (

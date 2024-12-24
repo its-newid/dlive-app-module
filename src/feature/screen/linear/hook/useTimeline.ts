@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAtomValue } from 'jotai';
-import dayjs from 'dayjs';
 import { timeBarOffsetState } from '@/atom/screen/linear';
+import dayjs from 'dayjs';
 
-export const TIME_SLOT_MILLIS = 1000 * 60 * 30; // 30 minutes
-export const TIME_SLOT_MAX_MILLIS = 1000 * 60 * 60 * 12; // 12 hours
+export const TIME_SLOT_MILLIS = 1000 * 60 * 30;
+export const TIME_SLOT_MAX_MILLIS = 1000 * 60 * 60 * 12;
 
 export const useTimeline = (openingMillis: number) => {
     const timeBarOffset = useAtomValue(timeBarOffsetState);
@@ -18,7 +18,12 @@ export const useTimeline = (openingMillis: number) => {
         setTimes(generateTimes(openingMillis));
     }, [openingMillis]);
 
-    return { times, timeBarOffset, currentSlotMillis };
+    return {
+        times,
+        timeBarOffset,
+        currentSlotMillis,
+        currentTime: new Date(currentSlotMillis),
+    };
 };
 
 const generateTimes = (millis: number = new Date().getTime()) => {
@@ -28,18 +33,20 @@ const generateTimes = (millis: number = new Date().getTime()) => {
 
     const times = [];
     for (let i = 0; i <= len; i++) {
-        times.push(format12Hour(date));
+        times.push(format24Hour(date));
         date.setMinutes(date.getMinutes() + minute);
     }
     return times;
 };
 
 export function floorToNearest30Minutes(date: Date = new Date()) {
-    return new Date(Math.floor(date.getTime() / TIME_SLOT_MILLIS) * TIME_SLOT_MILLIS);
+    return new Date(
+        Math.floor(date.getTime() / TIME_SLOT_MILLIS) * TIME_SLOT_MILLIS,
+    );
 }
 
-function format12Hour(date: Date) {
-    return dayjs(date).format('hh:mm A');
+function format24Hour(date: Date) {
+    return dayjs(date).format('HH:mm');
 }
 
 export function formatYYYYMMDD(date: Date) {
@@ -48,4 +55,8 @@ export function formatYYYYMMDD(date: Date) {
 
 export function formatMMMDD(date: Date) {
     return dayjs(date).format('MMM DD');
+}
+
+export function formatMMDD(date: Date) {
+    return dayjs(date).format('MM/DD');
 }

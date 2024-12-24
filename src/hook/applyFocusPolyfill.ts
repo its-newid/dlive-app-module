@@ -3,7 +3,7 @@ document.createElement('i').focus({
     get preventScroll() {
         supported = true;
         return false;
-    }
+    },
 });
 
 export const applyFocusPolyfill = () => {

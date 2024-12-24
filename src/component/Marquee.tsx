@@ -6,7 +6,7 @@ import {
     useLayoutEffect,
     useRef,
     useState,
-    memo
+    memo,
 } from 'react';
 import styled from 'styled-components';
 import { IExtendableStyledComponent, Nullable } from '@/type/common';
@@ -50,7 +50,7 @@ const MarqueeUtils = {
         x: offset,
         to: element,
         duration,
-        delay = 0
+        delay = 0,
     }: {
         x: number;
         to: HTMLElement;
@@ -68,24 +68,31 @@ const MarqueeUtils = {
                 transform: translate3d(${offset}px, 0, 0);
                 will-change: transform;
             `;
-    }
+    },
 };
 
 const AnimationHandlers = {
-    loop: (element: HTMLSpanElement, containerWidth: number, cleanup: () => void) => {
+    loop: (
+        element: HTMLSpanElement,
+        containerWidth: number,
+        cleanup: () => void,
+    ) => {
         let isAnimating = true;
 
         const startIteration = () => {
             if (!isAnimating) return;
 
-            const duration = MarqueeUtils.calculateDuration(element.scrollWidth, containerWidth);
+            const duration = MarqueeUtils.calculateDuration(
+                element.scrollWidth,
+                containerWidth,
+            );
 
             requestAnimationFrame(() => {
                 if (!isAnimating) return;
 
                 MarqueeUtils.setTranslate({
                     x: containerWidth,
-                    to: element
+                    to: element,
                 });
 
                 requestAnimationFrame(() => {
@@ -94,7 +101,7 @@ const AnimationHandlers = {
                     MarqueeUtils.setTranslate({
                         x: -element.scrollWidth,
                         duration,
-                        to: element
+                        to: element,
                     });
                 });
             });
@@ -116,20 +123,36 @@ const AnimationHandlers = {
         };
     },
 
-    oneWay: (element: HTMLSpanElement, width: number, containerWidth: number, delay: number) => {
-        const duration = MarqueeUtils.calculateDuration(element.scrollWidth, containerWidth);
+    oneWay: (
+        element: HTMLSpanElement,
+        width: number,
+        containerWidth: number,
+        delay: number,
+    ) => {
+        const duration = MarqueeUtils.calculateDuration(
+            element.scrollWidth,
+            containerWidth,
+        );
 
         MarqueeUtils.setTranslate({
             x: -width,
             duration,
             delay,
-            to: element
+            to: element,
         });
     },
 
-    comeback: (element: HTMLSpanElement, width: number, containerWidth: number, delay: number) => {
+    comeback: (
+        element: HTMLSpanElement,
+        width: number,
+        containerWidth: number,
+        delay: number,
+    ) => {
         let isAnimating = true;
-        const duration = MarqueeUtils.calculateDuration(element.scrollWidth, containerWidth);
+        const duration = MarqueeUtils.calculateDuration(
+            element.scrollWidth,
+            containerWidth,
+        );
 
         const onEndComeback = () => {
             if (!element || !isAnimating) return;
@@ -141,7 +164,7 @@ const AnimationHandlers = {
                     x: 0,
                     duration,
                     delay,
-                    to: element
+                    to: element,
                 });
             });
 
@@ -154,7 +177,7 @@ const AnimationHandlers = {
             x: -width,
             duration,
             delay,
-            to: element
+            to: element,
         });
 
         return () => {
@@ -167,10 +190,13 @@ const AnimationHandlers = {
         element: HTMLSpanElement,
         width: number,
         containerWidth: number,
-        delay: number
+        delay: number,
     ) => {
         let isAnimating = true;
-        const duration = MarqueeUtils.calculateDuration(element.scrollWidth, containerWidth);
+        const duration = MarqueeUtils.calculateDuration(
+            element.scrollWidth,
+            containerWidth,
+        );
 
         const onEndReset = () => {
             if (!element || !isAnimating) return;
@@ -196,14 +222,14 @@ const AnimationHandlers = {
             x: -width,
             duration,
             delay,
-            to: element
+            to: element,
         });
 
         return () => {
             isAnimating = false;
             element.removeEventListener('transitionend', onEndReset);
         };
-    }
+    },
 };
 
 export const Marquee = memo(
@@ -216,9 +242,9 @@ export const Marquee = memo(
                 enabled = true,
                 truncateIfNeeded = false,
                 text = '',
-                animationStyle = 'oneWay'
+                animationStyle = 'oneWay',
             },
-            ref
+            ref,
         ) => {
             const [displayText, setDisplayText] = useState(text);
             const spanRef = useRef<HTMLSpanElement>(null);
@@ -254,24 +280,29 @@ export const Marquee = memo(
                         containerWidth,
                         () => {
                             animationCleanupRef.current = null;
-                        }
+                        },
                     );
                 } else if (animationStyle === 'comeback') {
                     animationCleanupRef.current = AnimationHandlers.comeback(
                         spanRef.current,
                         width,
                         containerWidth,
-                        delay
+                        delay,
                     );
                 } else if (animationStyle === 'oneWayReset') {
                     animationCleanupRef.current = AnimationHandlers.oneWayReset(
                         spanRef.current,
                         width,
                         containerWidth,
-                        delay
+                        delay,
                     );
                 } else if (animationStyle === 'oneWay') {
-                    AnimationHandlers.oneWay(spanRef.current, width, containerWidth, delay);
+                    AnimationHandlers.oneWay(
+                        spanRef.current,
+                        width,
+                        containerWidth,
+                        delay,
+                    );
                 }
             }, [animationStyle, delay]);
 
@@ -308,9 +339,9 @@ export const Marquee = memo(
                             }
                             return text;
                         });
-                    }
+                    },
                 }),
-                [handleMarquee, updateTruncateState]
+                [handleMarquee, updateTruncateState],
             );
 
             useLayoutEffect(() => {
@@ -343,8 +374,8 @@ export const Marquee = memo(
                     </Content>
                 </Container>
             );
-        }
-    )
+        },
+    ),
 );
 
 Marquee.displayName = 'Marquee';

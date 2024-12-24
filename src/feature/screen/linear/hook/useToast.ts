@@ -4,7 +4,7 @@ import { isToastVisibleState } from '@/atom/screen/linear';
 
 export const TOAST_ANIMATION = {
     DURATION: 500,
-    DELAY: 2500
+    DELAY: 2500,
 };
 
 const useToast = () => {
@@ -30,7 +30,9 @@ const useToast = () => {
         setMessage(message);
         setIsToastVisible(true);
 
-        setTimer(TOAST_ANIMATION.DELAY)(() => setTimer(TOAST_ANIMATION.DURATION)(removeToast));
+        setTimer(TOAST_ANIMATION.DELAY)(() =>
+            setTimer(TOAST_ANIMATION.DURATION)(removeToast),
+        );
     };
 
     const removeToast = () => {

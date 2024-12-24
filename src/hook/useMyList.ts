@@ -20,7 +20,7 @@ const useMyList = () => {
         setState((prev: TMyListContents) => {
             return {
                 ...prev,
-                [type]: [...prev[type].filter((id) => id !== contentId)]
+                [type]: [...prev[type].filter((id) => id !== contentId)],
             };
         });
     };

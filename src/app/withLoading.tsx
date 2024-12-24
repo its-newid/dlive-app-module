@@ -1,6 +1,6 @@
 import React from 'react';
-import { ErrorPage } from '../component/ErrorPage';
-import { LoadingSpinner } from '../component/LoadingSpinner';
+import { ErrorPage } from '@/component/ErrorPage';
+import { LoadingSpinner } from '@/component/LoadingSpinner';
 import styled from 'styled-components';
 import { useGetSchedule } from '@/api/scheduleQuery.ts';
 
@@ -8,7 +8,13 @@ export const withLoading = (WrappedComponent: React.ComponentType) => {
     return function Component() {
         const { isLoading, isError } = useGetSchedule();
 
-        return isError ? <ErrorPage /> : isLoading ? <Loader /> : <WrappedComponent />;
+        return isError ? (
+            <ErrorPage />
+        ) : isLoading ? (
+            <Loader />
+        ) : (
+            <WrappedComponent />
+        );
     };
 };
 

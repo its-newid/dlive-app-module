@@ -22,19 +22,3 @@ export type ScheduleResponse = {
     startAt: number;
     endAt: number;
 };
-
-// export type CategoryResponse = {
-//     idx: number;
-//     name: string;
-//     linear: CategoryContentResponse[];
-//     avod: CategoryContentResponse[];
-// };
-
-// type CategoryContentResponse = {
-//     idx: number;
-//     categoryIdx: number;
-//     contentId: string;
-//     type: ContentType;
-//     thumbUrl: ThumbType;
-//     title: string;
-// };

@@ -3,43 +3,50 @@ import { atom, SetStateAction } from 'jotai/index';
 export default function atomWithDebounce<T>(
     initialValue: T,
     delayMilliseconds = 500,
-    shouldDebounceOnReset = false
+    shouldDebounceOnReset = false,
 ) {
-    const prevTimeoutAtom = atom<ReturnType<typeof setTimeout> | undefined>(undefined);
+    const prevTimeoutAtom = atom<ReturnType<typeof setTimeout> | undefined>(
+        undefined,
+    );
 
     const _currentValueAtom = atom(initialValue);
     const isDebouncingAtom = atom(false);
 
-    const debouncedValueAtom = atom(initialValue, (get, set, update: SetStateAction<T>) => {
-        clearTimeout(get(prevTimeoutAtom));
+    const debouncedValueAtom = atom(
+        initialValue,
+        (get, set, update: SetStateAction<T>) => {
+            clearTimeout(get(prevTimeoutAtom));
 
-        const prevValue = get(_currentValueAtom);
-        const nextValue =
-            typeof update === 'function' ? (update as (prev: T) => T)(prevValue) : update;
+            const prevValue = get(_currentValueAtom);
+            const nextValue =
+                typeof update === 'function'
+                    ? (update as (prev: T) => T)(prevValue)
+                    : update;
 
-        const onDebounceStart = () => {
-            set(_currentValueAtom, nextValue);
-            set(isDebouncingAtom, true);
-        };
+            const onDebounceStart = () => {
+                set(_currentValueAtom, nextValue);
+                set(isDebouncingAtom, true);
+            };
 
-        const onDebounceEnd = () => {
-            set(debouncedValueAtom, nextValue);
-            set(isDebouncingAtom, false);
-        };
+            const onDebounceEnd = () => {
+                set(debouncedValueAtom, nextValue);
+                set(isDebouncingAtom, false);
+            };
 
-        onDebounceStart();
+            onDebounceStart();
 
-        if (!shouldDebounceOnReset && nextValue === initialValue) {
-            onDebounceEnd();
-            return;
-        }
+            if (!shouldDebounceOnReset && nextValue === initialValue) {
+                onDebounceEnd();
+                return;
+            }
 
-        const nextTimeoutId = setTimeout(() => {
-            onDebounceEnd();
-        }, delayMilliseconds);
+            const nextTimeoutId = setTimeout(() => {
+                onDebounceEnd();
+            }, delayMilliseconds);
 
-        set(prevTimeoutAtom, nextTimeoutId);
-    });
+            set(prevTimeoutAtom, nextTimeoutId);
+        },
+    );
 
     const clearTimeoutAtom = atom(null, (get, set) => {
         clearTimeout(get(prevTimeoutAtom));
@@ -57,6 +64,6 @@ export default function atomWithDebounce<T>(
         isDebouncingAtom,
         clearTimeoutAtom,
         debouncedValueAtom,
-        initialAtom
+        initialAtom,
     };
 }

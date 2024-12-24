@@ -1,79 +1,115 @@
-import { useCallback, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useAtomCallback } from 'jotai/utils';
+import { useCallback, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useAtom, useSetAtom } from 'jotai';
 import { appService } from '@/api/service/app';
 import { ScheduleResponse } from '@/api/model/schedule';
+import { LinearResponse } from '@/api/model/app';
 import { DEFAULT_LOCALE } from '@/app/environment';
-import { lastUpdatedTimeState } from '@/atom/app';
-import { channelsState, scheduleEnabledState } from '@/atom/screen';
+import { lastUpdatedTimeState, writeWatchHistory } from '@/atom/app';
+import {
+    channelNowState,
+    channelsState,
+    onAirScheduleEndTimeState,
+    onAirScheduleState,
+    readInitialChannel,
+} from '@/atom/screen';
 import { QueryKeys } from '@/type/queryKey';
-import { ChannelEpisode } from '@/type/linear';
-
-const TWENTY_FOUR_HOURS_IN_MS = 1000 * 60 * 60 * 24;
+import { Channel } from '@/type/linear';
+import { useAtomCallback } from 'jotai/utils';
+import {
+    findAiringEpisode,
+    scheduleOfChannelSelector,
+} from '@/atom/screen/linear';
+import { toMillis } from '@/util/common';
 
 export const useGetSchedule = () => {
-    const { lang, country } = DEFAULT_LOCALE;
-    const setScheduleEnabled = useSetAtom(scheduleEnabledState);
+    const [isReady, setIsReady] = useState(false);
+    const [channelNow, setChannelNow] = useAtom(channelNowState);
     const setLastAppQueryTime = useSetAtom(lastUpdatedTimeState);
     const setChannels = useSetAtom(channelsState);
-    const getChannels = useAtomCallback(useCallback((get) => get(channelsState), []));
-    const lastAppQueryTime = useAtomValue(lastUpdatedTimeState);
-
-    const queryClient = useQueryClient();
-
-    const cachedData = queryClient.getQueryData([QueryKeys.SCHEDULE]);
+    const getInitialChannel = useAtomCallback(
+        useCallback((get) => get(readInitialChannel), []),
+    );
+    const { lang, country } = DEFAULT_LOCALE;
 
     const { data, isLoading, isError, isRefetching, refetch } = useQuery({
         queryKey: [QueryKeys.SCHEDULE],
         queryFn: () => {
-            console.log('Fetching schedule...');
             return appService.fetchSchedule({ lang, country });
         },
-        select: useCallback(transformData, []),
-        staleTime: TWENTY_FOUR_HOURS_IN_MS,
-        gcTime: TWENTY_FOUR_HOURS_IN_MS,
-        refetchOnReconnect: true, // 네트워크 재연결 시 refetch
-        refetchOnMount: false, // 마운트 시 refetch 방지
-        refetchOnWindowFocus: false, // 윈도우 포커스 시 refetch 방지
-        enabled:
-            !cachedData ||
-            lastAppQueryTime === 0 ||
-            Date.now() - lastAppQueryTime > TWENTY_FOUR_HOURS_IN_MS
+        select: useCallback(
+            (data: ScheduleResponse) => transformData(data),
+            [],
+        ),
+        staleTime: 60 * 60 * 1000,
+        gcTime: 2 * 60 * 60 * 1000,
+        refetchOnReconnect: true,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchInterval: 60 * 60 * 1000,
     });
 
     useEffect(() => {
         if (!data || isRefetching) return;
-
+        setChannels(data);
         setLastAppQueryTime(Date.now());
+        setChannelNow(getInitialChannel());
+        setIsReady(true);
+    }, [data, isRefetching, setChannels, setLastAppQueryTime]);
 
-        const newChannels = getChannels();
-        const updatedChannels = newChannels.map((channel) => ({
-            ...channel,
-            schedule: data[channel.contentId] || channel.schedule
-        }));
+    const updateSchedule = useAtomCallback(
+        useCallback((get, set, channel: Channel | null) => {
+            if (!channel) return;
 
-        setChannels(updatedChannels);
-        setScheduleEnabled(false);
-    }, [data, isRefetching]);
+            const current = Date.now();
+            const schedule =
+                get(scheduleOfChannelSelector(channel.contentId)) ?? [];
+            const airingEpisode = findAiringEpisode(schedule, current);
+
+            set(onAirScheduleState, airingEpisode);
+            set(
+                onAirScheduleEndTimeState,
+                airingEpisode ? toMillis(airingEpisode.endAt) : -1,
+            );
+
+            if (airingEpisode) {
+                set(writeWatchHistory, {
+                    type: 'linear',
+                    content: {
+                        contentId: channel.contentId,
+                    },
+                });
+            }
+        }, []),
+    );
+
+    useEffect(() => {
+        if (!channelNow) return;
+        updateSchedule(channelNow);
+    }, [channelNow, updateSchedule]);
 
     return {
         isRefetching,
-        isLoading,
+        isLoading: isLoading || !isReady,
         isError,
-        refetch
+        refetch,
     };
 };
 
 const transformData = (data: ScheduleResponse) => {
-    return data.reduce(
-        (acc, linear) => {
-            acc[linear.contentId] = linear.schedule.map((schedule) => ({
-                ...schedule,
-                channelId: linear.contentId
-            }));
-            return acc;
-        },
-        {} as Record<string, ChannelEpisode[]>
-    );
+    const transformedChannels = data.map((channel) => mapToChannel(channel));
+    return transformedChannels;
+};
+
+const mapToChannel = (channel: LinearResponse): Channel => {
+    const { schedule, ...rest } = channel;
+
+    return {
+        ...rest,
+        categoryIdx: 1,
+        schedule: schedule.map((schedule) => ({
+            ...schedule,
+            channelId: channel.contentId,
+        })),
+    };
 };

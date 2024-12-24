@@ -6,35 +6,41 @@ import { Optional } from '@/type/common';
 import { Channel } from '@/type/linear';
 import { RoutePath } from '@/type/routePath';
 import useOverlay from '@/feature/screen/linear/hook/useOverlay';
-import { channelNowState, channelSelector, selectedChannelSelector } from '@/atom/screen';
+import {
+    channelNowState,
+    channelSelector,
+    selectedChannelSelector,
+} from '@/atom/screen';
 import { LiveScreenOverlayType } from '@/atom/screen/linear';
 
 export const ChannelUpdateState = {
     PENDING: 'PENDING',
-    SUCCESS: 'SUCCESS'
+    SUCCESS: 'SUCCESS',
 } as const;
-export type ChannelUpdateState = (typeof ChannelUpdateState)[keyof typeof ChannelUpdateState];
+export type ChannelUpdateState =
+    (typeof ChannelUpdateState)[keyof typeof ChannelUpdateState];
 
 export function useParamsUpdate() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [channelUpdateState, setChannelUpdateState] = useState<ChannelUpdateState>(
-        ChannelUpdateState.PENDING
-    );
+    const [channelUpdateState, setChannelUpdateState] =
+        useState<ChannelUpdateState>(ChannelUpdateState.PENDING);
 
     const setChannelNow = useAtomCallback(
         useCallback((_, set, channel: Optional<Channel>) => {
             set(channelNowState, channel);
-        }, [])
+        }, []),
     );
 
-    const getCurrentChannel = useAtomCallback(useCallback((get) => get(channelNowState), []));
+    const getCurrentChannel = useAtomCallback(
+        useCallback((get) => get(channelNowState), []),
+    );
 
     const getChannelById = useAtomCallback(
         useCallback((get, _, channelId: string) => {
             return get(channelSelector(channelId));
-        }, [])
+        }, []),
     );
 
     useEffect(() => {
@@ -70,13 +76,16 @@ export function useInitialOverlay() {
 
     const setGuideChannel = useSetAtom(selectedChannelSelector);
 
-    const getCurrentChannel = useAtomCallback(useCallback((get) => get(channelNowState), []));
+    const getCurrentChannel = useAtomCallback(
+        useCallback((get) => get(channelNowState), []),
+    );
 
     useEffect(() => {
         const currentChannel = getCurrentChannel();
         if (!currentChannel) return;
 
-        const overlay = state?.overlayType ?? LiveScreenOverlayType.CHANNEL_BANNER;
+        const overlay =
+            state?.overlayType ?? LiveScreenOverlayType.CHANNEL_BANNER;
 
         const isGuideOverlay = overlay === LiveScreenOverlayType.GUIDE;
         if (isGuideOverlay) {
@@ -92,6 +101,7 @@ export function useInitialOverlay() {
         };
 
         window.addEventListener('beforeunload', clearStateOnPageLoad);
-        return () => window.removeEventListener('beforeunload', clearStateOnPageLoad);
+        return () =>
+            window.removeEventListener('beforeunload', clearStateOnPageLoad);
     }, []);
 }

@@ -25,7 +25,7 @@ const useAriaLabelUpdater = () => {
 
     return {
         ariaLabelRef,
-        updateAriaLabel
+        updateAriaLabel,
     };
 };
 

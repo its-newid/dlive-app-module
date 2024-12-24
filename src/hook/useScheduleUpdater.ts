@@ -2,7 +2,10 @@ import { toMillis } from '@/util/common';
 import { useCallback, useEffect, useRef } from 'react';
 import { Optional } from '@/type/common';
 import { Channel, ChannelEpisode } from '@/type/linear';
-import { findAiringEpisode, scheduleOfChannelSelector } from '@/atom/screen/linear';
+import {
+    findAiringEpisode,
+    scheduleOfChannelSelector,
+} from '@/atom/screen/linear';
 import { useAtomCallback } from 'jotai/utils';
 import { lastUpdatedTimeState } from '@/atom/app';
 import { SCHEDULE_STALE_TIME, useGetSchedule } from '@/api/scheduleQuery';
@@ -13,7 +16,7 @@ export const useScheduleUpdater = ({
     channel,
     scheduleEndTime,
     setSchedule,
-    setScheduleEndTime
+    setScheduleEndTime,
 }: {
     channel: Optional<Channel>;
     scheduleEndTime: number;
@@ -26,13 +29,16 @@ export const useScheduleUpdater = ({
         useCallback(
             (get, _, channel: Channel) =>
                 get(scheduleOfChannelSelector(channel?.contentId ?? '')) ?? [],
-            []
-        )
+            [],
+        ),
     );
 
-    const subscribeToUpdateCallback = useCallback((callback: Optional<() => void>) => {
-        savedCallback.current = callback;
-    }, []);
+    const subscribeToUpdateCallback = useCallback(
+        (callback: Optional<() => void>) => {
+            savedCallback.current = callback;
+        },
+        [],
+    );
 
     useEffect(() => {
         setScheduleEndTime(-1);
@@ -45,7 +51,7 @@ export const useScheduleUpdater = ({
         useCallback(() => {
             const currentTime = Date.now();
             return currentTime - lastQueryTime >= SCHEDULE_STALE_TIME;
-        }, [lastQueryTime])
+        }, [lastQueryTime]),
     );
 
     const { refetch } = useGetSchedule();
@@ -72,7 +78,9 @@ export const useScheduleUpdater = ({
             const airingEpisode = findAiringEpisode(schedule ?? [], current);
 
             setSchedule(airingEpisode);
-            setScheduleEndTime(airingEpisode ? toMillis(airingEpisode.endAt) : -1);
+            setScheduleEndTime(
+                airingEpisode ? toMillis(airingEpisode.endAt) : -1,
+            );
         };
 
         updateSchedule();

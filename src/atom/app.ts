@@ -1,15 +1,10 @@
-// import { getLanguage, splitLanguageAndCountry } from '@/hook/loadLocaleMessage';
+import { atomWithLocalStorage } from '../util/localStorage.atom';
 import { atom } from 'jotai';
+import { ContentType } from '../type/common';
+import { ChannelEpisode } from '../type/linear';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-// import { DEFAULT_LOCALE } from '@/app/environment';
-import { ContentKind, ContentType } from '@/type/common';
-import { ChannelEpisode } from '@/type/linear';
-import { atomWithSessionStorage } from '@/util/sessionStorage.atom';
-
-// type TLocale = {
-//     lang: string;
-//     country: string;
-// };
+import { PrimitiveAtom } from 'jotai/vanilla';
+import { useCallback } from 'react';
 
 export type TMyListContents = {
     [val in ContentType]: string[];
@@ -21,49 +16,30 @@ export type TWatchedContent = {
     linear: LinearWatchHistory[];
 };
 
-export const uuidState = atomWithStorage('uuid', '');
+export const uuidState = atomWithLocalStorage('uuid', '');
 
-// const getInitialLocale = (): TLocale => {
-//     const [language, country] = splitLanguageAndCountry(navigator.language);
-//     return {
-//         lang: getLanguage(language) ?? DEFAULT_LOCALE.lang,
-//         country: country ?? DEFAULT_LOCALE.country
-//     };
-// };
-
-// export const localeState = atomWithStorage<TLocale>('locale', getInitialLocale());
-
-// export const languageSelector = atom(
-//     (get) => {
-//         const locale = get(localeState);
-//         return locale.lang;
-//     },
-//     (get, set, code: string) => {
-//         const lang = getLanguage(code) ?? DEFAULT_LOCALE.lang;
-//         const locale = get(localeState);
-//         set(localeState, {
-//             ...locale,
-//             lang: lang
-//         });
-//     }
-// );
-
-export const isFirstLaunchState = atomWithStorage('isFirstLaunch', true);
+export const isFirstLaunchState = atomWithLocalStorage('isFirstLaunch', true);
 
 const initialMyListContent = Object.values(ContentType).reduce((acc, val) => {
     return { ...acc, [val]: [] };
 }, {} as TMyListContents);
-export const mylistState = atomWithStorage<TMyListContents>('favorite', initialMyListContent);
+
+export const mylistState = atomWithStorage<TMyListContents>(
+    'favorite',
+    initialMyListContent,
+);
 
 const initialWatchHistoryContent: TWatchedContent = {
-    linear: []
+    linear: [],
 };
+
 export const watchHistoryState = atomWithStorage<TWatchedContent>(
     'watch',
-    initialWatchHistoryContent
+    initialWatchHistoryContent,
 );
 
 const MAX_WATCH_HISTORY_COUNT = 30;
+
 export const writeWatchHistory = atom(
     null,
     (
@@ -71,16 +47,18 @@ export const writeWatchHistory = atom(
         set,
         item: {
             content: LinearWatchHistory;
-            type: ContentKind<ContentType>;
-        }
+            type: ContentType;
+        },
     ) => {
         const watchedContents = get(watchHistoryState);
         const { content, type } = item;
 
-        const history = watchedContents.linear;
+        const history = watchedContents[type];
         if (!history) return;
 
-        const existingIndex = history.findIndex((item) => item.contentId === content.contentId);
+        const existingIndex = history.findIndex(
+            (item) => item.contentId === content.contentId,
+        );
 
         if (existingIndex !== -1) {
             const updatedHistory = [...history];
@@ -93,7 +71,7 @@ export const writeWatchHistory = atom(
 
             set(watchHistoryState, {
                 ...watchedContents,
-                [type]: updatedHistory
+                [type]: updatedHistory,
             });
         } else {
             const updatedHistory = [...history];
@@ -105,81 +83,27 @@ export const writeWatchHistory = atom(
 
             set(watchHistoryState, {
                 ...watchedContents,
-                [type]: updatedHistory
+                [type]: updatedHistory,
             });
         }
-    }
-);
-
-export const deleteWatchHistory = atom(
-    null,
-    (
-        get,
-        set,
-        item: {
-            content: LinearWatchHistory;
-            type: ContentKind<ContentType>;
-        }
-    ) => {
-        const history = get(watchHistoryState);
-
-        const existingIndex = history.linear?.findIndex(
-            (history) => history.contentId === item.content.contentId
-        );
-        if (existingIndex === -1) return;
-
-        set(watchHistoryState, {
-            ...history,
-            linear: history.linear.filter((vod) => item.content.contentId !== vod.contentId)
-        });
-    }
-);
-
-export const clearWatchHistoryAtom = atom(null, (get, set, type: ContentKind<ContentType>) => {
-    const history = get(watchHistoryState);
-
-    set(watchHistoryState, {
-        ...history,
-        [type]: []
-    });
-});
-
-export const clearSearchHistoryAtom = atom(null, (_, set) => {
-    set(searchKeywordHistoryState, []);
-});
-
-export const clearAllWatchHistoryAtom = atom(null, (_, set) => {
-    set(watchHistoryState, initialWatchHistoryContent);
-});
-
-export const searchKeywordHistoryState = atomWithStorage<string[]>('searchKeywords', []);
-
-const MAX_SEARCH_HISTORY_COUNT = 10;
-export const searchKeywordHistorySelector = atom(
-    (get) => {
-        const list = get(searchKeywordHistoryState);
-        return [...list].reverse();
     },
-    (get, set, keyword: string) => {
-        const histories = get(searchKeywordHistoryState);
-
-        if (histories.includes(keyword)) {
-            const index = histories.indexOf(keyword);
-            histories.splice(index, 1);
-        }
-
-        if (histories.length >= MAX_SEARCH_HISTORY_COUNT) {
-            histories.shift();
-        }
-
-        set(searchKeywordHistoryState, [...histories, keyword]);
-    }
 );
 
-export const lastUpdatedTimeState = atomWithSessionStorage<number>('lastUpdatedTime', 0);
 
-export const ipState = atomWithStorage<string>(
-    'ip',
-    '',
-    createJSONStorage(() => sessionStorage)
+export const lastUpdatedTimeState = atomWithStorage<number>(
+    'lastUpdatedTime',
+    0,
+    createJSONStorage(() => sessionStorage),
 );
+
+export function useReducerAtom<Value, Action>(
+    anAtom: PrimitiveAtom<Value>,
+    reducer: (v: Value, a: Action) => Value,
+) {
+    const [state, setState] = useAtom(anAtom);
+    const dispatch = useCallback(
+        (action: Action) => setState((prev) => reducer(prev, action)),
+        [setState, reducer],
+    );
+    return [state, dispatch] as const;
+}

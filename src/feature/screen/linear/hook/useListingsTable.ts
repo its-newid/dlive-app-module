@@ -1,46 +1,60 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { CustomKeyboardEvent, FlexDirection, Nullable, Optional } from '@/type/common';
-import { containTabIndex, getChildrenOfElement } from '@/util/getChildrenOfElement';
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
+import {
+    CustomKeyboardEvent,
+    FlexDirection,
+    Nullable,
+    Optional,
+} from '@/type/common';
+import {
+    containTabIndex,
+    getChildrenOfElement,
+} from '@/util/getChildrenOfElement';
 import { DOWN, LEFT, RIGHT, UP } from '@/util/eventKey';
 import { coerceIn, getRem, TableIndex } from '@/util/common';
 import { TimeBarOffsetValues } from '@/atom/screen/linear';
 import { useViewportSize } from '@/hook/useViewportSize';
-import { makeKeyboardEvent } from '@/util/makeKeyboardEvent';
+// import { makeKeyboardEvent } from '@/util/makeKeyboardEvent';
 import { getTransformMatrixValues } from '@/util/getTransformMaxrixValues';
 
 export const COMMON_SELECTED_ROW_INDEX = 2;
 
-type Props<T> = {
+interface Props<T> {
     items: T[];
     enabled: boolean;
     selectedColumnIndex: number;
     timeBarOffsetValues: TimeBarOffsetValues;
-};
+}
 
-type Return = {
+interface Return {
     offset: number;
     getSelectedItemIndex: () => Nullable<TableIndex>;
     selectItem: (index: TableIndex) => void;
     setListRef: (node: Nullable<HTMLElement>) => void;
-};
+}
 
-type State = {
+interface State {
     enabled: boolean;
     timeBarOffsetValues: Nullable<TimeBarOffsetValues>;
     selectedColumnItem: Nullable<HTMLElement>;
     selectedIndex: Nullable<TableIndex>;
-};
+}
 
-type Style = {
+interface Style {
     columns: HTMLElement[];
     rows: HTMLElement[][];
-};
+}
 
 export function useListingsTable<T>({
     items,
     enabled,
     selectedColumnIndex,
-    timeBarOffsetValues
+    timeBarOffsetValues,
 }: Props<T>): Return {
     const containerRef = useRef<Optional<HTMLElement>>(undefined);
     const styleRef = useRef(defaultStyle);
@@ -66,18 +80,18 @@ export function useListingsTable<T>({
         const [columnIndex] = index;
         const targetColumn = styleRef.current.columns[columnIndex];
         if (!targetColumn) return;
-
         const fixedIndex = columnIndex - 2;
 
         const [_, translateY] = getTransformMatrixValues(containerRef.current);
         const isInViewport = isElementInViewport({
             item: targetColumn,
             container: containerRef.current,
-            offset: translateY
+            offset: translateY,
         });
 
+        // 밑에 공백 조정
         const adjustedIndex = isInViewport ? fixedIndex : fixedIndex + 1;
-        const offset = -110 * coerceIn(adjustedIndex, 0, 3);
+        const offset = -110 * coerceIn(adjustedIndex, 0, 1);
         setOffset(offset);
     };
 
@@ -99,16 +113,38 @@ export function useListingsTable<T>({
 
         if (keyCode === UP || keyCode === DOWN) {
             const delta = keyCode === UP ? -1 : 1;
-            const [, rowIndex] = selectedIndex;
-            const targetColumnIndex = coerceIn(
-                selectedColumnIndex + delta,
+            const [currentChannelIndex, episodeIndex] = selectedIndex;
+
+            const targetChannelIndex = coerceIn(
+                currentChannelIndex + delta,
                 0,
-                style.columns.length - 1
+                style.columns.length - 1,
             );
 
-            stateRef.current.selectedColumnItem = style.columns[targetColumnIndex];
-            const targetRowIndex = Math.min(Math.min(2, rowIndex), style.rows.length - 1);
-            selectItem([targetColumnIndex, targetRowIndex]);
+            stateRef.current.selectedColumnItem =
+                style.columns[targetChannelIndex];
+
+            const newChannelRows = style.rows[targetChannelIndex];
+            const lastIndexOfNewChannel = newChannelRows.length - 1;
+            const targetEpisodeIndex =
+                // 현재 에피소드 인덱스가 2 미만이면 2로 조정 (fav/thumbnail 보호)
+                episodeIndex < COMMON_SELECTED_ROW_INDEX
+                    ? COMMON_SELECTED_ROW_INDEX
+                    : // 현재 에피소드 인덱스가 새 채널의 범위 내에 있으면 유지
+                      episodeIndex < newChannelRows.length
+                      ? episodeIndex
+                      : // 범위를 벗어났을 때:
+                        // 새 채널의 마지막 인덱스가 2보다 작으면 2 유지
+                        lastIndexOfNewChannel < COMMON_SELECTED_ROW_INDEX
+                        ? COMMON_SELECTED_ROW_INDEX
+                        : // 그렇지 않으면 마지막 인덱스 사용
+                          lastIndexOfNewChannel;
+            stateRef.current = {
+                ...stateRef.current,
+                selectedIndex: [targetChannelIndex, targetEpisodeIndex],
+            };
+
+            selectItem([targetChannelIndex, targetEpisodeIndex]);
         }
 
         if (keyCode === LEFT || keyCode === RIGHT) {
@@ -118,7 +154,11 @@ export function useListingsTable<T>({
             if (!timeBarOffsetValues) return;
 
             const [, rowIndex] = selectedIndex;
-            const { value: offset, min: minOffset, max: maxOffset } = timeBarOffsetValues;
+            const {
+                value: offset,
+                min: minOffset,
+                max: maxOffset,
+            } = timeBarOffsetValues;
 
             const targetIndex = rowIndex + delta;
             let minIndex;
@@ -137,25 +177,21 @@ export function useListingsTable<T>({
             const targetRowIndex = coerceIn(
                 targetIndex,
                 minIndex,
-                isLastRowReached ? maxIndex : shouldChangeBeginningOfRow ? 2 : maxIndex
+                isLastRowReached
+                    ? maxIndex
+                    : shouldChangeBeginningOfRow
+                      ? 2
+                      : maxIndex,
             );
             selectItem([selectedColumnIndex, targetRowIndex]);
-        }
-    }, []);
-
-    const handleWheel = useCallback((event: WheelEvent) => {
-        if (stateRef.current.enabled) {
-            handleKeyDown(makeKeyboardEvent('keydown')(event));
         }
     }, []);
 
     useEffect(() => {
         if (!containerRef.current) return;
 
-        window.addEventListener('wheel', handleWheel);
         containerRef.current.addEventListener('keydown', handleKeyDown);
         return () => {
-            window.removeEventListener('wheel', handleWheel);
             containerRef.current?.removeEventListener('keydown', handleKeyDown);
         };
     }, [containerRef]);
@@ -166,42 +202,46 @@ export function useListingsTable<T>({
 
             containerRef.current = node;
 
-            const columns = getChildrenOfElement(node).filter((child) => containTabIndex(child));
+            const columns = getChildrenOfElement(node).filter((child) =>
+                containTabIndex(child),
+            );
             const rows = columns
                 .map((element) => findFocusableItem(element))
-                .filter((arr) => arr.length);
+                .filter((arr) => arr.length); // 빈 배열 제거
             styleRef.current = {
                 columns,
-                rows
+                rows,
             };
 
             const { current: state } = stateRef;
             const { selectedIndex } = state;
             let newIndex: TableIndex;
             if (selectedIndex) {
+                // 기존 선택 위치 유지하되 채널만 업데이트
                 const [, selectedRowIndex] = selectedIndex;
                 newIndex = [selectedColumnIndex, selectedRowIndex];
             } else {
+                // 새로운 위치 (선택된 채널, 기본 row 인덱스)
                 newIndex = [selectedColumnIndex, COMMON_SELECTED_ROW_INDEX];
             }
             stateRef.current = {
                 selectedIndex: newIndex,
                 selectedColumnItem: columns[selectedColumnIndex],
                 timeBarOffsetValues,
-                enabled
+                enabled,
             };
 
             enabled && selectItem(newIndex);
             updateOffset();
         },
-        [enabled, timeBarOffsetValues, selectedColumnIndex, items]
+        [enabled, timeBarOffsetValues, selectedColumnIndex, items],
     );
 
     return {
         setListRef,
         offset,
         selectItem,
-        getSelectedItemIndex
+        getSelectedItemIndex,
     };
 }
 
@@ -224,12 +264,12 @@ const defaultState: State = {
     enabled: false,
     timeBarOffsetValues: null,
     selectedColumnItem: null,
-    selectedIndex: null
+    selectedIndex: null,
 };
 
 const defaultStyle: Style = {
     columns: [],
-    rows: []
+    rows: [],
 };
 
 export function useItemNumbersInListings() {
@@ -245,10 +285,14 @@ export function useItemNumbersInListings() {
 
         const table = getChildrenOfElement(node)?.[0];
         if (table) {
-            focusableItem = getChildrenOfElement(table).find((child) => containTabIndex(child));
+            focusableItem = getChildrenOfElement(table).find((child) =>
+                containTabIndex(child),
+            );
         }
 
-        const itemHeight = focusableItem ? focusableItem.offsetHeight : (110 * getRem()) / 100;
+        const itemHeight = focusableItem
+            ? focusableItem.offsetHeight
+            : (110 * getRem()) / 100;
 
         const itemNumbers = Math.round(size / itemHeight);
         setItemNumbers(itemNumbers);
@@ -260,7 +304,7 @@ export function useItemNumbersInListings() {
 function isElementInViewport({
     container,
     item,
-    offset
+    offset,
 }: {
     container: HTMLElement;
     item: HTMLElement;
@@ -275,5 +319,8 @@ function isElementInViewport({
     const adjustedItemTop = itemRect.top + offset;
     const adjustedItemBottom = itemRect.bottom + offset;
 
-    return adjustedItemTop >= parentRect.top && adjustedItemBottom <= parentRect.bottom;
+    return (
+        adjustedItemTop >= parentRect.top &&
+        adjustedItemBottom <= parentRect.bottom
+    );
 }

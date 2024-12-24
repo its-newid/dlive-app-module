@@ -6,13 +6,16 @@ import { t } from 'i18next';
 
 export const Menu = {
     HOME: 0,
-    EXIT: 1
+    EXIT: 1,
 } as const;
 
 export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [currentFocus, setCurrentFocus] = useState<number>(Menu.EXIT);
-    const buttonRefs: RefObject<Optional<HTMLElement | null>>[] = [useRef(null), useRef(null)];
+    const buttonRefs: RefObject<Optional<HTMLElement | null>>[] = [
+        useRef(null),
+        useRef(null),
+    ];
 
     const handleGoHome = () => {
         if (!isOnline) return;
@@ -63,13 +66,18 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
 
     return (
         <Container onKeyDown={onDefaultUIEvent(handleEscapeKeyDown)}>
-            <Column aria-live={'polite'} aria-labelledby={`title desc btn-${currentFocus}`}>
+            <Column
+                aria-live={'polite'}
+                aria-labelledby={`title desc btn-${currentFocus}`}
+            >
                 <Title id={'title'}>{t('network_error_title')}</Title>
-                <Description id={'desc'}>{t('network_error_description')}</Description>
+                <Description id={'desc'}>
+                    {t('network_error_description')}
+                </Description>
                 <Row>
                     <Button
                         role={'button'}
-                        enabled={isOnline}
+                        $enabled={isOnline}
                         onKeyDown={onDefaultUIEvent(handleHomeButtonKeyDown)}
                         onClick={handleGoHome}
                         ref={(node) => {
@@ -84,7 +92,7 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                         role={'button'}
                         onKeyDown={onDefaultUIEvent(handleExitButtonKeyDown)}
                         onClick={handleExit}
-                        enabled
+                        $enabled
                         ref={(node) => {
                             if (node) {
                                 buttonRefs[Menu.EXIT].current = node;
@@ -138,7 +146,7 @@ const Row = styled.div`
 `;
 
 const Button = styled.div.attrs({ tabIndex: 0 })<{
-    enabled: boolean;
+    $enabled: boolean;
 }>`
     margin-top: 86rem;
     width: fit-content;
@@ -154,8 +162,8 @@ const Button = styled.div.attrs({ tabIndex: 0 })<{
         text-align: center;
         font: ${({ theme }) =>
             `${theme.fonts.weight.bold} 36rem/44rem ${theme.fonts.family.pretendard}`};
-        color: ${({ theme, enabled }) =>
-            enabled ? theme.colors.whiteAlpha95 : theme.colors.whiteAlpha50};
+        color: ${({ theme, $enabled }) =>
+            $enabled ? theme.colors.whiteAlpha95 : theme.colors.whiteAlpha50};
     }
 
     :focus {
@@ -168,9 +176,11 @@ const Button = styled.div.attrs({ tabIndex: 0 })<{
 
     :hover:not(:focus) {
         > span {
-            color: ${({ theme, enabled }) => enabled && theme.colors.whiteAlpha95};
+            color: ${({ theme, $enabled }) =>
+                $enabled && theme.colors.whiteAlpha95};
         }
 
-        background-color: ${({ theme, enabled }) => enabled && theme.colors.grey50};
+        background-color: ${({ theme, $enabled }) =>
+            $enabled && theme.colors.grey50};
     }
 `;

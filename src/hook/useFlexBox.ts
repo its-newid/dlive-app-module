@@ -1,9 +1,14 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
-import { CustomKeyboardEvent, FlexDirection, Nullable, Optional } from '@/type/common';
+import {
+    CustomKeyboardEvent,
+    FlexDirection,
+    Nullable,
+    Optional,
+} from '@/type/common';
 import { coerceIn, isItemEmpty } from '@/util/common';
 import {
     calculateViewportItemNumbers,
-    getFlexDirection
+    getFlexDirection,
 } from '@/util/calculateViewportItemNumbers';
 import { DOWN, LEFT, RIGHT, UP } from '@/util/eventKey';
 import { getChildrenOfElement } from '@/util/getChildrenOfElement';
@@ -58,8 +63,13 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
             return [0, 0];
         }
 
-        const targetIndex = getItemIndex(selectedItemRef.current) + 1 - state.itemsInContainer;
-        const firstItemIndex = coerceIn(targetIndex, 0, state.elements.length - 1);
+        const targetIndex =
+            getItemIndex(selectedItemRef.current) + 1 - state.itemsInContainer;
+        const firstItemIndex = coerceIn(
+            targetIndex,
+            0,
+            state.elements.length - 1,
+        );
         const lastItemIndex = firstItemIndex + state.itemsInContainer - 1;
         return [firstItemIndex, lastItemIndex];
     };
@@ -92,11 +102,11 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
         const offset = calculateTranslateOffset({
             elementStyle: state.style.element,
             index: firstItemIndex,
-            direction: state.style.direction
+            direction: state.style.direction,
         });
         updateTransform({
             value: offset,
-            isTransition: isAnimate
+            isTransition: isAnimate,
         });
     };
 
@@ -126,7 +136,7 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
         const targetIndex = coerceIn(
             getItemIndex(selectedItemRef.current) + delta,
             0,
-            state.elements.length - 1
+            state.elements.length - 1,
         );
 
         selectItem({ by: targetIndex });
@@ -148,7 +158,7 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
             const direction = getFlexDirection(node);
             if (direction === FlexDirection.COLUMN) {
                 window.addEventListener('wheel', handleWheel, {
-                    passive: false
+                    passive: false,
                 });
             }
 
@@ -162,41 +172,43 @@ export function useFlexBox<T>({ items, enabled }: Props<T>): Return {
                 container: node,
                 gap: elementStyle.gap,
                 firstVisibleItemIndex,
-                direction
+                direction,
             });
             stateRef.current = {
                 elements: elements,
                 style: {
                     element: elementStyle,
-                    direction
+                    direction,
                 },
                 firstVisibleItemIndex,
                 itemsInContainer,
-                enabled
+                enabled,
             };
 
-            const selectedItem = elements.find((element) => element === selectedItemRef.current);
+            const selectedItem = elements.find(
+                (element) => element === selectedItemRef.current,
+            );
 
             if (enabled) {
                 selectItem({
-                    by: selectedItem ?? representativeItem
+                    by: selectedItem ?? representativeItem,
                 });
             }
         },
-        [items, enabled]
+        [items, enabled],
     );
 
     return {
         setBoxRef,
         selectItem,
-        getSelectedItemIndex
+        getSelectedItemIndex,
     };
 }
 
 export function calculateTranslateOffset({
     elementStyle,
     index,
-    direction
+    direction,
 }: {
     elementStyle: ElementStyle;
     index: number;
@@ -233,11 +245,11 @@ const defaultState: State = {
             width: 0,
             height: 0,
             gap: 0,
-            top: 0
+            top: 0,
         },
-        direction: FlexDirection.ROW
+        direction: FlexDirection.ROW,
     },
     firstVisibleItemIndex: 0,
     itemsInContainer: 0,
-    enabled: false
+    enabled: false,
 };

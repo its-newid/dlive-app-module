@@ -13,14 +13,16 @@ export function ScheduleDuration({ range }: Props) {
     const getLocaleTime = (millis: number) => {
         return t('time', {
             val: new Date(millis),
-            formatParams: { val: { hour: 'numeric', minute: 'numeric', hour12: true } }
+            formatParams: {
+                val: { hour: 'numeric', minute: 'numeric', hour12: false },
+            },
         });
     };
 
     const times = useMemo(() => {
         return {
             start: getLocaleTime(range.start),
-            end: getLocaleTime(range.end)
+            end: getLocaleTime(range.end),
         };
     }, [range, i18n.language]);
 

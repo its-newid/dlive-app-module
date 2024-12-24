@@ -13,7 +13,7 @@ export function ScheduleRemainingTime({ className, leftMillis }: Props) {
     return (
         <TimeLeft className={className}>
             {t('detail_current_episode_left_minutes', {
-                minute: min
+                minute: min,
             })}
         </TimeLeft>
     );

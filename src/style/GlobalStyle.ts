@@ -1,9 +1,13 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, DefaultTheme } from 'styled-components';
+import { Optional } from '../type/common';
 import { reset } from '@/style/reset';
 
-const cdnUrl = import.meta.env.VITE_CDN_URL || '';
+type GlobalStyleProps = {
+    theme: DefaultTheme;
+    cdnUrl: Optional<string>;
+};
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
   ${reset}
 
   * {
@@ -48,14 +52,16 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'pretendard';
     font-style: normal;
     font-weight: normal;
-    src: url('${cdnUrl}/font/pretendard_regular_subset.woff2') format('woff2');
+    src: ${({ cdnUrl }) =>
+        `url('${cdnUrl}/font/pretendard_regular_subset.woff2') format('woff2')`};
   }
 
   @font-face {
     font-family: 'pretendard';
     font-style: normal;
     font-weight: bold;
-    src: url('${cdnUrl}/font/pretendard_bold_subset.woff2') format('woff2');
+    src: ${({ cdnUrl }) =>
+        `url('${cdnUrl}/font/pretendard_bold_subset.woff2') format('woff2')`};
   }
 `;
 

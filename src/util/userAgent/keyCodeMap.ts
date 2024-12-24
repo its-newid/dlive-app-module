@@ -8,3 +8,5 @@ export class UserAgentKeyCodeMap implements IKeyCodeMap {
     enter = 13;
     back = 27;
 }
+
+export class AndroidKeyCodeMap extends UserAgentKeyCodeMap {}

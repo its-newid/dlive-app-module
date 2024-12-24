@@ -1,9 +1,25 @@
-import { useParams } from 'react-router';
+import { channelNowState } from '@/atom/screen';
+import { useAtomValue } from 'jotai';
+import {
+    ChannelUpdateState,
+    useParamsUpdate,
+} from '@/feature/screen/linear/hook/useRouting';
+import { useEffect, useState } from 'react';
+import Player from '@/feature/screen/linear/Player';
 
 const LiveScreen = () => {
-    const { id } = useParams();
+    const [liveUrl, setLiveUrl] = useState('');
 
-    return <h1>LiveScreen {id}</h1>;
+    const currentChannel = useAtomValue(channelNowState);
+    const { channelUpdateState } = useParamsUpdate();
+
+    useEffect(() => {
+        if (channelUpdateState === ChannelUpdateState.SUCCESS) {
+            setLiveUrl(currentChannel?.liveUrl ?? '');
+        }
+    }, [currentChannel, channelUpdateState]);
+
+    return <Player url={liveUrl} />;
 };
 
 export default LiveScreen;

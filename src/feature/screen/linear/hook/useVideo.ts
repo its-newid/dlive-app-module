@@ -1,15 +1,15 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react';
-import { Nullable, Optional } from '../../../../type/common';
-import { LinearVideoState, videoState, VideoState } from '../../../../atom/screen/linear';
+import { Nullable, Optional } from '@/type/common';
+import { LinearVideoState, videoState, VideoState } from '@/atom/screen/linear';
 import { useAtom } from 'jotai';
 import { VideoConfig } from '@/component/Video';
 
-export type VideoProps = {
+export interface VideoProps {
     config?: Partial<VideoConfig>;
     src?: string;
-};
+}
 
-type VideoReturn = {
+interface VideoReturn {
     readonly videoConfig: VideoConfig;
     readonly videoState: LinearVideoState;
     videoPlay: () => Optional<Promise<void>>;
@@ -19,16 +19,18 @@ type VideoReturn = {
     setAutoPlay: (autoplay: boolean) => void;
     videoRef: RefObject<HTMLVideoElement | null>;
     videoCallback: (node: Nullable<HTMLVideoElement>) => void;
-};
+}
 
-export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoReturn => {
+export const useVideo = ({
+    config = defaultVideoConfig,
+}: VideoProps): VideoReturn => {
     const playerRef = useRef<HTMLVideoElement | null>(null);
 
     const _config = { ...defaultVideoConfig, ...config };
     const configRef = useRef<VideoConfig>({
         muted: _config.muted,
-        autoplay: _config.autoplay,
-        loop: _config.loop
+        autoPlay: _config.autoPlay,
+        loop: _config.loop,
     });
 
     const [state, setState] = useAtom(videoState);
@@ -53,13 +55,13 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
         }
     };
 
-    const setAutoPlay = (autoplay: boolean) => {
+    const setAutoPlay = (autoPlay: boolean) => {
         const { current: state } = configRef;
-        configRef.current = { ...state, autoplay: autoplay };
+        configRef.current = { ...state, autoPlay: autoPlay };
 
         const { current: player } = playerRef;
         if (player) {
-            player.autoplay = autoplay;
+            player.autoplay = autoPlay;
         }
     };
 
@@ -101,10 +103,14 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
         }
     }, [state]);
 
-    const manageEventListeners = (node: Nullable<HTMLVideoElement>, action: 'add' | 'remove') => {
+    const manageEventListeners = (
+        node: Nullable<HTMLVideoElement>,
+        action: 'add' | 'remove',
+    ) => {
         if (!node) return;
 
-        const method = action === 'add' ? 'addEventListener' : 'removeEventListener';
+        const method =
+            action === 'add' ? 'addEventListener' : 'removeEventListener';
         node[method]('emptied', handleEmptied);
         node[method]('loadedmetadata', handleLoad);
     };
@@ -120,7 +126,7 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
                 manageEventListeners(node, 'add');
             }
         },
-        [handleEmptied, handleLoad]
+        [handleEmptied, handleLoad],
     );
 
     useEffect(() => {
@@ -138,12 +144,12 @@ export const useVideo = ({ config = defaultVideoConfig }: VideoProps): VideoRetu
         setMute,
         setLoop,
         setSrc,
-        setAutoPlay
+        setAutoPlay,
     };
 };
 
 const defaultVideoConfig: VideoConfig = {
-    autoplay: false,
+    autoPlay: false,
     muted: true,
-    loop: false
+    loop: false,
 };
