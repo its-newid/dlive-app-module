@@ -12,7 +12,7 @@ import { LegalType } from '@/type/legal';
 import useToast, { TOAST_ANIMATION } from '../screen/linear/hook/useToast';
 import { closeApp } from '@/util/closeApp';
 import { userAgent } from '@/util/userAgent';
-import { Animation, Group } from '@/component/anim/Group';
+import { AnimationType, Group } from '@/component/anim/Group';
 import legal from '../../../legal.json';
 import { t } from 'i18next';
 
@@ -60,7 +60,7 @@ function AgreementScreen() {
     const handleAgree = () => {
         setIsFirstLaunch(false);
 
-        navigate(RoutePath.HOME);
+        navigate(RoutePath.LIVE_SCREEN);
     };
 
     useEffect(() => {
@@ -133,8 +133,8 @@ const Toast = styled.div<{ isVisible: boolean }>`
         isVisible &&
         css`
             animation:
-                ${Group[Animation.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
-                ${Group[Animation.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
+                ${Group[AnimationType.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
+                ${Group[AnimationType.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
                     ${TOAST_ANIMATION.DELAY}ms;
         `};
     animation-fill-mode: forwards;

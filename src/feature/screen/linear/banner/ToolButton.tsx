@@ -50,7 +50,7 @@ const StyledButton = styled(Clickable)<{ $type: ButtonType }>`
     border-radius: 36rem;
     color: ${({ theme }) => theme.colors.whiteAlpha95};
     font-family: ${({ theme }) => theme.fonts.family.pretendard};
-    ${({ type }) => toolButtonStyle[type]};
+    ${({ $type }) => $toolButtonStyle[$type]};
 
     svg {
         color: ${({ theme }) => theme.colors.grey10};
