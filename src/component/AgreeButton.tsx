@@ -26,10 +26,10 @@ const Container = styled(Clickable)`
     border-radius: 37rem;
     background-color: ${({ theme }) => theme.colors.grey10};
 
-    :hover {
+    &:hover {
         background-color: ${({ theme }) => theme.colors.main};
     }
-    :focus {
+    &:focus {
         background-color: ${({ theme }) => theme.colors.main};
     }
 
