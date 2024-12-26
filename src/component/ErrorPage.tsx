@@ -63,11 +63,6 @@ const Title = styled.span`
     font: ${({ theme }) =>
         `${theme.fonts.weight.bold} 76rem/96rem ${theme.fonts.family.pretendard}`};
     color: ${({ theme }) => theme.colors.whiteAlpha95};
-
-    &:after {
-        content: ' :(';
-        color: ${({ theme }) => theme.colors.main};
-    }
 `;
 
 const Description = styled.span`

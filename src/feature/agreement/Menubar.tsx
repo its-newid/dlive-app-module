@@ -169,16 +169,16 @@ const Item = styled(Clickable)<Selectable>`
     outline: none;
     color: ${({ theme }) => theme.colors.whiteAlpha95};
 
-    :focus {
+    &:focus {
         background: ${({ theme }) => theme.colors.main};
         color: ${({ theme }) => theme.colors.grey90};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         background: ${({ theme }) => theme.colors.grey50};
     }
 
-    :not(:last-child) {
+    &:not(:last-child) {
         margin-bottom: 16rem;
     }
 `;

@@ -65,7 +65,7 @@ const Button = styled(StyledAgreeButton)<{ isToastVisible: boolean }>`
             isToastVisible ? theme.colors.whiteAlpha25 : theme.colors.grey90};
     }
 
-    :hover:not(:focus) {
+    &:hover:not(:focus) {
         background-color: ${({ theme }) => theme.colors.grey50};
 
         span {
@@ -73,7 +73,7 @@ const Button = styled(StyledAgreeButton)<{ isToastVisible: boolean }>`
         }
     }
 
-    :focus {
+    &:focus {
         background-color: ${({ theme }) => theme.colors.main};
     }
 `;
