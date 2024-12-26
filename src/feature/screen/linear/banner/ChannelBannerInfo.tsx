@@ -42,7 +42,7 @@ export function ChannelBannerInfo() {
     ) : (
         <Container>
             <ChannelInfo>
-                <span>Ch {info.channelInfo?.no}</span>
+                <span>CH {info.channelInfo?.no}</span>
                 <span>{info.channelInfo?.title}</span>
             </ChannelInfo>
             <EpisodeInfo>
