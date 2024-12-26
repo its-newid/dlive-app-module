@@ -34,7 +34,7 @@ export function MiniBanner() {
                 <Loading />
             ) : (
                 <Content>
-                    <ChannelNo>Ch {info.channelInfo?.no}</ChannelNo>
+                    <ChannelNo>CH {info.channelInfo?.no}</ChannelNo>
                     <ChannelName>{info.channelInfo?.title}</ChannelName>
                     <EpisodeTitle
                         delay={2}
@@ -111,6 +111,7 @@ const Thumbnail = styled(LoadThumbnail)`
     margin-right: 40rem;
     border-radius: 16rem;
     object-fit: cover;
+    pointer-events: none;
 `;
 
 const EpisodeTitle = styled(Marquee)`
