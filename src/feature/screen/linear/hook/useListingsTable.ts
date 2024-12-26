@@ -124,26 +124,10 @@ export function useListingsTable<T>({
             stateRef.current.selectedColumnItem =
                 style.columns[targetChannelIndex];
 
-            const newChannelRows = style.rows[targetChannelIndex];
-            const lastIndexOfNewChannel = newChannelRows.length - 1;
-            const targetEpisodeIndex =
-                // 현재 에피소드 인덱스가 2 미만이면 2로 조정 (fav/thumbnail 보호)
-                episodeIndex < COMMON_SELECTED_ROW_INDEX
-                    ? COMMON_SELECTED_ROW_INDEX
-                    : // 현재 에피소드 인덱스가 새 채널의 범위 내에 있으면 유지
-                      episodeIndex < newChannelRows.length
-                      ? episodeIndex
-                      : // 범위를 벗어났을 때:
-                        // 새 채널의 마지막 인덱스가 2보다 작으면 2 유지
-                        lastIndexOfNewChannel < COMMON_SELECTED_ROW_INDEX
-                        ? COMMON_SELECTED_ROW_INDEX
-                        : // 그렇지 않으면 마지막 인덱스 사용
-                          lastIndexOfNewChannel;
-            stateRef.current = {
-                ...stateRef.current,
-                selectedIndex: [targetChannelIndex, targetEpisodeIndex],
-            };
-
+            const targetEpisodeIndex = Math.min(
+                Math.min(2, episodeIndex),
+                style.rows.length - 1,
+            );
             selectItem([targetChannelIndex, targetEpisodeIndex]);
         }
 
