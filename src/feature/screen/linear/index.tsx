@@ -9,6 +9,9 @@ import {
     useInitialOverlay,
     useParamsUpdate,
 } from './hook/useRouting';
+import { API_ERROR_CHANNEL_ID } from '@/api/scheduleQuery.ts';
+import { useNavigate } from 'react-router';
+import { RoutePath } from '@/type/routePath';
 
 /**
  * state
@@ -22,6 +25,7 @@ import {
  */
 
 function LiveScreen() {
+    const navigate = useNavigate();
     const [liveUrl, setLiveUrl] = useState('');
 
     const currentChannel = useAtomValue(channelNowState);
@@ -35,6 +39,11 @@ function LiveScreen() {
             setLiveUrl(currentChannel?.liveUrl ?? '');
         }
     }, [currentChannel, channelUpdateState]);
+
+    useEffect(() => {
+        if (currentChannel?.contentId === API_ERROR_CHANNEL_ID)
+            navigate(RoutePath.ERROR);
+    }, [currentChannel]);
 
     return <Player url={liveUrl} />;
 }

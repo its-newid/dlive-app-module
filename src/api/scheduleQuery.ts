@@ -24,6 +24,11 @@ import { toMillis } from '@/util/common';
 
 export const SCHEDULE_STALE_TIME = 1000 * 60 * 60 * 24;
 
+const META_ERROR_CHANNEL_ID = 'newid_112';
+const HLS_ERROR_CHANNEL_ID = 'newid_110';
+export const API_ERROR_CHANNEL_ID = 'newid_002';
+export const NETWORK_ERROR_CHANNEL_ID = 'newid_102';
+
 export const useGetSchedule = () => {
     const [isReady, setIsReady] = useState(false);
     const [channelNow, setChannelNow] = useAtom(channelNowState);
@@ -105,6 +110,29 @@ const transformData = (data: ScheduleResponse) => {
 
 const mapToChannel = (channel: LinearResponse): Channel => {
     const { schedule, ...rest } = channel;
+
+    if (channel.contentId === META_ERROR_CHANNEL_ID) {
+        return {
+            ...rest,
+            thumbUrl: {},
+            liveUrl: '',
+            categoryIdx: 1,
+            schedule: [],
+        };
+    }
+
+    if (channel.contentId === HLS_ERROR_CHANNEL_ID) {
+        return {
+            ...rest,
+            liveUrl:
+                'https://.its-newid.net/api/manifest.m3u8?tp=binge_korea&channel_name=myunfortunateboyfriend&channel_id=newid_110&id=009f347c97d1875be683f81bd7c8947023aa8bde&mpf=d66626b0-dcf94840-73c715bf&apikey=5ad71e08-4495-4e72-9f51-2eb60c5eb725&auth=32b2fd3c-60dca2a8-ae35b89d-17ac3804&ads.live=[CONTENT_LIVE]&ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.us_privacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]',
+            categoryIdx: 1,
+            schedule: schedule.map((schedule) => ({
+                ...schedule,
+                channelId: channel.contentId,
+            })),
+        };
+    }
 
     return {
         ...rest,
