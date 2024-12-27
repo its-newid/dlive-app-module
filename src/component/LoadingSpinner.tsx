@@ -1,12 +1,31 @@
 import styled, { keyframes } from 'styled-components';
 import Spinner from '@/asset/icSpinner.png';
 import { IExtendableStyledComponent } from '@/type/common';
+import { useEffect } from 'react';
+import { ESCAPE } from '@/util/eventKey.ts';
+import { closeApp } from '@/util/closeApp.ts';
+import { userAgent } from '@/util/userAgent';
 
 type Props = IExtendableStyledComponent & {
     message?: string;
 };
 
 export function LoadingSpinner({ className }: Props) {
+    useEffect(() => {
+        function handleKeyDown(event: KeyboardEvent) {
+            event.preventDefault();
+
+            if (event.keyCode === ESCAPE) {
+                closeApp(userAgent.type);
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
         <Container className={className} aria-live={'assertive'}>
             <Element src={Spinner} alt={'loading'} />
