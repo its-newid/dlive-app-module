@@ -2,9 +2,11 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
 import { t } from 'i18next';
+import { closeApp } from '@/util/closeApp.ts';
+import { userAgent } from '@/util/userAgent';
 
 export function ErrorPage() {
-    const handleExit = () => window.close();
+    const handleExit = () => closeApp(userAgent.type);
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
         const { keyCode } = event;
