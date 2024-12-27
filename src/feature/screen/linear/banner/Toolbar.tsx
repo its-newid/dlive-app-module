@@ -5,9 +5,9 @@ import {
     useMemo,
     useRef,
 } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import useOverlay from '../hook/useOverlay';
-import { ContentType, ErrorMessage, Nullable } from '@/type/common';
+import { ContentType, ErrorMessage, Nullable, Optional } from '@/type/common';
 import { ENTER, ESCAPE, LEFT, RIGHT } from '@/util/eventKey';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import useMyList from '@/hook/useMyList';
@@ -15,7 +15,7 @@ import { coerceIn } from '@/util/common';
 import { ButtonType, Child, ToolButton } from './ToolButton';
 import MoreIcon from '@/asset/icMore.svg?react';
 import { MyListButton as StyledMyListButton } from '@/component/MyListButton';
-import useToast from '../hook/useToast';
+import useToast, { TOAST_ANIMATION } from '../hook/useToast';
 import { RESET } from 'jotai/utils';
 import { channelNowState, selectedChannelSelector } from '@/atom/screen';
 import {
@@ -27,11 +27,13 @@ import {
     liveScreenOverlayState,
 } from '@/atom/screen/linear';
 import { t } from 'i18next';
+import { AnimationType, Group } from '@/component/anim/Group.tsx';
 
 export function Toolbar() {
     const menuRef = useRef(new Map());
 
     const [currentMenu, setMenu] = useAtom(currentToolbarMenuState);
+    const currentChannel = useAtomValue(channelNowState);
     const isFullDescriptionVisible = useAtomValue(
         isFullDescriptionVisibleState,
     );
@@ -41,7 +43,7 @@ export function Toolbar() {
         return Object.values(ChannelBannerToolMenu);
     }, []);
 
-    const { isToastVisible, showToast, removeToast } = useToast();
+    const { isToastVisible, showToast, removeToast, message } = useToast();
     const { showOverlay, removeOverlay } = useOverlay();
 
     useEffect(() => {
@@ -53,6 +55,12 @@ export function Toolbar() {
         showOverlay({ type: LiveScreenOverlayType.CHANNEL_BANNER });
         showToast(message);
     };
+
+    const canGuideOpen = useMemo(() => {
+        const schedule = currentChannel?.schedule;
+        const hasCategory = currentChannel?.categoryIdx;
+        return schedule ? findAiringEpisode(schedule) && hasCategory : false;
+    }, [currentChannel]);
 
     useEffect(() => {
         return () => setMenu(RESET);
@@ -116,6 +124,7 @@ export function Toolbar() {
                         <>
                             <GuideButton
                                 showMessage={handleMessage}
+                                canGuideOpen={canGuideOpen}
                                 menuRef={menuRef}
                             />
                             <MyListButton menuRef={menuRef} />
@@ -126,6 +135,9 @@ export function Toolbar() {
                     <MoreButton menuRef={menuRef} />
                 </ToolbarRight>
             </Container>
+            {isToastVisible && !canGuideOpen && (
+                <Toast $isVisible={isToastVisible}>{message}</Toast>
+            )}
         </>
     );
 }
@@ -135,10 +147,16 @@ type ButtonProps = {
 };
 
 type GuideButtonProps = ButtonProps & {
+    canGuideOpen: false | Optional<number>;
     showMessage: (message: string) => void;
 };
 
-const GuideButton = ({ menuRef, showMessage, ...rest }: GuideButtonProps) => {
+const GuideButton = ({
+    menuRef,
+    canGuideOpen,
+    showMessage,
+    ...rest
+}: GuideButtonProps) => {
     const { showOverlay } = useOverlay();
 
     const setToolbarMenu = useSetAtom(currentToolbarMenuState);
@@ -151,12 +169,6 @@ const GuideButton = ({ menuRef, showMessage, ...rest }: GuideButtonProps) => {
 
     const setSelectedChannelId = useSetAtom(selectedChannelSelector);
 
-    const canGuideOpen = useMemo(() => {
-        const schedule = currentChannel?.schedule;
-        const hasCategory = currentChannel?.categoryIdx;
-        return schedule ? findAiringEpisode(schedule) && hasCategory : false;
-    }, [currentChannel]);
-
     const elements: Child = {
         type: ButtonType.TEXT_ONLY,
         elements: (
@@ -168,7 +180,7 @@ const GuideButton = ({ menuRef, showMessage, ...rest }: GuideButtonProps) => {
         setToolbarMenu(ChannelBannerToolMenu.GUIDE);
 
         if (!currentChannel || !canGuideOpen) {
-            showMessage(t(`${ErrorMessage.NO_DATA_AVAILABLE}`));
+            showMessage(t(ErrorMessage.NO_DATA_AVAILABLE));
             return;
         }
 
@@ -323,3 +335,27 @@ const ToolbarLeft = styled.div`
 `;
 
 const ToolbarRight = styled.div``;
+
+const Toast = styled.div<{ $isVisible: boolean }>`
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    height: 128rem;
+    align-items: center;
+    justify-content: center;
+    background: ${({ theme }) => theme.colors.main};
+    font: ${({ theme }) =>
+        `${theme.fonts.weight.bold} 38rem/46rem ${theme.fonts.family.pretendard}`};
+    color: ${({ theme }) => theme.colors.blackAlpha100};
+
+    ${({ $isVisible }) =>
+        $isVisible &&
+        css`
+            animation:
+                ${Group[AnimationType.SLIDE_IN]} ${TOAST_ANIMATION.DURATION}ms,
+                ${Group[AnimationType.SLIDE_OUT]} ${TOAST_ANIMATION.DURATION}ms
+                    ${TOAST_ANIMATION.DELAY}ms;
+        `};
+    animation-fill-mode: forwards;
+`;

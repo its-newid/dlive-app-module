@@ -104,10 +104,8 @@ function Banner() {
             {isCurrentOverlayIncludes([CHANNEL_BANNER, FULL_DESCRIPTION]) && (
                 <ChannelBanner />
             )}
-            {isToastVisible && (
-                <Toast $isVisible={isToastVisible} role={'status'}>
-                    {message}
-                </Toast>
+            {isToastVisible && message && (
+                <Toast $isVisible={isToastVisible}>{message}</Toast>
             )}
         </Container>
     );

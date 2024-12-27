@@ -135,8 +135,7 @@ function EmptyEpisode({ ...rest }: { onFocus: () => void }) {
         <EpisodeCell
             width={'100vw'}
             states={[RowState.IDLE]}
-            // title={'...'}
-            title={'방송정보없음'}
+            title={'...'}
             {...rest}
         />
     );

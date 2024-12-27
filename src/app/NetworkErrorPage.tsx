@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { ENTER, ESCAPE, LEFT, onDefaultUIEvent, RIGHT } from '@/util/eventKey';
 import { Optional } from '@/type/common';
 import { t } from 'i18next';
+import { closeApp } from '@/util/closeApp.ts';
+import { userAgent } from '@/util/userAgent';
 
 export const Menu = {
     HOME: 0,
@@ -22,7 +24,7 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
         setCurrentFocus(Menu.HOME);
         onConnected();
     };
-    const handleExit = () => window.close();
+    const handleExit = () => closeApp(userAgent.type);
 
     const handleEscapeKeyDown = (event: React.KeyboardEvent) => {
         event.keyCode === ESCAPE && handleExit();
