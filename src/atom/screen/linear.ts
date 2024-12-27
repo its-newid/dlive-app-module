@@ -114,7 +114,7 @@ export interface TimeBarOffsetValues {
     max: number;
 }
 
-const MAX_TIME_BAR_OFFSET = TIME_SLOT_MAX_MILLIS / TIME_SLOT_MILLIS - 2;
+const MAX_TIME_BAR_OFFSET = TIME_SLOT_MAX_MILLIS / TIME_SLOT_MILLIS - 2.456;
 export const timeBarOffsetValuesSelector = atom<TimeBarOffsetValues>((get) => {
     return {
         min: 0,
@@ -130,9 +130,9 @@ export const timeBarOffsetReducer = (
     },
 ) => {
     if (action.type === 'INCREMENT') {
-        return coerceAtMost(prev + 2, MAX_TIME_BAR_OFFSET);
+        return coerceAtMost(prev + 2.456, MAX_TIME_BAR_OFFSET);
     } else if (action.type === 'DECREMENT') {
-        return coerceAtLeast(prev - 2, 0);
+        return coerceAtLeast(prev - 2.456, 0);
     } else if (action.type === 'RESET') {
         return 0;
     } else {
@@ -176,7 +176,7 @@ export const visibleTimesInTimeBar = atom((get) => {
     const timeBarOffset = get(timeBarOffsetState);
 
     const start = openingMillis + timeBarOffset * TIME_SLOT_MILLIS;
-    const end = start + TIME_SLOT_MILLIS * 2;
+    const end = start + TIME_SLOT_MILLIS * 2.456;
     return [start, end];
 });
 
