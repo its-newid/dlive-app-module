@@ -167,15 +167,9 @@ export default function Player({ url }: LiveVideoProps) {
             )}
         </>
     ) : (
-        <DefaultBackground />
+        <SkeletonLoader />
     );
 }
-
-const DefaultBackground = styled.div`
-    z-index: -1;
-    width: 100%;
-    background: ${({ theme }) => theme.colors.grey80};
-`;
 
 const SkeletonLoader = styled(Skeleton)`
     position: absolute;
