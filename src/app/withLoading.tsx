@@ -3,17 +3,24 @@ import { ErrorPage } from '@/component/ErrorPage';
 import { LoadingSpinner } from '@/component/LoadingSpinner';
 import styled from 'styled-components';
 import { useGetSchedule } from '@/api/scheduleQuery.ts';
+import { useDetectOnline } from '@/hook/useDetectOnline.ts';
+import { NetworkErrorPage } from '@/app/NetworkErrorPage.tsx';
 
 export const withLoading = (WrappedComponent: React.ComponentType) => {
     return function Component() {
+        const { isOnline, setOnline } = useDetectOnline();
         const { isLoading, isError } = useGetSchedule();
 
-        return isError ? (
-            <ErrorPage />
-        ) : isLoading ? (
-            <Loader />
+        return isOnline ? (
+            isError ? (
+                <ErrorPage />
+            ) : isLoading ? (
+                <Loader />
+            ) : (
+                <WrappedComponent />
+            )
         ) : (
-            <WrappedComponent />
+            <NetworkErrorPage onConnected={setOnline} />
         );
     };
 };

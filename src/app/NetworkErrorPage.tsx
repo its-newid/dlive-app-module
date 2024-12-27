@@ -82,6 +82,7 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                         onKeyDown={onDefaultUIEvent(handleExitButtonKeyDown)}
                         onClick={handleExit}
                         enabled
+                        isBack={false}
                         ref={(node) => {
                             if (node) {
                                 buttonRefs[Menu.EXIT].current = node;
@@ -95,6 +96,7 @@ export function NetworkErrorPage({ onConnected }: { onConnected: () => void }) {
                         enabled={isOnline}
                         onKeyDown={onDefaultUIEvent(handleHomeButtonKeyDown)}
                         onClick={handleGoHome}
+                        isBack={true}
                         ref={(node) => {
                             if (node) {
                                 buttonRefs[Menu.HOME].current = node;
@@ -144,6 +146,7 @@ const Row = styled.div`
 
 const Button = styled.div.attrs({ tabIndex: 0 })<{
     enabled: boolean;
+    isBack: boolean;
 }>`
     margin-top: 162rem;
     width: fit-content;
@@ -160,8 +163,12 @@ const Button = styled.div.attrs({ tabIndex: 0 })<{
         height: 44rem;
         font: ${({ theme }) =>
             `${theme.fonts.weight.bold} 36rem/44rem ${theme.fonts.family.pretendard}`};
-        color: ${({ theme, enabled }) =>
-            enabled ? theme.colors.whiteAlpha95 : theme.colors.whiteAlpha50};
+        color: ${({ theme, enabled, isBack }) =>
+            enabled
+                ? theme.colors.whiteAlpha95
+                : isBack
+                  ? theme.colors.whiteAlpha25
+                  : theme.colors.whiteAlpha50};
     }
 
     &:focus {
