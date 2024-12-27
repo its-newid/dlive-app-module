@@ -19,7 +19,7 @@ const Thumbnail = styled.div`
     height: 252rem;
     margin-right: 64rem;
     border-radius: 16rem;
-    background: ${({ theme }) => theme.colors.grey70};
+    background: ${({ theme }) => theme.colors.grey80};
 `;
 
 const Title = styled.span`
