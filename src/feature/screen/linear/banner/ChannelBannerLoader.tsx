@@ -15,9 +15,9 @@ export function ChannelBannerLoader() {
 
 const Container = styled.div`
     display: flex;
-    margin-top: 60rem;
+    margin-top: 56rem;
     overflow: hidden;
-    margin-left: 72rem;
+    margin-left: 60rem;
     flex-direction: column;
 `;
 
