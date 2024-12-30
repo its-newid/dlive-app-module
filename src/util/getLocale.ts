@@ -8,5 +8,6 @@ export function getLocale() {
 
     const matchedLocale = metaContentName.toLowerCase();
 
-    return matchedLocale ?? UserAgentLocale.DEFAULT;
+    return 'kr';
+    // return matchedLocale ?? UserAgentLocale.DEFAULT;
 }

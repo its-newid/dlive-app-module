@@ -6,16 +6,9 @@ import { usePrevious } from '@/hook/usePrevious';
 import { useScheduleUpdater } from '@/hook/useScheduleUpdater';
 import { useVisibility } from '@/hook/useVisibilityChange';
 import { Optional } from '@/type/common';
-import { Channel, ChannelEpisode } from '@/type/linear';
-import {
-    findChannelSelector,
-    onAirScheduleEndTimeState,
-    onAirScheduleState,
-} from '@/atom/screen';
+import { Channel } from '@/type/linear';
+import { onAirScheduleEndTimeState, onAirScheduleState } from '@/atom/screen';
 import { VideoErrorState, videoErrorState } from '@/atom/screen/linear';
-import { writeWatchHistory } from '@/atom/app';
-
-const WATCH_TIME_THRESHOLD_SECONDS = 10;
 
 export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
     const setSchedule = useSetAtom(onAirScheduleState);
@@ -23,13 +16,6 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
         onAirScheduleEndTimeState,
     );
 
-    const setWatchHistory = useSetAtom(writeWatchHistory);
-
-    const getChannel = useAtomCallback(
-        useCallback((get, _, schedule: ChannelEpisode) => {
-            return get(findChannelSelector(schedule));
-        }, []),
-    );
     const getCurrentSchedule = useAtomCallback(
         useCallback((get) => get(onAirScheduleState), []),
     );
@@ -43,59 +29,11 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
     const prevVisible = usePrevious(visible);
 
     const errorState = useAtomValue(videoErrorState);
-    const getAsyncErrorState = useAtomCallback(
-        useCallback((get) => get(videoErrorState), []),
-    );
 
     const initTime = () => {
         subscribeToUpdateCallback(undefined);
         secondsRef.current = 0;
     };
-
-    const addWatchHistory = useCallback(() => {
-        if (!currentSchedule) return;
-        if (getAsyncErrorState().type === VideoErrorState.FAILED) return;
-
-        secondsRef.current += 1;
-        const { current: seconds } = secondsRef;
-
-        if (seconds >= WATCH_TIME_THRESHOLD_SECONDS) {
-            const channel = getChannel(currentSchedule);
-            if (channel) {
-                setWatchHistory({
-                    type: 'linear',
-                    content: {
-                        contentId: channel.contentId,
-                    },
-                });
-            }
-
-            initTime();
-        }
-    }, [currentSchedule]);
-
-    // const trackEvent = usePostAnalyticsEvent();
-    const trackWatchTimeEvent = useCallback(
-        (
-            schedule: Optional<ChannelEpisode>,
-            currentTime: number = toTimestamp(Date.now()),
-        ) => {
-            const { current: scheduleEnterTime } = scheduleEnterTimeRef;
-
-            if (scheduleEnterTime === -1) return;
-            if (!schedule) return;
-
-            const watchTime = currentTime - scheduleEnterTime;
-            const neededTracking = watchTime > WATCH_TIME_THRESHOLD_SECONDS;
-            if (!neededTracking) return;
-
-            const channel = getChannel(schedule);
-            if (!channel) return;
-
-            scheduleEnterTimeRef.current = -1;
-        },
-        [],
-    );
 
     const subscribeToUpdateCallback = useScheduleUpdater({
         channel,
@@ -105,21 +43,11 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
     });
 
     useEffect(() => {
-        scheduleEnterTimeRef.current = -1;
-
-        return () => trackWatchTimeEvent(getCurrentSchedule());
-    }, []);
-
-    useEffect(() => {
         const currentTime = toTimestamp(Date.now());
 
         if (visible && errorState.type === VideoErrorState.IDLE) {
             if (prevVisible !== visible && visible) {
                 scheduleEnterTimeRef.current = -1;
-            }
-
-            if (prevSchedule && prevSchedule !== currentSchedule) {
-                trackWatchTimeEvent(prevSchedule, currentTime);
             }
 
             if (currentSchedule) {
@@ -138,8 +66,6 @@ export const useUpdateCurrentSchedule = (channel: Optional<Channel>) => {
             prevSchedule?.contentId !== currentSchedule?.contentId;
 
         if (isChannelsEqual) return;
-
-        subscribeToUpdateCallback(addWatchHistory);
 
         return () => initTime();
     }, [currentSchedule]);
