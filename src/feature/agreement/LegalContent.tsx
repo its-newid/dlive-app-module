@@ -9,7 +9,7 @@ import {
     currentFocusState,
     currentSelectedItemState,
 } from '@/atom/onboarding';
-import { t } from 'i18next';
+import { isToastVisibleState } from '@/atom/screen/linear.ts';
 
 type LegalContentProps = {
     title: string;
@@ -26,9 +26,11 @@ export function LegalContent({
     const [currentFocus, setFocus] = useAtom(currentFocusState);
     const [canContentFocus, setCanContentFocus] = useAtom(canContentFocusState);
     const selectedMenu = useAtomValue(currentSelectedItemState);
+    const isToastVisible = useAtomValue(isToastVisibleState);
 
     const isVisible = selectedMenu?.type === title;
-    const enabled = currentFocus === AgreementFocusState.CONTENT;
+    const enabled =
+        currentFocus === AgreementFocusState.CONTENT && !isToastVisible;
 
     const handleScroll = (info: ScrollInfo) => {
         const { scrollTop, scrollHeight, clientHeight } = info;
@@ -50,11 +52,11 @@ export function LegalContent({
     return (
         <>
             {isVisible && (
-                <Container onMouseDown={handleMouseDown} enabled={enabled}>
-                    <Title id={'title'}>{t(`${selectedMenu?.title}`)}</Title>
+                <Container onMouseDown={handleMouseDown} $enabled={enabled}>
+                    <Title id={'title'}>{selectedMenu?.title}</Title>
                     <Description
                         content={content}
-                        $enabled={enabled}
+                        enabled={enabled}
                         onFocusable={setCanContentFocus}
                         scrollOffset={scrollOffset}
                         setScrollOffset={setScrollOffset}
@@ -66,13 +68,13 @@ export function LegalContent({
     );
 }
 
-const Container = styled.div<{ enabled: boolean }>`
+const Container = styled.div<{ $enabled: boolean }>`
     position: relative;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 272rem);
 
-    :hover > {
+    &:hover > {
         .scrollable-div:not(:focus) {
             ::-webkit-scrollbar-thumb {
                 background-color: ${({ theme }) => theme.colors.grey10};
@@ -81,7 +83,7 @@ const Container = styled.div<{ enabled: boolean }>`
     }
 
     .scrollable-div {
-        pointer-events: ${({ enabled }) => (enabled ? 'auto' : 'none')};
+        pointer-events: ${({ $enabled }) => ($enabled ? 'auto' : 'none')};
     }
 `;
 
