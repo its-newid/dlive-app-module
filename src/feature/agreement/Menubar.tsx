@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import MenubarLayout from '@/component/layout/Menubar';
-import { Logo } from '@/component/Logo';
+import { Logo, LogoType } from '@/component/Logo';
 import Clickable from '@/component/Clickable';
 import { KeyboardEventListener, Selectable } from '@/type/common';
 import { useAtom, useSetAtom, useAtomValue } from 'jotai';
@@ -15,7 +15,6 @@ import {
     TLegalMenuItem,
 } from '@/atom/onboarding';
 import { isToastVisibleState } from '@/atom/screen/linear';
-import { t } from 'i18next';
 
 function Menubar({ list }: { list: TLegalMenuItem[] }) {
     const [selectedItem, setSelectedItem] = useAtom(currentSelectedItemState);
@@ -108,7 +107,7 @@ function Menubar({ list }: { list: TLegalMenuItem[] }) {
 
     return (
         <Container onKeyDown={handleKeyDown}>
-            <Header />
+            <Header logoType={LogoType.ONBOARDING} />
             <Menu>{items}</Menu>
         </Container>
     );
@@ -133,7 +132,7 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(
 
         return (
             <Item selected={isSelected} onClick={handleClick} ref={ref}>
-                <ItemText>{t(`${item.title}`)}</ItemText>
+                <ItemText>{item.title}</ItemText>
             </Item>
         );
     },

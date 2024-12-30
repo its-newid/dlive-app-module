@@ -11,16 +11,20 @@ import {
 import AgreeButton from './AgreeButton';
 import { LegalContent } from './LegalContent';
 import legal from '../../../legal.json';
+import { isToastVisibleState } from '@/atom/screen/linear.ts';
 
 function Content({ onAgree }: { onAgree: () => void }) {
     const [isReachedBottom, setIsReachedBottom] = useState(false);
     const setFocus = useSetAtom(currentFocusState);
     const selectedMenu = useAtomValue(currentSelectedItemState);
+    const isToastVisible = useAtomValue(isToastVisibleState);
 
     const handleKeyDown: KeyboardEventListener = (event) => {
         event.preventDefault();
 
         const { keyCode } = event;
+
+        if (isToastVisible) return;
 
         if (keyCode === DOWN) {
             isReachedBottom && setFocus(AgreementFocusState.AGREE);
