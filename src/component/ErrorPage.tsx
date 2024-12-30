@@ -4,8 +4,10 @@ import { ENTER, onDefaultUIEvent } from '@/util/eventKey';
 import { t } from 'i18next';
 import { closeApp } from '@/util/closeApp.ts';
 import { userAgent } from '@/util/userAgent';
+import { getLocale } from '@/util/getLocale.ts';
 
 export function ErrorPage() {
+    const locale = getLocale();
     const handleExit = () => closeApp(userAgent.type);
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -26,10 +28,21 @@ export function ErrorPage() {
     return (
         <Container>
             <Column>
-                <Title id={'title'}>{t('app_query_error_title')}</Title>
-                <Description id={'desc'}>
-                    {t('app_query_error_description')}
-                </Description>
+                {locale !== 'kr' ? (
+                    <>
+                        <Title id={'title'}>{t('geo_block_error_title')}</Title>
+                        <Description id={'desc'}>
+                            {t('geo_block_error_description')}
+                        </Description>
+                    </>
+                ) : (
+                    <>
+                        <Title id={'title'}>{t('app_query_error_title')}</Title>
+                        <Description id={'desc'}>
+                            {t('app_query_error_description')}
+                        </Description>
+                    </>
+                )}
                 <Row>
                     <Button
                         role={'button'}

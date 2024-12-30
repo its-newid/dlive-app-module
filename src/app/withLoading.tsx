@@ -5,10 +5,19 @@ import styled from 'styled-components';
 import { useGetSchedule } from '@/api/scheduleQuery.ts';
 import { useDetectOnline } from '@/hook/useDetectOnline.ts';
 import { NetworkErrorPage } from '@/app/NetworkErrorPage.tsx';
+import { getLocale } from '@/util/getLocale.ts';
 
 export const withLoading = (WrappedComponent: React.ComponentType) => {
     return function Component() {
+        const locale = getLocale();
         const { isOnline, setOnline } = useDetectOnline();
+
+        if (locale !== 'kr') {
+            return <ErrorPage />;
+        }
+
+        // 데이터 받기 이전에 국가제한을 해야 하므로 조건부로 hook을 호출되면 안된다는 규칙 무시
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const { isLoading, isError } = useGetSchedule();
 
         return isOnline ? (
