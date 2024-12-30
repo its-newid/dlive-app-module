@@ -5,7 +5,7 @@ import { appService } from '@/api/service/app';
 import { ScheduleResponse } from '@/api/model/schedule';
 import { LinearResponse } from '@/api/model/app';
 import { DEFAULT_LOCALE } from '@/app/environment';
-import { lastUpdatedTimeState, writeWatchHistory } from '@/atom/app';
+import { lastUpdatedTimeState } from '@/atom/app';
 import {
     channelNowState,
     channelsState,
@@ -73,15 +73,6 @@ export const useGetSchedule = () => {
                 onAirScheduleEndTimeState,
                 airingEpisode ? toMillis(airingEpisode.endAt) : -1,
             );
-
-            if (airingEpisode) {
-                set(writeWatchHistory, {
-                    type: 'linear',
-                    content: {
-                        contentId: channel.contentId,
-                    },
-                });
-            }
         }, []),
     );
 
