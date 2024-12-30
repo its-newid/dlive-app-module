@@ -7,11 +7,20 @@ import { usePreventFocusLoss } from '@/hook/usePreventFocusLoss';
 import GlobalStyle from '@/style/GlobalStyle';
 import { theme } from '@/style/theme';
 import { CDN_URL } from '@/app/environment.ts';
+import { useSetAtom } from 'jotai';
+import { isFirstLaunchState } from '@/atom/app.ts';
+import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
 
 function App() {
     usePreventFocusLoss();
+
+    // 앱 진입시 무조건 agreement 뜨게 하는 테스트 코드
+    const setIsFirstLaunch = useSetAtom(isFirstLaunchState);
+    useEffect(() => {
+        setIsFirstLaunch(true);
+    }, []);
 
     return (
         <I18nextProvider i18n={i18n}>

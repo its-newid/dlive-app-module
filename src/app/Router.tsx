@@ -3,6 +3,7 @@ import LinearLayout from '@/component/layout/LinearLayout';
 import withLoading from '@/app/withLoading';
 import { RoutePath } from '@/type/routePath';
 import { ErrorPage } from '@/component/ErrorPage';
+import AgreementScreen from '@/feature/agreement';
 
 function AppRouter() {
     const routes: RouteObject[] = [
@@ -13,6 +14,10 @@ function AppRouter() {
         {
             path: RoutePath.ERROR,
             element: <ErrorPage />,
+        },
+        {
+            path: RoutePath.ONBOARDING,
+            element: <AgreementScreen />,
         },
     ];
 
