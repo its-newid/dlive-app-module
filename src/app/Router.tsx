@@ -14,6 +14,10 @@ function AppRouter() {
             path: RoutePath.ERROR,
             element: <ErrorPage />,
         },
+        // {
+        //     path: RoutePath.ONBOARDING,
+        //     element: <AgreementScreen />,
+        // },
     ];
 
     const router = createHashRouter(routes);

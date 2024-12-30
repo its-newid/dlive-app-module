@@ -28,7 +28,7 @@ export interface Selectable {
 }
 
 export interface Enable {
-    $enabled: boolean;
+    enabled: boolean;
 }
 
 export const FlexDirection = {
