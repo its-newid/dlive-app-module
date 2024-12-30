@@ -1,18 +1,11 @@
 import { atomWithLocalStorage } from '../util/localStorage.atom';
-import { atom, PrimitiveAtom, useAtom } from 'jotai';
+import { PrimitiveAtom, useAtom } from 'jotai';
 import { ContentType } from '../type/common';
-import { ChannelEpisode } from '../type/linear';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import { useCallback } from 'react';
 
 export type TMyListContents = {
     [val in ContentType]: string[];
-};
-
-export type LinearWatchHistory = Pick<ChannelEpisode, 'contentId'>;
-
-export type TWatchedContent = {
-    linear: LinearWatchHistory[];
 };
 
 export const uuidState = atomWithLocalStorage('uuid', '');
@@ -26,66 +19,6 @@ const initialMyListContent = Object.values(ContentType).reduce((acc, val) => {
 export const mylistState = atomWithStorage<TMyListContents>(
     'favorite',
     initialMyListContent,
-);
-
-const initialWatchHistoryContent: TWatchedContent = {
-    linear: [],
-};
-
-export const watchHistoryState = atomWithStorage<TWatchedContent>(
-    'watch',
-    initialWatchHistoryContent,
-);
-
-const MAX_WATCH_HISTORY_COUNT = 30;
-
-export const writeWatchHistory = atom(
-    null,
-    (
-        get,
-        set,
-        item: {
-            content: LinearWatchHistory;
-            type: ContentType;
-        },
-    ) => {
-        const watchedContents = get(watchHistoryState);
-        const { content, type } = item;
-
-        const history = watchedContents[type];
-        if (!history) return;
-
-        const existingIndex = history.findIndex(
-            (item) => item.contentId === content.contentId,
-        );
-
-        if (existingIndex !== -1) {
-            const updatedHistory = [...history];
-            updatedHistory.splice(existingIndex, 1);
-
-            if (updatedHistory.length >= MAX_WATCH_HISTORY_COUNT) {
-                updatedHistory.shift();
-            }
-            updatedHistory.push(content);
-
-            set(watchHistoryState, {
-                ...watchedContents,
-                [type]: updatedHistory,
-            });
-        } else {
-            const updatedHistory = [...history];
-
-            if (updatedHistory.length >= MAX_WATCH_HISTORY_COUNT) {
-                updatedHistory.shift();
-            }
-            updatedHistory.push(content);
-
-            set(watchHistoryState, {
-                ...watchedContents,
-                [type]: updatedHistory,
-            });
-        }
-    },
 );
 
 export const lastUpdatedTimeState = atomWithStorage<number>(
