@@ -4,6 +4,12 @@ export const UserAgentOS = {
 } as const;
 export type UserAgentOS = (typeof UserAgentOS)[keyof typeof UserAgentOS];
 
+export const UserAgentLocale = {
+    DEFAULT: 'KR',
+} as const;
+export type UserAgentLocale =
+    (typeof UserAgentLocale)[keyof typeof UserAgentLocale];
+
 export interface ITargetOS {
     type: UserAgentOS;
 }
