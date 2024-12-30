@@ -22,6 +22,8 @@
     "network_error_exit": "Exit",
     "app_query_error_title": "Sorry, we’re failed to load the Information",
     "app_query_error_description": "Please exit the app and run it again",
+    "geo_block_error_title": "서비스 지역이 아닙니다",
+    "geo_block_error_description" : "이 서비스는 한국 거주자에게만 제공됩니다.\nThis service is only for people in South Korea.",
     "time": "{val, datetime}",
     "press_back_again_to_exit": "Press BACK button once more to exit"
 }
