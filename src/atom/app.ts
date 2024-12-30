@@ -17,7 +17,7 @@ export type TWatchedContent = {
 
 export const uuidState = atomWithLocalStorage('uuid', '');
 
-export const isFirstLaunchState = atomWithLocalStorage('isFirstLaunch', true);
+// export const isFirstLaunchState = atomWithLocalStorage('isFirstLaunch', true);
 
 const initialMyListContent = Object.values(ContentType).reduce((acc, val) => {
     return { ...acc, [val]: [] };
