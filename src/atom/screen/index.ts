@@ -3,7 +3,7 @@ import { atomFamily } from 'jotai/utils';
 import { Channel, ChannelEpisode } from '@/type/linear';
 import { ContentType, Nullable, Optional } from '@/type/common';
 import { MyListCategory } from '@/type/category';
-import { mylistState, watchHistoryState } from '@/atom/app';
+import { mylistState } from '@/atom/app';
 import {
     scheduleCategories,
     selectedScheduleCategoryIdxState,
@@ -174,14 +174,6 @@ export const scheduleEnabledState = atom(false);
 
 export const readInitialChannel = atom((get) => {
     const channels = get(channelsState);
-    const watchHistory = get(watchHistoryState);
 
-    const recentlyWatchedChannelId =
-        watchHistory[ContentType.LINEAR]?.slice(-1)?.[0]?.contentId;
-
-    const initialChannel = channels.find(
-        (channel) => channel.contentId === recentlyWatchedChannelId,
-    );
-
-    return initialChannel || channels?.[0];
+    return channels?.[0];
 });
