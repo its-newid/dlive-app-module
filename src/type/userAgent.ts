@@ -1,6 +1,9 @@
 export const UserAgentOS = {
-    ANDROID: 'android',
-    DEFAULT: 'DLIVE',
+    DLIVE_STB: 'dlive_settopbox',
+    DLIVE_CTV: 'dlive_embedded',
+    LONGTV_STB: 'longtv_settopbox',
+    GOOGLE_PLAY: 'google_play',
+    DEFAULT: 'dlive',
 } as const;
 export type UserAgentOS = (typeof UserAgentOS)[keyof typeof UserAgentOS];
 

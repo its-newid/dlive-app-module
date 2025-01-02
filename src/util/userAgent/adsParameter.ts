@@ -1,6 +1,6 @@
 import { IAdsParameter, UserAgentOS } from '@/type/userAgent';
 
-const ADS_APP_NAME = 'bingekorea';
+const ADS_APP_NAME = 'diva';
 
 export abstract class UserAgentAdsParameter implements IAdsParameter {
     private readonly appName = ADS_APP_NAME;
@@ -47,14 +47,54 @@ export class DliveAgentAdsParameter extends UserAgentAdsParameter {
     }
 }
 
-export class AndroidAgentAdsParameter extends UserAgentAdsParameter {
+export class DliveStbAgentAdsParameter extends UserAgentAdsParameter {
     constructor(os: UserAgentOS) {
         super(
             os,
             encodeURIComponent('kr.dlive.app.android.fasttv'),
-            encodeURIComponent(
-                'https://play.google.com/store/apps/details?id=net.itsnewid.app.android.diva',
-            ),
+            encodeURIComponent('diva.net'),
+        );
+    }
+
+    getIfaType(): string {
+        return 'aaid';
+    }
+}
+
+export class DliveCtvAgentAdsParameter extends UserAgentAdsParameter {
+    constructor(os: UserAgentOS) {
+        super(
+            os,
+            encodeURIComponent('kr.dlive.app.android.fasttv'),
+            encodeURIComponent('diva.net'),
+        );
+    }
+
+    getIfaType(): string {
+        return 'aaid';
+    }
+}
+
+export class LongtvStbAgentAdsParameter extends UserAgentAdsParameter {
+    constructor(os: UserAgentOS) {
+        super(
+            os,
+            encodeURIComponent('kr.dlive.app.android.fasttv'),
+            encodeURIComponent('diva.net'),
+        );
+    }
+
+    getIfaType(): string {
+        return 'aaid';
+    }
+}
+
+export class GooglePlayAgentAdsParameter extends UserAgentAdsParameter {
+    constructor(os: UserAgentOS) {
+        super(
+            os,
+            encodeURIComponent('kr.dlive.app.android.fasttv'),
+            encodeURIComponent('diva.net'),
         );
     }
 
