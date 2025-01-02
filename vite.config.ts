@@ -5,7 +5,7 @@ import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig({
-    base: "./",
+    base: "",
     resolve: {
         alias: {
             '@': '/src',
@@ -16,22 +16,33 @@ export default defineConfig({
         legacy({
             targets: ["chrome >= 69"],
             polyfills: true,
+            renderLegacyChunks: false,
         }),
         svgr(),
+        {
+            name: 'remove-script-attributes',
+            transformIndexHtml(html) {
+                return html.replace(
+                    '<script type="module" crossorigin src="./bundle.js"></script>',
+                    '<script defer src="./bundle.js"></script>'
+                );
+            }
+        }
     ],
     build: {
         cssTarget: "chrome69",
         assetsDir: "",
-        minify: "terser", // 주석처리하면 esbuild 사용.
+        minify: "terser",
+        assetsInlineLimit: 10485760, // 10MB
         rollupOptions: {
+            input: 'index.html',
             output: {
+                inlineDynamicImports: true,
+                entryFileNames: 'bundle.js',
+                format: 'iife',
                 manualChunks: undefined,
-                entryFileNames: 'dlive-entry-[name]-[hash].js',
-                chunkFileNames: 'dlive-chunk-[name]-[hash].js',
-                assetFileNames: 'dlive-asset-[name]-[hash].[ext]',
-                dir: 'dist'
             }
         },
-        chunkSizeWarningLimit: 1500, // tv앱은 앱 설치 시점에 이미 웹 리소스가 모두 다운로드되므로 파일 I/O 최소화가 더 중요.
+        chunkSizeWarningLimit: 1500,
     },
 });

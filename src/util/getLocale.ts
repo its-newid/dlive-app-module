@@ -3,11 +3,15 @@ import { UserAgentLocale } from '@/type/userAgent.ts';
 export function getLocale() {
     const metaContentName = document
         .querySelector('meta[property="locale"]')
-        ?.getAttribute('content');
-    if (!metaContentName) return UserAgentLocale.DEFAULT;
+        ?.getAttribute('content')
+        ?.toLowerCase();
 
-    const matchedLocale = metaContentName.toLowerCase();
-
-    return 'kr';
-    // return matchedLocale ?? UserAgentLocale.DEFAULT;
+    switch (metaContentName) {
+        case null:
+        case undefined:
+        case 'locale_name':
+            return UserAgentLocale.DEFAULT.toLowerCase();
+        default:
+            return metaContentName;
+    }
 }
