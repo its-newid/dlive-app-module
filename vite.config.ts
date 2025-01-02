@@ -4,7 +4,7 @@ import legacy from "@vitejs/plugin-legacy";
 import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
     base: "",
     resolve: {
         alias: {
@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
     plugins: [
         react(),
         legacy({
-           targets: ["chrome >= 69"],
+            targets: ["chrome >= 69"],
             polyfills: true,
             renderLegacyChunks: false,
         }),
@@ -45,4 +45,4 @@ export default defineConfig(({ mode }) => ({
         },
         chunkSizeWarningLimit: 1500,
     },
-}));
+});
