@@ -1,7 +1,10 @@
 import { getOS } from '@/util/getOs';
 import {
-    AndroidAgentAdsParameter,
     DliveAgentAdsParameter,
+    DliveCtvAgentAdsParameter,
+    DliveStbAgentAdsParameter,
+    GooglePlayAgentAdsParameter,
+    LongtvStbAgentAdsParameter,
 } from '@/util/userAgent/adsParameter';
 import { UserAgentKeyCodeMap } from '@/util/userAgent/keyCodeMap';
 import { UserAgentScreenSize } from '@/util/userAgent/screenSize';
@@ -52,11 +55,41 @@ export class UserAgentImpl implements IUserAgent {
 
         let userAgent;
         switch (os) {
-            case UserAgentOS.ANDROID: {
+            case UserAgentOS.DLIVE_STB: {
                 userAgent = createAgent(
                     this,
                     os,
-                    new AndroidAgentAdsParameter(os),
+                    new DliveStbAgentAdsParameter(os),
+                    new UserAgentKeyCodeMap(),
+                    new UserAgentScreenSize(),
+                );
+                break;
+            }
+            case UserAgentOS.DLIVE_CTV: {
+                userAgent = createAgent(
+                    this,
+                    os,
+                    new DliveCtvAgentAdsParameter(os),
+                    new UserAgentKeyCodeMap(),
+                    new UserAgentScreenSize(),
+                );
+                break;
+            }
+            case UserAgentOS.LONGTV_STB: {
+                userAgent = createAgent(
+                    this,
+                    os,
+                    new LongtvStbAgentAdsParameter(os),
+                    new UserAgentKeyCodeMap(),
+                    new UserAgentScreenSize(),
+                );
+                break;
+            }
+            case UserAgentOS.GOOGLE_PLAY: {
+                userAgent = createAgent(
+                    this,
+                    os,
+                    new GooglePlayAgentAdsParameter(os),
                     new UserAgentKeyCodeMap(),
                     new UserAgentScreenSize(),
                 );
