@@ -41,7 +41,8 @@ function Clickable(
     ref: ForwardedRef<HTMLDivElement>,
 ) {
     const enabled = useMemo(() => {
-        return userAgent.type !== UserAgentOS.ANDROID;
+        // return userAgent.type !== (UserAgentOS.ANDROID || UserAgentOS.AMAZON);
+        return false;
     }, [userAgent]);
 
     const handleClick = () => onClick?.();
