@@ -36,8 +36,4 @@ jobs:
 
             - name: Deploy to S3
               run: |
-                  aws s3 cp ./dist/bundle.js s3://titicaca.its-newid.net/data_dlive/BUILD_TYPE/build/
-
-            - name: Invalidate CloudFront cache
-              run: |
-                  aws cloudfront create-invalidation --distribution-id YOUR_STAGING_DISTRIBUTION_ID --paths "/*"
+                  aws s3 cp ./dist/bundle.js s3://titicaca.its-newid.net/data_dlive/stage/build/
