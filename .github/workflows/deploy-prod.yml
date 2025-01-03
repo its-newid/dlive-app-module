@@ -1,0 +1,40 @@
+name: Build and Deploy
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '20'
+
+            - name: Install pnpm
+              run: npm install -g pnpm
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build project
+              run: pnpm run build
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.DEPLOY_S3_ACCESS_KEY }}
+                  aws-secret-access-key: ${{ secrets.DEPLOY_S3_SECRET_KEY }}
+                  aws-region: 'ap-northeast-2'
+
+            # s3 버킷 이름 변경 필요
+            - name: Deploy to S3
+              run: |
+                  aws s3 cp ./dist/bundle.js s3://titicaca.its-newid.net/data_dlive/prod/build/
