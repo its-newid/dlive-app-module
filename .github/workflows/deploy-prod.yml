@@ -34,6 +34,7 @@ jobs:
                   aws-secret-access-key: ${{ secrets.DEPLOY_S3_SECRET_KEY }}
                   aws-region: 'ap-northeast-2'
 
+            # s3 버킷 이름 변경 필요
             - name: Deploy to S3
               run: |
-                  aws s3 cp ./dist/bundle.js s3://titicaca.its-newid.net/data_dlive/BUILD_TYPE/build/
+                  aws s3 cp ./dist/bundle.js s3://titicaca.its-newid.net/data_dlive/prod/build/
